@@ -1,0 +1,286 @@
+<resources>
+    <string name="app_name">魔小灯</string>
+    <string name="action_settings">系统设置</string>
+    <string name="error_info">来自火星的消息</string>
+    <string name="default_text">小王子</string>
+    <string name="default_tobecontinued">魔小灯未完待续... 谢谢~</string>
+    <string name="splash_words">真正懂得你，乐享新生活</string>
+
+    <!--gradient_ramp.xml-->
+    <string name="tv_save">保存</string>
+
+    <!--SceneModeActivity.java中用到的文字-->
+    <string name="save_succ">保存成功</string>
+
+    <!--TimerFragment.java中用到的文字-->
+    <string name="timeearly_thannow_warning">请选择一个晚于现在的正确定时时间！</string>
+
+    <!--CenterFragment.java中用到的文字-->
+    <string name="choose_call_reminder">选择来电提醒模式</string>
+    <string name="choose_call_reminder_red">红灯闪烁</string>
+    <string name="choose_call_reminder_green">绿灯闪烁</string>
+    <string name="choose_call_reminder_blue">蓝灯闪烁</string>
+    <string name="choose_call_reminder_diy">自定义闪烁</string>
+
+    <!--DatetimeBean.java中用到的文字-->
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="hour">时</string>
+    <string name="minute">分</string>
+
+    <!--SceneFragment.java中用到的文字-->
+    <string name="colorpallet">七彩调色盘</string>
+    <string name="colorpallet_description">随心所欲，调制您的颜料，漾出一片色空</string>
+    <string name="warmnight">温馨小夜灯</string>
+    <string name="warmnight_description">一键调出温馨色调，暖暖的进入梦乡</string>
+    <string name="sunmode">太阳升又落</string>
+    <string name="sunmode_description">模拟太阳东升西落的光线变化</string>
+    <string name="defaultmode">十面埋伏</string>
+    <string name="defaultmode_description">给你的生活绣上十面百色花</string>
+    <string name="rgbwave">三色渐渐变</string>
+    <string name="rgbwave_description">红绿蓝三原色同时渐变</string>
+    <string name="diyshine">炫彩渐渐变</string>
+    <string name="diyshine_description">赤橙黄绿青蓝紫，谁持彩练当空舞</string>
+
+    <!--GroupFragment.java 和 fragment_group.xml中用到的文字-->
+    <string name="group_device_detele">删除</string>
+    <string name="group_empty_info">下拉可开始扫描</string>
+    <string name="group_empty_on">返回键停止扫描</string>
+
+    <!--activity_pallet.xml中用到的文字-->
+    <string name="red">红</string>
+    <string name="orange">橙</string>
+    <string name="yellow">黄</string>
+    <string name="green">绿</string>
+    <string name="cyan">青</string>
+    <string name="blue">蓝</string>
+    <string name="purple">紫</string>
+    <string name="white">白</string>
+
+    <!--dialog_password_settings.xml中用到的文字-->
+    <string name="input_new_pwd">请输入新密码！</string>
+
+    <!--dialog_account_settings.xml中用到的文字-->
+    <string name="input_new_lightname">请输入新灯名！</string>
+
+    <!--fragment_main.xml中用到的文字-->
+    <string name="open_light_timer">定时开灯</string>
+    <string name="close_light_timer">延时关灯</string>
+    <string name="light_timer_unit">分钟</string>
+
+    <!--MainFragment.java中用到的文字-->
+    <string name="unfinised_open_light_timer">定时开灯任务正在运行</string>
+    <string name="finised_open_light_timer">定时开灯任务已结束</string>
+    <string name="unfinised_close_light_timer">定时关灯任务正在运行</string>
+    <string name="finised_close_light_timer">定时关灯任务已结束</string>
+
+    <!--ConnectActivity.java 和 activity_connect.xml中用到的文字-->
+    <string name="connect_device_title">我的设备</string>
+    <string name="connect_group_title">我的分组</string>
+    <string name="connect_personal_title">个人中心</string>
+    <string name="connect_select_tip">至少选择一个设备</string>
+    <string name="connect_dialog_title">连接</string>
+    <string name="connect_dialog_message">拼命连接中……</string>
+    <string name="connect_toast_failed">连接失败</string>
+
+    <!--GradientRampActivity.java 和 gradient_amp.xml中用到的文字-->
+    <string name="gradient_title">炫彩渐变</string>
+    <string name="stop_gap">渐变时长 </string>
+    <string name="gradient_gap">变化色值 </string>
+    <string name="red_value">红灯色值 </string>
+    <string name="green_value">绿灯色值 </string>
+    <string name="blue_value">蓝灯色值 </string>
+    <string name="color_selected">√ </string>
+    <string name="color_notselected">X </string>
+    <string name="change_gradient_delay">设置色彩渐变启动延时(秒) </string>
+    <string name="confirm_delay">确定 </string>
+    <string name="cancel_delay">取消 </string>
+    <string name="settings_delay_tip">请输入正确的延时周期（单位秒）！ </string>
+    <string name="wait_gradient_run">请等待渐变延时任务启动! </string>
+    <string name="gradient_model_saved">炫彩模式保存分享功能正在完善中... </string>
+
+    <!--dialog_gradient_delay_settings.xml中用到的文字-->
+    <string name="hint_input_new">请输入延时时长(秒)</string>
+    <string name="hint_value_saved">当前的延时时长: </string>
+
+    <!--DriveModeActivity.java 和 drive_mode.xml中用到的文字-->
+    <string name="drive_title">情景模式</string>
+    <string name="btn_on">开</string>
+    <string name="btn_off">关</string>
+    <string name="frequency_strong">0 快</string>
+    <string name="frequency_weak">慢 512</string>
+    <string name="frequency_gap">闪烁间隔</string>
+    <string name="red_warning">警示红灯</string>
+    <string name="green_clear">清新绿灯</string>
+    <string name="blue_caution">醒目蓝灯</string>
+    <string name="red_green">红绿交替</string>
+    <string name="red_blue">红蓝变换</string>
+    <string name="blue_green">蓝绿组合</string>
+    <string name="red_blue_green">红绿蓝闪烁</string>
+
+    <!--drivemode_list_item.xml-->
+    <string name="label">标签</string>
+    <string name="label_unlabeled">未标记</string>
+
+    <!--GradientRampService.java-->
+    <string name="notification_content_GradientRamp">炫彩渐变</string>
+    <string name="notification_content_GradientRamp_Sun">日出日落</string>
+    <string name="notification_content_GradientRamp_Rgb">红绿蓝水波纹</string>
+
+
+    <!--DriveModeService.java-->
+    <string name="notification_content_drivemode">情景模式</string>
+
+    <!--PersonalFragment.java 和 fragment_personal.xml中用到的文字-->
+    <string name="personal_feedback">您的建议</string>
+    <string name="personal_about_app">程序版本</string>
+    <string name="personal_about_us">关于我们</string>
+    <string name="personal_phone_func">来电提醒</string>
+
+    <string name="connect_null_title">您的设备叫什么名字？</string>
+    <string name="connect_null_info">请点击 + 选择您的设备。</string>
+    <string name="connect_listen_title">您的设备叫:</string>
+    <string name="connect_listen_info">点击图标进行连接?或点击 + 选择新设备。</string>
+    <string name="connect_scanning_title">正在努力寻找:</string>
+    <string name="connect_scanning_info">请耐心等候。您可以点击图标停止寻找。</string>
+    <string name="connect_scanned_title">我找不到:</string>
+    <string name="connect_scanned_info">您可以点击图标再次尝试，或者点击 + 再次选择设备。</string>
+    <string name="connect_connecting_title">加速连接:</string>
+    <string name="connect_connecting_info">报告队长：连接中，您可以点击图标停止连接。</string>
+    <string name="connect_fail_title">非常抱歉，实在是连不上:</string>
+    <string name="connect_fail_info">请点击 + 重新扫描 检查设备是否已打开。</string>
+    <string name="connect_connected_title">连接成功</string>
+    <string name="connect_connected_info">报告队长：已连接成功，您可以尽情的玩耍了。</string>
+    <!--Dialog中用到的文字-->
+    <string name="dialog_title_connect">已与魔小灯断开连接</string>
+    <string name="dialog_info_connect">您可重新连接或者退出程序，请您选择操作</string>
+    <string name="dialog_exit_connect">退出程序</string>
+    <string name="dialog_retry_connect">重新连接</string>
+    <!--MainActivity.java中用到的文字-->
+    <string name="dialog_title">退出提醒</string>
+    <string name="dialog_message">后台还有服务运行，真的要退出么？</string>
+    <string name="dialog_positive">后台运行</string>
+    <string name="dialog_negative">继续退出</string>
+    <string name="dialog_neutral">取消</string>
+    <string name="exit_warning">请关闭蓝牙节约用电</string>
+    <string name="exit_words">客官慢走欢迎再来</string>
+    <string name="exit_background">在下暂时回避</string>
+    <string name="device_online">在线</string>
+    <string name="device_offline">离线</string>
+    <string name="main_state_online">有设备已上线</string>
+    <string name="main_state_offline">有设备已离线</string>
+    <string name="main_state_bond">绑定状态改变</string>
+    <string name="main_state_bluetooth">蓝牙状态改变</string>
+    <string name="main_state_equipment">外设状态改变</string>
+    <!--UpgradeManager.java中用到的文字-->
+    <string name="soft_update_latest">已是最新版本</string>
+    <string name="soft_update_title">软件更新</string>
+    <string name="soft_update_info">检测到新版本，立即更新吗</string>
+    <string name="soft_update_updatebtn">更新</string>
+    <string name="soft_update_later">稍后更新</string>
+    <string name="soft_updating">正在更新...</string>
+    <string name="soft_update_cancel">取消</string>
+    <string name="soft_update_now">当前版本为：</string>
+    <string name="soft_update_net">网络版本为：</string>
+    <string name="soft_update_whether">是否要更新</string>
+
+    <string name="soft_upgrade_yes">检测到新版本</string>
+    <string name="soft_upgrade_no">已是最新版本</string>
+    <string name="soft_upgrade_check">点击检查</string>
+    <string name="soft_upgrade_checking">正在检查……</string>
+
+    <!--ShakeService.java 和 VisualizerService.java里用到的文字-->
+    <string name="ticker_text">魔小灯后台服务</string>
+    <string name="notification_title">魔小灯</string>
+    <string name="notification_content_visualizer">音乐律动</string>
+    <string name="notification_content_shake">摇啊摇啊</string>
+    <string name="notification_info">后台运行中……</string>
+    <string name="notice_warning">注意：音乐律动和摇一摇不能同时运行</string>
+    <!--DeviceList.java 和 device_list.xml中用到的文字-->
+    <string name="bluetooth_title">设备扫描</string>
+    <string name="bluetooth_scanning">扫描中……</string>
+    <string name="bluetooth_scan">开始扫描</string>
+    <string name="bluetooth_connect">连接</string>
+    <string name="bluetooth_unpair">取消配对</string>
+    <!--MainFragment1.java 和 fragment_main2.xml中用到的文字-->
+    <string name="main_brightness_weak">0暗</string>
+    <string name="main_brightness_strong">亮255</string>
+    <string name="main_brightness_tip">当前亮度值</string>
+    <string name="main_timer_weak">0分</string>
+    <string name="main_timer_strong">60分</string>
+    <string name="main_timer_tip_zero">延时关灯已关闭</string>
+    <string name="main_timer_tip">分钟后自动关灯</string>
+    <!--Scene1Fragment.java 和 fragment_scene1.xml中用到的文字-->
+    <string name="scene_music">音乐律动</string>
+    <string name="scene_shake">摇一摇</string>
+    <string name="scene_mode">情景模式 </string>
+    <string name="scene_pallet">调色板</string>
+    <string name="scene_onoff">开关</string>
+    <string name="scene_gradient">炫彩渐变</string>
+    <string name="scene_drive">情景模式</string>
+    <string name="scene_music_error">如果音乐播放器未打开请手动打开</string>
+    <string name="scene_state_on">运行中……</string>
+    <!--StatusFragment.java 和 fragment_status.xml中用到的文字-->
+    <string name="status_temperature">当前温度</string>
+    <string name="status_electricity">当前电压</string>
+    <!--SettingsActivity.java 和 activity_settings.xml中用到的文字-->
+    <!--<string name="settings_login">请点击登录</string>-->
+    <string name="settings_login">设置</string>
+    <string name="settings_password">设置密码</string>
+    <string name="settings_name">更改灯名</string>
+    <string name="settings_color">预置灯色</string>
+    <string name="settings_music">音乐律动</string>
+    <string name="settings_shake">摇一摇吧</string>
+    <string name="settings_camera">开心自拍</string>
+    <string name="settings_about">关于我们</string>
+    <string name="settings_positive">更改</string>
+    <string name="settings_negative">取消</string>
+    <string name="settings_password_tip">密码必须为4位数字</string>
+    <string name="settings_name_tip">灯名不能为空</string>
+    <string name="settings_color_tip">已设当前颜色为开灯启动色</string>
+    <string name="settings_warning">若灯重启，请重启APP</string>
+    <string name="settings_color_message">确定要设置当前颜色为开机启动色？</string>
+    <!--AboutActivity.java 和 activity_about.xml中用到的文字-->
+    <string name="about_upgrade">检查更新</string>
+    <string name="about_latest">已是最近版本</string>
+    <string name="about_describe">扫描二维码，让您的好友一起体验魔小灯</string>
+    <string name="about_no_network">当前网络不可用</string>
+    <string name="about_software_version">软件版本 V</string>
+    <string name="about_firmware_version">固件版本 V</string>
+    <!--ShakeActivity.java 和 activity_shake.xml中用到的文字-->
+    <string name="shake_switch">开灯关灯</string>
+    <string name="shake_color">随机变色</string>
+    <string name="shake_strong">0强</string>
+    <string name="shake_weak">弱</string>
+    <string name="shake_sensitive">敏感度</string>
+    <!--VisualizerActivity.java 和 activity_visualizer.xml中用到的文字-->
+    <string name="visualizer_strong">0强</string>
+    <string name="visualizer_weak">弱512</string>
+    <string name="visualizer_feel">随身感</string>
+    <!--SelfieActivity.java 和 activity_selfie.xml中用到的文字-->
+    <string name="selfie_open">开启自拍</string>
+    <string name="selfie_close">关闭自拍</string>
+    <string name="selfie_tip">使用方法：第一步点击“开始自拍”；第二步魔小灯APP“后台运行”；第三步连接魔小灯键盘设备；第四步打开手机相机去嗨吧！</string>
+    <string name="selfie_open_tip">已开启蓝牙自拍功能</string>
+    <string name="selfie_close_tip">已关闭蓝牙自拍功能</string>
+    <string name="selfie_root_success">Root权限请求成功</string>
+    <string name="selfie_root_fail">Root权限请求失败</string>
+    <string name="selfie_require_root">请求Root权限</string>
+    <string name="selfie_already_root">已经是Root权限了</string>
+    <!--GroupAdapter.java 和 item_options_settings.xml中用到的文字-->
+    <string name="group_adapter_connect">连接</string>
+    <string name="group_adapter_disconnect">断开</string>
+    <!--DialogFragment.java 和 fragment_dialog.xml中用到的文字-->
+    <string name="dialog_toast_connecting">连接中……</string>
+    <string name="dialog_toast_disconnecting">断开中……</string>
+    <string name="dialog_show_title">设备管理</string>
+    <string name="dialog_connect_all">连接所有</string>
+    <string name="dialog_disconnect_all">断开所有</string>
+    <string name="dialog_select_all">全选</string>
+    <string name="dialog_deselect_all">反选</string>
+    <string name="dialog_cancel_all">取消</string>
+    <string name="dialog_state_tip">请先连接设备</string>
+
+    <string name="prompt_recordvideo_permission">请开启“允许录制音频”权限，开始音乐律动吧！</string>
+</resources>

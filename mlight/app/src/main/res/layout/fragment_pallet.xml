@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_fragment_pallet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="8dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@color/grey500"
+    tools:context=".MainActivity$PlaceholderFragment">
+<!--
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity$PlaceholderFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@color/grey500">
+-->
+        <TextView
+            android:id="@+id/tv_value_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/default_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/moon" />
+
+            <SeekBar
+                android:id="@+id/sb_brightness_main"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="255" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/sun" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_red_main"
+                android:layout_width="@dimen/button_color_size"
+                android:layout_height="@dimen/button_color_size"
+                android:layout_marginLeft="@dimen/button_horizontal_margin"
+                android:layout_marginRight="@dimen/button_horizontal_margin"
+                android:background="@drawable/shape_circle_red"
+                android:text="红"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btn_orange_main"
+                android:layout_width="@dimen/button_color_size"
+                android:layout_height="@dimen/button_color_size"
+                android:layout_marginLeft="@dimen/button_horizontal_margin"
+                android:layout_marginRight="@dimen/button_horizontal_margin"
+                android:background="@drawable/shape_circle_orange"
+                android:text="橙"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btn_yellow_main"
+                android:layout_width="@dimen/button_color_size"
+                android:layout_height="@dimen/button_color_size"
+                android:layout_marginLeft="@dimen/button_horizontal_margin"
+                android:layout_marginRight="@dimen/button_horizontal_margin"
+                android:background="@drawable/shape_circle_yellow"
+                android:text="黄"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btn_green_main"
+                android:layout_width="@dimen/button_color_size"
+                android:layout_height="@dimen/button_color_size"
+                android:layout_marginLeft="@dimen/button_horizontal_margin"
+                android:layout_marginRight="@dimen/button_horizontal_margin"
+                android:background="@drawable/shape_circle_green"
+                android:text="绿"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/view_vertical_margin"
+            android:layout_marginLeft="@dimen/framelayout_horizontal_margin"
+            android:layout_marginRight="@dimen/framelayout_horizontal_margin"
+            android:layout_marginTop="@dimen/view_vertical_margin">
+
+            <ImageView
+                android:id="@+id/iv_color_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/colors" />
+
+            <ImageButton
+                android:id="@+id/btn_switch_main"
+                android:layout_width="@dimen/button_color_size"
+                android:layout_height="@dimen/button_color_size"
+                android:layout_gravity="center"
+                android:background="@drawable/selector_circle_bg"
+                android:padding="12dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/light_off" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_cyan_main"
+                android:layout_width="@dimen/button_color_size"
+                android:layout_height="@dimen/button_color_size"
+                android:layout_marginLeft="@dimen/button_horizontal_margin"
+                android:layout_marginRight="@dimen/button_horizontal_margin"
+                android:background="@drawable/shape_circle_cyan"
+                android:text="青"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btn_blue_main"
+                android:layout_width="@dimen/button_color_size"
+                android:layout_height="@dimen/button_color_size"
+                android:layout_marginLeft="@dimen/button_horizontal_margin"
+                android:layout_marginRight="@dimen/button_horizontal_margin"
+                android:background="@drawable/shape_circle_blue"
+                android:text="蓝"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btn_purple_main"
+                android:layout_width="@dimen/button_color_size"
+                android:layout_height="@dimen/button_color_size"
+                android:layout_marginLeft="@dimen/button_horizontal_margin"
+                android:layout_marginRight="@dimen/button_horizontal_margin"
+                android:background="@drawable/shape_circle_purple"
+                android:text="紫"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btn_white_main"
+                android:layout_width="@dimen/button_color_size"
+                android:layout_height="@dimen/button_color_size"
+                android:layout_marginLeft="@dimen/button_horizontal_margin"
+                android:layout_marginRight="@dimen/button_horizontal_margin"
+                android:background="@drawable/shape_circle_white"
+                android:text="白"
+                android:textColor="@color/green500" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/timer" />
+
+            <TextView
+                android:id="@+id/tv_timer_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/default_text"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0分"
+                android:textColor="@color/white" />
+
+            <SeekBar
+                android:id="@+id/sb_timer_main"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="60" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="60分"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    <!--</LinearLayout>-->
+</LinearLayout>
