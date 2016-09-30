@@ -5,5 +5,5 @@ gradle/
 *.iml
 *.properties
 gradlew
-gradle.bat
+*.bat
 settings.gradle
