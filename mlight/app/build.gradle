@@ -8,7 +8,7 @@ android {
         applicationId "com.guohua.mlight"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode
+        versionCode 1
         versionName "2.0"
     }
     buildTypes {
