@@ -72,6 +72,10 @@ public class ParseXmlService {
      */
     public HashMap<String, String> parseXmlByUrl(String url) {
         InputStream is = getInputStreamFromUrl(url);
+        if(is == null){
+            System.out.println("ParseXmlService parseXmlByUrl InputStream is: null");
+            return null;
+        }
         return parseXml(is);
     }
 
@@ -88,6 +92,7 @@ public class ParseXmlService {
             HttpURLConnection mConn = (HttpURLConnection) mUrl.openConnection();
             is = mConn.getInputStream();
         } catch (IOException e) {
+            System.out.println("InputStream getInputStreamFromUrl " + url + " exception: "+ e.toString());
             e.printStackTrace();
         }
         return is;

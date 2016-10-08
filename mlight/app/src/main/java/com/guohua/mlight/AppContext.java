@@ -54,13 +54,6 @@ public class AppContext extends Application {
     private volatile static AppContext mAppContext = null;
 
     public static AppContext getInstance() {
-        if (mAppContext == null) {
-            synchronized (AppContext.class) {
-                if (mAppContext == null) {
-                    mAppContext = new AppContext();
-                }
-            }
-        }
         return mAppContext;
     }
 
