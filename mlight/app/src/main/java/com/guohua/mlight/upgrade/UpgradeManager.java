@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -29,11 +28,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
-/**
- * @author Leo
- * @detail 版本升级
- * @time 2015-12-15
- */
 public class UpgradeManager {
     public static final int WHAT_UPDATE_FALSE = 0;
     public static final int WHAT_UPDATE_TRUE = 1;
@@ -43,7 +37,8 @@ public class UpgradeManager {
     private Handler handler;//传递消息
     private Context context;//检测中用到的上下文
     private String currentVersion;//当前版本
-    private String serverVersion;//服务器版本的版本号
+    private int currentVersionCode;//当前版本
+    private int serverVersion;//服务器版本的版本号
     private String serverName;//服务器版本的应用名
     private String serverUrl;//服务器版本的URL
 
@@ -85,7 +80,7 @@ public class UpgradeManager {
             ParseXmlService parseXmlService = new ParseXmlService();
             HashMap<String, String> result = parseXmlService.parseXmlByUrl(params[0]);
             if (result != null && result.size() > 0) {
-                serverVersion = result.get("version");
+                serverVersion = Integer.parseInt(result.get("version"));
                 serverName = result.get("name");
                 serverUrl = result.get("url");
             }
@@ -111,16 +106,12 @@ public class UpgradeManager {
      * @return
      */
     private boolean isUpate() {
-        if (serverVersion == null)
+        if (serverVersion == 0)
             return false;
 
-        if (!TextUtils.equals(serverVersion, currentVersion)) {
-            float serverVersionCode = Float.parseFloat(serverVersion);
-            float currentVersionCode = Float.parseFloat(currentVersion);
-            if (serverVersionCode > currentVersionCode)
-                return true;
+        if (serverVersion > currentVersionCode) {
+            return true;
         }
-
         return false;
     }
 
@@ -142,6 +133,7 @@ public class UpgradeManager {
         PackageManager pm = context.getPackageManager();
         try {
             PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
+            currentVersionCode = pi.versionCode;
             return pi.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
