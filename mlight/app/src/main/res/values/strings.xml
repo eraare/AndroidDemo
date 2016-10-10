@@ -52,6 +52,7 @@
     <!--fragment_main.xml中用到的文字-->
     <string name="open_light_timer">Turn On At</string>
     <string name="close_light_timer">Turn Off After</string>
+    <string name="cancel_open_light_timer">Cancel turn on at </string>
     <string name="light_timer_unit">Minutes</string>
 
     <!--activity_pallet.xml中用到的文字-->

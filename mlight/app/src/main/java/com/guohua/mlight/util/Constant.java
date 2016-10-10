@@ -26,6 +26,7 @@ public final class Constant {
     public static final String KEY_DEVICE_SWITCH = "key_device_switch";
     public static final String KEY_DEVICE_COLOR = "key_device_color";
     public static final String KEY_TIMER = "key_timer";
+    public static final String EXIST_TIMER_OPEN = "exist_timer_open";
     public static final String KEY_TIMER_OPEN = "key_timer_open";
     public static final String KEY_TIMER_CLOSE = "key_timer_close";
     public static final String KEY_TIMER_MODE = "key_timer_mode";
@@ -61,6 +62,7 @@ public final class Constant {
     public static final String ACTION_TEMPERATURE_STATUS = "action.TEMPERATURE_STATUS";
     public static final String ACTION_VOLTAGE_STATUS = "action.VOLTAGE_STATUS";
     public static final String ACTION_FIRMWARE_VERSION = "action_FIRMWARE_VERSION";
+    public static final String ACTION_OPENLIGHT_TIMER = "action_OPENLIGHT_TIMER";
 
     //情景模式监听状态值
     public static final int DRIVEMODE_WHITE_CODE = 9;

@@ -1,5 +1,6 @@
 package com.guohua.mlight.fragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -22,6 +23,9 @@ import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.util.CodeUtils;
 import com.guohua.mlight.util.Constant;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.guohua.mlight.fragment.MainFragment.currentOpenTime;
 
@@ -104,25 +108,39 @@ public class TimerFragment extends android.support.v4.app.DialogFragment {
             int id = v.getId();
             switch (id) {
                 case R.id.tv_confirm_timer: {
-                    if (mDatetime.getTimeInMillis() > 0) {
+                    if (mDatetime.getTimeInMillis() != 0) {//当天24:00之前的定时
                         long curTime = System.currentTimeMillis();
-                        System.out.println(String.format("%d", curTime) + "  ----------------turn on:" + mDatetime.getTimeInMillis());
-                        String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_DELAY_OPEN, new Object[]{mDatetime.getTimeInMillis() / 1000});
+                        long mdateTime = mDatetime.getTimeInMillis();
+
+                        if(mdateTime < 0){//第二天当前时间点之前的定时
+                            System.out.println(String.format("%d", curTime) + "  -------11111---------turn on:" + mdateTime);
+                            mdateTime = mDatetime.getNextDayTimeInMillis();
+                        }
+
+                        System.out.println(String.format("%d", curTime) + "  --------22222--------turn on:" + mdateTime);
+
+                        String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_DELAY_OPEN, new Object[]{mdateTime / 1000});
                         ThreadPool.getInstance().addOtherTask(new SendRunnable(data));
 
                         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
                         SharedPreferences.Editor editor = sp.edit();
-                        currentOpenTime = (int) mDatetime.getTimeInMillis() /(60*1000);
+                        currentOpenTime = (int) mdateTime /(60*1000);
                         long tmp = currentOpenTime*60*1000;
                         long resTimer = curTime + tmp;
                         System.out.println(String.format("%d", curTime) + " + " + tmp + " = resTimer is:     " +
                                 String.format("%d", resTimer));
+
                         editor.putLong(Constant.KEY_TIMER_OPEN, resTimer).apply();
+                        editor.putBoolean(Constant.EXIST_TIMER_OPEN, true).apply();
+
+                        Intent intent = new Intent(Constant.ACTION_OPENLIGHT_TIMER);
+                        intent.putExtra(Constant.ACTION_OPENLIGHT_TIMER, new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(resTimer)));
+                        mContext.sendBroadcast(intent);
 
                         System.out.println(String.format("%d", curTime) + "   " + currentOpenTime + "  timerfragment icon_light currentOpenTime " +
                                 String.format("%d", resTimer) + ";  " + String.format("%d", sp.getLong(Constant.KEY_TIMER_OPEN, 0)));
                         dismiss();
-                    } else {
+                    } else{
                         showToast(getString(R.string.timeearly_thannow_warning));
                     }
                 }
@@ -197,6 +215,11 @@ public class TimerFragment extends android.support.v4.app.DialogFragment {
     }
 
     private void showDatetime() {
+        if(mDatetime.getTimeInMillis() < 0){//选择的时间小于当前时间，跳至第二天
+            mDatetime.tmpDay = mDatetime.day + 1;
+        }else if(mDatetime.day < mDatetime.tmpDay){//同一天内，此时刻之后的时间
+            mDatetime.tmpDay = mDatetime.day;
+        }
         mTitle.setText(mDatetime.toString());
     }
 }

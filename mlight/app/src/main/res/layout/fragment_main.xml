@@ -69,6 +69,7 @@
                 android:background="@color/main" />
 
             <TextView
+                android:id="@+id/tv_timer_off_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
