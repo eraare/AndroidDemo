@@ -1,0 +1,115 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity$PlaceholderFragment">
+    <!--android:paddingLeft="@dimen/horizontal_padding"-->
+    <!--android:paddingRight="@dimen/horizontal_padding"-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/content_padding"
+            android:paddingLeft="@dimen/content_padding"
+            android:paddingRight="@dimen/content_padding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:text="@string/main_brightness_weak"
+                android:textColor="@color/greyd" />
+
+            <TextView
+                android:id="@+id/tv_brightness_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/main_brightness_tip"
+                android:textColor="@color/greyd" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:text="@string/main_brightness_strong"
+                android:textColor="@color/greyd" />
+        </FrameLayout>
+
+        <SeekBar
+            android:id="@+id/sb_brightness_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="255" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="right"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/content_padding"
+            android:paddingLeft="@dimen/content_padding"
+            android:paddingRight="@dimen/content_padding"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:text="@string/main_timer_weak"
+                android:textColor="@color/greyd" />
+
+            <TextView
+                android:id="@+id/tv_timer_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/main_timer_tip_zero"
+                android:textColor="@color/greyd" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:text="@string/main_timer_strong"
+                android:textColor="@color/greyd" />
+        </FrameLayout>
+
+        <SeekBar
+            android:id="@+id/sb_timer_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="60"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/iv_timer_scene"
+            android:layout_width="@dimen/large_icon_size"
+            android:layout_height="@dimen/large_icon_size"
+            android:layout_margin="@dimen/content_margin"
+            android:adjustViewBounds="true"
+            android:src="@drawable/icon_timer_normal"
+            android:visibility="gone"/>
+
+
+    </LinearLayout>
+
+    <com.guohua.mlight.view.holocolorpicker.ColorPicker
+        android:id="@+id/cp_picker_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

@@ -1,0 +1,225 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_rect_bg"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="0dp"
+    tools:context=".MainActivity$PlaceholderFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_onoff_scene"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/greye"
+        android:gravity="center"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+            android:id="@+id/iv_onoff_scene"
+            android:layout_width="@dimen/large_icon_size"
+            android:layout_height="@dimen/large_icon_size"
+            android:layout_margin="@dimen/content_margin"
+            android:adjustViewBounds="true"
+            android:src="@drawable/icon_device_on" />
+
+        <TextView
+            android:id="@+id/tv_onoff_scene"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scene_onoff"
+            android:textColor="@color/greyd"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_scene_list"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/greye"
+        android:gravity="center"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+            android:id="@+id/iv_scene_list"
+            android:layout_width="@dimen/large_icon_size"
+            android:layout_height="@dimen/large_icon_size"
+            android:layout_margin="@dimen/content_margin"
+            android:adjustViewBounds="true"
+            android:src="@drawable/icon_drive" />
+
+        <TextView
+            android:id="@+id/tv_scene_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scene_mode"
+            android:textColor="@color/greyd"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_scene_test"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/greye"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:id="@+id/iv_scene_test"
+            android:layout_width="@dimen/large_icon_size"
+            android:layout_height="@dimen/large_icon_size"
+            android:layout_margin="@dimen/content_margin"
+            android:adjustViewBounds="true"
+            android:src="@drawable/scenetest" />
+
+        <TextView
+            android:id="@+id/tv_scene_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sun"
+            android:textColor="@color/greyd"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_pallet_scene"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/greye"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:id="@+id/iv_pallet_scene"
+            android:layout_width="@dimen/large_icon_size"
+            android:layout_height="@dimen/large_icon_size"
+            android:layout_margin="@dimen/content_margin"
+            android:adjustViewBounds="true"
+            android:src="@drawable/icon_drive" />
+
+        <TextView
+            android:id="@+id/tv_pallet_scene"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scene_pallet"
+            android:textColor="@color/greyd"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_music_scene"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/greyb"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_music_scene"
+            android:layout_width="@dimen/large_icon_size"
+            android:layout_height="@dimen/large_icon_size"
+            android:layout_margin="@dimen/content_margin"
+            android:adjustViewBounds="true"
+            android:src="@drawable/icon_music_normal" />
+
+        <TextView
+            android:id="@+id/tv_music_scene"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scene_music"
+            android:textColor="@color/main" />
+    </LinearLayout>
+
+    <!--<View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/greyc" />-->
+
+    <!--<LinearLayout
+        android:id="@+id/ll_shake_scene"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/greye"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_shake_scene"
+            android:layout_width="@dimen/large_icon_size"
+            android:layout_height="@dimen/large_icon_size"
+            android:layout_margin="@dimen/content_margin"
+            android:adjustViewBounds="true"
+            android:src="@drawable/icon_shake_normal" />
+
+        <TextView
+            android:id="@+id/tv_shake_scene"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scene_shake"
+            android:textColor="@color/greyd" />
+    </LinearLayout>-->
+
+    <LinearLayout
+        android:id="@+id/ll_gradient_scene"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/greye"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_gradient_scene"
+            android:layout_width="@dimen/large_icon_size"
+            android:layout_height="@dimen/large_icon_size"
+            android:layout_margin="@dimen/content_margin"
+            android:adjustViewBounds="true"
+            android:src="@drawable/icon_gradient" />
+        <TextView
+            android:id="@+id/tv_gradient_scene"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scene_gradient"
+            android:textColor="@color/greyd" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_drive_scene"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/greye"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/iv_drive_scene"
+            android:layout_width="@dimen/large_icon_size"
+            android:layout_height="@dimen/large_icon_size"
+            android:layout_margin="@dimen/content_margin"
+            android:adjustViewBounds="true"
+            android:src="@drawable/icon_drive" />
+        <TextView
+            android:id="@+id/tv_drive_scene"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/scene_drive"
+            android:textColor="@color/greyd" />
+    </LinearLayout>
+</LinearLayout>
