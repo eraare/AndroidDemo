@@ -267,7 +267,6 @@ public class AppContext extends Application {
         for (Device device : devices) {
             if (device.isSelected()) {
                 send(device.getDeviceAddress(), message);
-                System.out.println("sendAll(String message) message is: " + message);
             }
         }
     }
@@ -276,11 +275,6 @@ public class AppContext extends Application {
         for (Device device : devices) {
             if (device.isSelected()) {
                 send(device.getDeviceAddress(), message);
-                System.out.println("sendAll(byte[] message) is: ");
-                for (int i = 0; i < message.length; i++) {
-                    System.out.print(message[i] + ";");
-                }
-                System.out.println();
             }
         }
     }

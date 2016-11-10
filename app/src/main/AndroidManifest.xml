@@ -213,7 +213,10 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.TemperatureActivity" />
+        <activity
+            android:name=".activity.TemperatureActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen" />
     </application>
 
 </manifest>

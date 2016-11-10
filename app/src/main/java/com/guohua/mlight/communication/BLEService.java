@@ -42,6 +42,7 @@ public class BLEService extends Service {
     private static final boolean NOTIFICATION_ENABLED = true;
     private boolean isServiceDiscovered = false;//发现服务否
     private HashMap<String, BLEDevice> mBLEDevices;//保存连接设备的Gatt 以device address为key
+    private SharedPreferences sp;
 
     //private boolean isConfirmed = false;//密码验证
 
@@ -327,18 +328,11 @@ public class BLEService extends Service {
                                             BluetoothGattCharacteristic characteristic) {
             // TODO Auto-generated method stub
             // super.onCharacteristicChanged(gatt, characteristic);
-            //硬件传来的数据从这里读取
+            System.out.println("接收数据----------------------");
             String deviceAddress = gatt.getDevice().getAddress();
             String rcv = new String(characteristic.getValue());
-            sendDataBroadcast(rcv, deviceAddress);
             System.out.println("我收到了" + deviceAddress + "的数据:" + rcv);
-
-//			if(isConfirmed == false && TextUtils.equals(rcv, "goal")) {
-//				isConfirmed = true;
-//			}
-//			if(!isConfirmed) {
-//				writeToBLE(deviceAddress, CodeUtils.password);
-//			}
+            sendDataBroadcast(rcv, deviceAddress);
         }
 
         @Override
@@ -378,7 +372,7 @@ public class BLEService extends Service {
                 if (mGatt != null)
                     mGatt.discoverServices();
                 mDevice.state = BLEDevice.STATE_CONNECTED;
-				System.out.println("state connected");
+                System.out.println("state connected");
 //				sendStateBroadcast(BLEConstant.ACTION_BLE_CONNECTED, deviceAddress);
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 // connect(mBluetoothDeviceAddress);
@@ -432,36 +426,33 @@ public class BLEService extends Service {
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             // TODO Auto-generated method stub
             // super.onServicesDiscovered(gatt, status);
-//			if (isServiceDiscovered) {
-//				return;
-//			}
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
-            String deviceAddress = gatt.getDevice().getAddress();
-            if (!mBLEDevices.containsKey(deviceAddress)) {
-                gatt.disconnect();
-                return;
-            }
-            BLEDevice mDevice = mBLEDevices.get(deviceAddress);
-            BluetoothGatt mGatt = mDevice.gatt;
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                BluetoothGattCharacteristic mCharacteristic = getCharacteristic(gatt, SampleGattAttributes.UUID_SERVICE, SampleGattAttributes.UUID_CHARACTERISTIC);
-                if (mCharacteristic == null) {
+                BluetoothGattService service = gatt.getService(SampleGattAttributes.UUID_SERVICE);
+                if (service == null) {
                     return;
                 }
-                mDevice.characteristic = mCharacteristic;
-                System.out.println("find services");
-//				isServiceDiscovered = true;
-                System.out.println("state connected");
+                BluetoothGattCharacteristic characteristic = service.getCharacteristic(SampleGattAttributes.UUID_CHARACTERISTIC);
+                if (characteristic == null) {
+                    return;
+                }
+                String deviceAddress = gatt.getDevice().getAddress();
+                BLEDevice device = mBLEDevices.get(deviceAddress);
+                if (device == null) {
+                    return;
+                }
+                device.gatt = gatt;
+                device.characteristic = characteristic;
+                if (sp == null) {
+                    sp = PreferenceManager.getDefaultSharedPreferences(mContext);
+                }
                 String passport = (Constant.DEFAULT_PASSWORD_HEAD + sp.getString(deviceAddress, CodeUtils.password));
-                System.out.println(" BLEService onServicesDiscovered deviceAddress: " + deviceAddress + "; passport:  " + passport);
-                writeToBLE(deviceAddress, passport.getBytes());
+                //writeToBLE(deviceAddress, passport.getBytes());
+                characteristic.setValue(passport.getBytes());
+                gatt.writeCharacteristic(characteristic);
+                //setCharacteristicNotification(gatt, characteristic, NOTIFICATION_ENABLED);
                 sendStateBroadcast(BLEConstant.ACTION_BLE_CONNECTED, deviceAddress);
-                setCharacteristicNotification(gatt, mCharacteristic, NOTIFICATION_ENABLED);
-            } else {
-                gatt.disconnect();
             }
         }
-
     };
 
     private BluetoothGattService getService(BluetoothGatt nGatt, UUID nUuid) {
@@ -476,25 +467,20 @@ public class BLEService extends Service {
     /**
      * 设置后可以使用通知 设备给手机发送通知时可触发onCharacteristicChanged()
      *
-     * @param characteristic
+     * @param mBluetoothGatt
+     * @param mCharacteristic
      * @param enabled
      */
-
-    private void setCharacteristicNotification(BluetoothGatt mBluetoothGatt,
-                                               BluetoothGattCharacteristic characteristic, boolean enabled) {
-        if (mBluetoothGatt == null || characteristic == null) {
+    private synchronized void setCharacteristicNotification(BluetoothGatt mBluetoothGatt, BluetoothGattCharacteristic mCharacteristic, boolean enabled) {
+        if (mBluetoothAdapter == null || mBluetoothGatt == null)
             return;
-        }
-        mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
-        BluetoothGattDescriptor descriptor = characteristic
-                .getDescriptor(SampleGattAttributes.UUID_DESCRIPTOR);
+        mBluetoothGatt.setCharacteristicNotification(mCharacteristic, enabled);
+        BluetoothGattDescriptor descriptor = mCharacteristic.getDescriptor(SampleGattAttributes.UUID_DESCRIPTOR);
         if (descriptor != null) {
-            descriptor
-                    .setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            mBluetoothGatt.writeDescriptor(descriptor);
+            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            while(!mBluetoothGatt.writeDescriptor(descriptor));
         }
     }
-
 
     /**
      * 通信接口 通过此函数即可向BLE设备写入数据
@@ -564,7 +550,7 @@ public class BLEService extends Service {
         isSucc = mGatt.writeCharacteristic(mCharacteristic);
 
 		/*synchronized(this)
-		{
+        {
 			try {
 				this.wait(50); // 暂停线程
 			}catch(InterruptedException e) {
@@ -578,7 +564,7 @@ public class BLEService extends Service {
 		}*/
 
 		/*try {
-			Thread.sleep(50);
+            Thread.sleep(50);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}*/
@@ -586,7 +572,7 @@ public class BLEService extends Service {
         return isSucc;
 
 		/*if (isSucc) {
-			return true;
+            return true;
 		}
 
 		return false;*/
