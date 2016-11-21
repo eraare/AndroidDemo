@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.guohua.ios.dialog.ActionSheetDialog;
 import com.guohua.mlight.AppContext;
 import com.guohua.mlight.MainActivity;
 import com.guohua.mlight.R;
@@ -164,7 +165,8 @@ public class CenterFragment extends Fragment {
                 }
                 break;
                 case 6: {
-                    setCallReminderColor();
+                    //setCallReminderColor();
+                    showTelphonyDialog();
                 }
                 break;
                 case 7: {
@@ -353,6 +355,44 @@ public class CenterFragment extends Fragment {
                     }
                 }).setNegativeButton(R.string.settings_negative, null).show();
     }
+
+    private void showTelphonyDialog() {
+        new ActionSheetDialog(mContext)
+                .builder()
+                .setTitle(getString(R.string.choose_call_reminder))
+                .addSheetItem(getString(R.string.choose_call_reminder_red), ActionSheetDialog.SheetItemColor.Blue, mOnSheetItemClickListener)
+                .addSheetItem(getString(R.string.choose_call_reminder_green), ActionSheetDialog.SheetItemColor.Blue, mOnSheetItemClickListener)
+                .addSheetItem(getString(R.string.choose_call_reminder_blue), ActionSheetDialog.SheetItemColor.Blue, mOnSheetItemClickListener)
+                .addSheetItem(getString(R.string.choose_call_reminder_diy), ActionSheetDialog.SheetItemColor.Red, mOnSheetItemClickListener)
+                .show();
+    }
+
+    private ActionSheetDialog.OnSheetItemClickListener mOnSheetItemClickListener = new ActionSheetDialog.OnSheetItemClickListener() {
+        @Override
+        public void onClick(int which) {
+            final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
+            switch (which) {
+                case 1:
+                    sp.edit().putInt(Constant.CALL_REMINDER_SHINEMODE, 0).apply();
+                    ToastUtill.showToast(mContext, getString(R.string.choose_call_reminder_red), Constant.TOASTLENGTH).show();
+                    break;
+                case 2:
+                    sp.edit().putInt(Constant.CALL_REMINDER_SHINEMODE, 1).apply();
+                    ToastUtill.showToast(mContext, getString(R.string.choose_call_reminder_green), Constant.TOASTLENGTH).show();
+                    break;
+                case 3:
+                    sp.edit().putInt(Constant.CALL_REMINDER_SHINEMODE, 2).apply();
+                    ToastUtill.showToast(mContext, getString(R.string.choose_call_reminder_blue), Constant.TOASTLENGTH).show();
+                    break;
+                case 4:
+                    //自定义模式
+                    getDiyCallReminderMOde();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     /**
      * 选择来电提醒的提示闪烁色
