@@ -12,15 +12,12 @@ import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SeekBar;
@@ -36,72 +33,61 @@ import com.guohua.mlight.util.Constant;
 import com.guohua.mlight.util.VibrateUtil;
 import com.guohua.mlight.widget.SwitchButton;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
+import butterknife.Unbinder;
+
 /**
- * @author Leo
+ * @author
  * @detail 摇一摇界面设计实现 可以切换摇一摇模式 开关或者随机变色
  * @time 2015-11-11
  */
-public class DriveModeActivity extends AppCompatActivity implements
-        OnItemClickListener, OnCheckedChangeListener {
+public class DriveModeActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
     private static final String TAG = DriveModeActivity.class.getSimpleName();
-
-    private ImageView iv_back_drive;
-
+    // 请求码
     public static final int REQUEST_SELECT_LAMP = 1;
     public static final int REQUEST_SELECT_COLOR = 2;
-
-    /**
-     * 骑行颜色模式
-     */
+    // 骑行颜色值
     private static final int POSITION_OF_DRIVERED = 0;
     private static final int POSITION_OF_DRIVEGREEN = 1;
     private static final int POSITION_OF_DRIVEBLUE = 2;
     private static final int POSITION_OF_DRIVEMIX = 3;
     private static final int POSITION_OF_DRIVEDIY = 4;
 
-    private boolean isDiveDiyChecked = false;
+    /*绑定控件*/
+    @BindView(R.id.smart_mode_list)
     ListView mSamrtList;
+    @BindView(R.id.iv_back_drive)
+    ImageView iv_back_drive;
+    @BindView(R.id.tv_show_freq_gap)
+    TextView valueShow;
+    @BindView(R.id.sb_drivemode_freq)
+    SeekBar freqGap;
+
+    private boolean isDiveDiyChecked = false;
     SmartAdapter adapter;
-
-    private TextView valueShow;//显示值
-    private SeekBar freqGap;//闪烁间隔
-
     int currentPos;
     SmartItem currentItem;
-
     SharedPreferences settings;
-//    String red_warning, green_clear, blue_caution, red_green, red_blue, blue_green, red_blue_green;
-
     SmartObj sObjs[];
-/*
-    SmartObj sObjs[] = {new SmartObj("红灯警示"), new SmartObj("绿灯畅通"), // 255,245,221
-            new SmartObj("蓝灯提醒"), new SmartObj("红绿交替"), new SmartObj("红蓝变换"),
-            new SmartObj("蓝绿组合"), new SmartObj("红绿蓝灯巡游")//, new SmartObj("自由组合")
-    };
-
-    String mSums[] = {"红灯星火", "绿灯提示", "蓝灯提醒", "红绿交替", "红蓝变换", "蓝绿组合", "红绿蓝白循环闪亮"//, "自定义颜色组合闪烁"
-    };
-*/
     String mSums[];
 
-    int colors[] = {Constant.RED, Constant.GREEN, Constant.BLUE, 1, 2, 3, 4//-1
-    };
-
+    int colors[] = {Constant.RED, Constant.GREEN, Constant.BLUE, 1, 2, 3, 4/*-1*/};
     private String data;
 
     //何种情景模式的广播
-    Handler handler = new Handler() {
-
+    private final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             int what = msg.what;
             AppContext.driveModeCheckedPos = what;
 
-            if(what == -1){
-                mService.stopBicycling();
-                stopDriveModeService();
-            }
             switch (what) {
+                case -1:
+                    mService.stopBicycling();
+                    stopDriveModeService();
                 case 0:
                     mService.setCurrentShineColor(Constant.DRIVEMODE_RED_CODE);
                     break;
@@ -132,20 +118,15 @@ public class DriveModeActivity extends AppCompatActivity implements
         }
     };
 
+    private Unbinder unbinder;
 
     protected void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
-
-        init();
-
-        setTitle(R.string.drive_title);
         setContentView(R.layout.drive_mode);
+        unbinder = ButterKnife.bind(this);
+        init();
+        setTitle(R.string.drive_title);
 
-        mSamrtList = (ListView) findViewById(R.id.smart_mode_list);
-        iv_back_drive = (ImageView) findViewById(R.id.iv_back_drive);
-
-        valueShow = (TextView) findViewById(R.id.tv_show_freq_gap);
-        freqGap = (SeekBar) findViewById(R.id.sb_drivemode_freq);
         freqGap.setProgress(AppContext.driveModeFreqGap);
         valueShow.setText(getString(R.string.frequency_gap) + AppContext.driveModeFreqGap);
         freqGap.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
@@ -155,7 +136,7 @@ public class DriveModeActivity extends AppCompatActivity implements
                 new SmartObj(getString(R.string.blue_green)), new SmartObj(getString(R.string.red_blue_green))//, new SmartObj("自由组合")
         };
 
-        mSums  = new String[]{getString(R.string.red_warning), getString(R.string.green_clear), getString(R.string.blue_caution),
+        mSums = new String[]{getString(R.string.red_warning), getString(R.string.green_clear), getString(R.string.blue_caution),
                 getString(R.string.red_green), getString(R.string.red_blue), getString(R.string.blue_green), getString(R.string.red_blue_green)//, "自定义颜色组合闪烁"
         };
 
@@ -166,9 +147,6 @@ public class DriveModeActivity extends AppCompatActivity implements
         adapter = new SmartAdapter(this);
         mSamrtList.setAdapter(adapter);
         adapter.addAll(sObjs);
-
-        mSamrtList.setOnItemClickListener(this);
-        iv_back_drive.setOnClickListener(mOnClickListener);
     }
 
     private SeekBar.OnSeekBarChangeListener mOnSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
@@ -201,22 +179,20 @@ public class DriveModeActivity extends AppCompatActivity implements
     /**
      * 相关的单击事件监听器
      */
-    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int id = v.getId();
-            switch (id) {
-                case R.id.iv_back_drive: {
-                    Intent intent = new Intent(DriveModeActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-                break;
-                default:
-                    break;
+    @OnClick(R.id.iv_back_drive)
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.iv_back_drive: {
+                Intent intent = new Intent(DriveModeActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
+            break;
+            default:
+                break;
         }
-    };
+    }
 
     class SmartObj {
         public String mLabel;
@@ -286,41 +262,31 @@ public class DriveModeActivity extends AppCompatActivity implements
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-        if(!manClick)
+        if (!manClick)
             return;
-
         SwitchButton sbtn = (SwitchButton) buttonView;
         int pos = (Integer) sbtn.getTag();
-
-        if(isChecked){
-            if(AppContext.driveModeCheckedPos != -1){
-                Log.e(TAG, AppContext.driveModeCheckedPos + " onCheckedChanged position ---------111111111----------  " + pos + ",checked  " + isChecked);
+        if (isChecked) {
+            if (AppContext.driveModeCheckedPos != -1) {
                 driveModeOnOff[AppContext.driveModeCheckedPos] = false;
-            }else{
-                Log.e(TAG, "onCheckedChanged position ---------2222222----------  " + pos + ",checked  " + isChecked);
+            } else {
                 startDriveModeService();
             }
             driveModeOnOff[pos] = true;
             handler.sendEmptyMessage(pos);
-        }else{
-            Log.e(TAG, "onCheckedChanged position ---------3333333----------  " + pos + ",checked  " + isChecked);
+        } else {
             driveModeOnOff[pos] = false;
             handler.sendEmptyMessage(-1);
         }
 
-        Log.e(TAG, "onCheckedChanged position -------------------  " + pos + ",checked  " + isChecked);
-
         VibrateUtil.vibrate(this, 100);
-
         adapter.notifyDataSetChanged();
     }
 
-    @Override
+
+    @OnItemClick(R.id.smart_mode_list)
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
-
-
         SmartItem item = (SmartItem) view.getTag();
         SharedPreferences settings = PreferenceManager
                 .getDefaultSharedPreferences(this);
@@ -335,7 +301,6 @@ public class DriveModeActivity extends AppCompatActivity implements
             intent.setClass(DriveModeActivity.this, SelectColorActivity.class);
             startActivityForResult(intent, REQUEST_SELECT_COLOR);
         }
-
     }
 
     @Override
@@ -352,7 +317,6 @@ public class DriveModeActivity extends AppCompatActivity implements
     }
 
 
-
     private ThreadPool pool = null;//线程池 向蓝牙设备发送控制数据等
 
     /**
@@ -361,7 +325,7 @@ public class DriveModeActivity extends AppCompatActivity implements
     private void init() {
         settings = PreferenceManager.getDefaultSharedPreferences(this);
         pool = ThreadPool.getInstance();
-        if(AppContext.driveModeCheckedPos != -1){
+        if (AppContext.driveModeCheckedPos != -1) {
             driveModeOnOff[AppContext.driveModeCheckedPos] = true;
         }
         Intent service = new Intent(this, DriveModeService.class);
@@ -399,10 +363,12 @@ public class DriveModeActivity extends AppCompatActivity implements
     protected void onDestroy() {
         super.onDestroy();
         unbindService(mServiceConnection);
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 
     public void back(View v) {
         this.finish();
     }
-
 }

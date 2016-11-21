@@ -22,73 +22,85 @@ import com.guohua.mlight.util.CodeUtils;
 import com.guohua.mlight.util.Constant;
 import com.guohua.mlight.util.ToolUtils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * @author Leo
  * @time 2016-02-23
  * @detail 关于界面主要包括 当前版本信息 版本检测更新 二维码
  */
 public class AboutActivity extends AppCompatActivity {
-    private TextView softVersion, message;//当前版本信息和更新提示信息
-    private TextView firmVersion;//固件版本
-    private ImageView upgrade;//升级
-    private Handler mHandler;//用于两个类之前的消息传递
+    @BindView(R.id.tv_version_about)
+    TextView softVersion;
+    @BindView(R.id.tv_firmware_about)
+    TextView firmVersion;
+    @BindView(R.id.tv_message_about)
+    TextView message;
+    @BindView(R.id.iv_upgrade_about)
+    ImageView upgrade;
+
+    //用于两个类之前的消息传递
+    private final Handler mHandler = new LocalHandler();
     private UpgradeManager upgradeManager;
     private boolean isChecked = false;//检查过了么
+    private Unbinder unbinder; //ButterKnife
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
+        unbinder = ButterKnife.bind(this);
         init();
     }
 
     private void init() {
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                //super.handleMessage(msg);
-                int what = msg.what;
-                switch (what) {
-                    case UpgradeManager.WHAT_UPDATE_TRUE: {
-                        message.setText(getString(R.string.soft_upgrade_yes));
-                        upgrade.setVisibility(View.VISIBLE);
-                    }
-                    break;
-                    case UpgradeManager.WHAT_UPDATE_FALSE: {
-                        message.setText(getString(R.string.soft_upgrade_no));
-                        upgrade.setVisibility(View.INVISIBLE);
-                    }
-                    break;
-                    case UpgradeManager.WHAT_UPDATE_DOWNLOAD: {
-                        if (upgradeManager != null) {
-                            upgradeManager.setProgress();
-                        }
-                    }
-                    break;
-                    case UpgradeManager.WHAT_UPDATE_FINISH: {
-                        if (upgradeManager != null) {
-                            upgradeManager.installApk();
-                        }
-                    }
-                    default:
-                        break;
-                }
-            }
-        };
         upgradeManager = new UpgradeManager(this, mHandler);
-        findViewsByIds();
+        initViews();
         IntentFilter mFilter = new IntentFilter();
         mFilter.addAction(Constant.ACTION_FIRMWARE_VERSION);
         mFilter.setPriority(Integer.MAX_VALUE);
         registerReceiver(mBroadcastReceiver, mFilter);
     }
 
-    private void findViewsByIds() {
-        softVersion = (TextView) findViewById(R.id.tv_version_about);
-        firmVersion = (TextView) findViewById(R.id.tv_firmware_about);
-        message = (TextView) findViewById(R.id.tv_message_about);
-        upgrade = (ImageView) findViewById(R.id.iv_upgrade_about);
+    private class LocalHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            //super.handleMessage(msg);
+            int what = msg.what;
+            switch (what) {
+                case UpgradeManager.WHAT_UPDATE_TRUE: {
+                    message.setText(getString(R.string.soft_upgrade_yes));
+                    upgrade.setVisibility(View.VISIBLE);
+                }
+                break;
+                case UpgradeManager.WHAT_UPDATE_FALSE: {
+                    message.setText(getString(R.string.soft_upgrade_no));
+                    upgrade.setVisibility(View.INVISIBLE);
+                }
+                break;
+                case UpgradeManager.WHAT_UPDATE_DOWNLOAD: {
+                    if (upgradeManager != null) {
+                        upgradeManager.setProgress();
+                    }
+                }
+                break;
+                case UpgradeManager.WHAT_UPDATE_FINISH: {
+                    if (upgradeManager != null) {
+                        upgradeManager.installApk();
+                    }
+                }
+                default:
+                    break;
+            }
+        }
+    }
 
+    /**
+     * 初始化控件显示内容
+     */
+    private void initViews() {
         upgrade.setVisibility(View.INVISIBLE);
         softVersion.setText(getString(R.string.about_software_version) + upgradeManager.getCurrentVersion());
         firmVersion.setText(getString(R.string.about_firmware_version));
@@ -161,5 +173,8 @@ public class AboutActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mBroadcastReceiver);
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 }

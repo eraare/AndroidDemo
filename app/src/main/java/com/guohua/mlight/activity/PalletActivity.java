@@ -41,6 +41,11 @@ import com.guohua.mlight.util.SceneModeSaveDiyGradientRamp;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
 
 /**
  * @author Leo
@@ -48,7 +53,6 @@ import java.util.ArrayList;
  * @time 2015-10-29
  */
 public class PalletActivity extends AppCompatActivity {
-    private ThreadPool pool = null;
     public static final String TAG = PalletActivity.class.getSimpleName();
     /**
      * 音例模式
@@ -66,33 +70,57 @@ public class PalletActivity extends AppCompatActivity {
         return palletActivity;
     }
 
-    /**
-     * 布局中的控件
-     */
-    private TextView valueShow, timerShow;//当前颜色值和定时关灯值
-    private TextView tv_title_title;
-    private SeekBar changeBrightness, changeTimer;//改变值的SeekBar
-    private ImageView changeColor;//颜色选择器
-    private ImageView add, iv_settings_title;
-    private ImageButton switcher;//开关按钮
+    private ThreadPool pool = null;
+    /*绑定控件*/
+    @BindView(R.id.tv_value_main)
+    TextView valueShow;
+    @BindView(R.id.tv_timer_main)
+    TextView timerShow;
+    @BindView(R.id.sb_brightness_main)
+    SeekBar changeBrightness;
+    @BindView(R.id.sb_timer_main)
+    SeekBar changeTimer;
+    @BindView(R.id.iv_color_main)
+    ImageView changeColor;
+    @BindView(R.id.btn_switch_main)
+    ImageButton switcher;
+    @BindView(R.id.tv_title_title)
+    TextView tv_title_title;
+    @BindView(R.id.iv_back_title)
+    ImageView add;
+    @BindView(R.id.iv_settings_title)
+    ImageView iv_settings_title;
+    @BindView(R.id.btn_red_main)
+    Button red;
+    @BindView(R.id.btn_orange_main)
+    Button orange;
+    @BindView(R.id.btn_yellow_main)
+    Button yellow;
+    @BindView(R.id.btn_green_main)
+    Button green;
+    @BindView(R.id.btn_cyan_main)
+    Button cyan;
+    @BindView(R.id.btn_blue_main)
+    Button blue;
+    @BindView(R.id.btn_purple_main)
+    Button purple;
+    @BindView(R.id.btn_white_main)
+    Button white;
+    @BindView(R.id.ll_activity_pallet)
+    LinearLayout ll_activity_pallet;
 
     private int currentColor = Color.GREEN;//当前颜色值
     private int currentBrightness = 255;//当前亮度
     private Bitmap bmp = null;//色板
 
-    private LinearLayout ll_activity_pallet;
-
-    /**
-     * 独立颜色值
-     */
-    private Button red, orange, yellow, green, cyan, blue, purple, white;
-
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
         // Inflate the layout for this fragment
         setContentView(R.layout.activity_pallet);
+        unbinder = ButterKnife.bind(this);
         init();
     }
 
@@ -101,7 +129,7 @@ public class PalletActivity extends AppCompatActivity {
      */
     private void init() {
         pool = ThreadPool.getInstance();
-        findViewsByIds();
+        initViews();
         initValues();
         if (MainFragment.isLighting) {
             switcher.setImageResource(R.drawable.light_on);
@@ -124,105 +152,73 @@ public class PalletActivity extends AppCompatActivity {
     /**
      * 得到所有控件 并绑定相应的事件
      */
-    private void findViewsByIds() {
-        valueShow = (TextView) findViewById(R.id.tv_value_main);
-        timerShow = (TextView) findViewById(R.id.tv_timer_main);
-        changeBrightness = (SeekBar) findViewById(R.id.sb_brightness_main);
-        changeTimer = (SeekBar) findViewById(R.id.sb_timer_main);
-        changeColor = (ImageView) findViewById(R.id.iv_color_main);
-        switcher = (ImageButton) findViewById(R.id.btn_switch_main);
 
-        tv_title_title = (TextView) findViewById(R.id.tv_title_title);
+
+    private void initViews() {
         tv_title_title.setText(getString(R.string.colorpallet));
-        add = (ImageView) findViewById(R.id.iv_back_title);
-        add.setOnClickListener(mOnClickListener);
-        iv_settings_title = (ImageView) findViewById(R.id.iv_settings_title);
-        iv_settings_title.setOnClickListener(mOnClickListener);
-
-        switcher.setOnClickListener(mOnClickListener);
         changeColor.setOnTouchListener(mOnTouchListener);
         changeBrightness.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
         changeBrightness.setEnabled(MainFragment.isLighting);
         changeTimer.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
-
-        red = (Button) findViewById(R.id.btn_red_main);
-        orange = (Button) findViewById(R.id.btn_orange_main);
-        yellow = (Button) findViewById(R.id.btn_yellow_main);
-        green = (Button) findViewById(R.id.btn_green_main);
-        cyan = (Button) findViewById(R.id.btn_cyan_main);
-        blue = (Button) findViewById(R.id.btn_blue_main);
-        purple = (Button) findViewById(R.id.btn_purple_main);
-        white = (Button) findViewById(R.id.btn_white_main);
-
-        ll_activity_pallet = (LinearLayout) findViewById(R.id.ll_activity_pallet);
         ll_activity_pallet.setBackgroundResource(R.color.greye);
-
-        red.setOnClickListener(mOnClickListener);
-        orange.setOnClickListener(mOnClickListener);
-        yellow.setOnClickListener(mOnClickListener);
-        green.setOnClickListener(mOnClickListener);
-        cyan.setOnClickListener(mOnClickListener);
-        blue.setOnClickListener(mOnClickListener);
-        purple.setOnClickListener(mOnClickListener);
-        white.setOnClickListener(mOnClickListener);
     }
 
     /**
      * 按钮的单击事件
      */
-    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int id = v.getId();
-            int color = Color.WHITE;
-            switch (id) {
-                case R.id.btn_switch_main: {
-                    switchLight(MainFragment.isLighting);
-                }
-                return;
-                case R.id.iv_back_title: {
-                    showDeviceDialog();
-                }
-                return;
-                case R.id.iv_settings_title: {
-                    Intent intent = new Intent(PalletActivity.this, SettingsActivity.class);
-                    startActivity(intent);
-                }
-                return;
-                case R.id.btn_red_main:
-                    color = Color.RED;
-                    break;
-                case R.id.btn_orange_main:
-                    color = Color.argb(255, 255, 79, 0);
-                    break;
-                case R.id.btn_yellow_main:
-                    color = Color.YELLOW;
-                    break;
-                case R.id.btn_green_main:
-                    color = Color.GREEN;
-                    break;
-                case R.id.btn_cyan_main:
-                    color = Color.CYAN;
-                    break;
-                case R.id.btn_blue_main:
-                    color = Color.BLUE;
-                    break;
-                case R.id.btn_purple_main:
-                    color = Color.argb(255, 255, 0, 255);
-                    break;
-                case R.id.btn_white_main:
-                    color = Color.WHITE;
-                    break;
-                default:
-                    break;
+    @OnClick({R.id.btn_switch_main, R.id.iv_back_title, R.id.iv_settings_title, R.id.btn_red_main,
+            R.id.btn_orange_main, R.id.btn_yellow_main, R.id.btn_green_main, R.id.btn_cyan_main,
+            R.id.btn_blue_main, R.id.btn_purple_main, R.id.btn_white_main})
+    public void onClick(View v) {
+        int id = v.getId();
+        int color = Color.WHITE;
+        switch (id) {
+            case R.id.btn_switch_main: {
+                switchLight(MainFragment.isLighting);
             }
-            String data = CodeUtils.transARGB2Protocol(color);
-            pool.addTask(new SendRunnable(data));
-            currentColor = color;
-            ll_activity_pallet.setBackgroundColor(currentColor);
-            switcher.setImageResource(R.drawable.light_on);
+            return;
+            case R.id.iv_back_title: {
+                showDeviceDialog();
+            }
+            return;
+            case R.id.iv_settings_title: {
+                Intent intent = new Intent(PalletActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+            return;
+            case R.id.btn_red_main:
+                color = Color.RED;
+                break;
+            case R.id.btn_orange_main:
+                color = Color.argb(255, 255, 79, 0);
+                break;
+            case R.id.btn_yellow_main:
+                color = Color.YELLOW;
+                break;
+            case R.id.btn_green_main:
+                color = Color.GREEN;
+                break;
+            case R.id.btn_cyan_main:
+                color = Color.CYAN;
+                break;
+            case R.id.btn_blue_main:
+                color = Color.BLUE;
+                break;
+            case R.id.btn_purple_main:
+                color = Color.argb(255, 255, 0, 255);
+                break;
+            case R.id.btn_white_main:
+                color = Color.WHITE;
+                break;
+            default:
+                break;
         }
-    };
+        String data = CodeUtils.transARGB2Protocol(color);
+        pool.addTask(new SendRunnable(data));
+        currentColor = color;
+        ll_activity_pallet.setBackgroundColor(currentColor);
+        switcher.setImageResource(R.drawable.light_on);
+    }
 
     private void showDeviceDialog() {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -549,5 +545,11 @@ public class PalletActivity extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
+    }
 }

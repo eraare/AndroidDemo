@@ -478,7 +478,7 @@ public class BLEService extends Service {
         BluetoothGattDescriptor descriptor = mCharacteristic.getDescriptor(SampleGattAttributes.UUID_DESCRIPTOR);
         if (descriptor != null) {
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            while(!mBluetoothGatt.writeDescriptor(descriptor));
+            while (!mBluetoothGatt.writeDescriptor(descriptor)) ;
         }
     }
 

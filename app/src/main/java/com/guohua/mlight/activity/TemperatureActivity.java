@@ -81,8 +81,11 @@ public class TemperatureActivity extends AppCompatActivity {
                 if (data != null && !TextUtils.equals("", data)) {
                     String[] temp = data.split(":");
                     if (temp.length >= 2) {
-                        float temperature = Float.parseFloat(temp[1]);
-                        PointValue pointValue = new PointValue(0f, temperature);
+                        float x = Float.parseFloat(temp[1]);
+                        double T = 1.40120080422346e-15 * Math.pow(x, 6) - 5.56853978625422e-12 * Math.pow(x, 5)
+                                + 8.77512419103114e-09 * Math.pow(x, 4) - 7.01484439592888e-06 * Math.pow(x, 3)
+                                + 0.00304713220829926 * Math.pow(x, 2) - 0.763588201330716 * x + 129.340455275951;
+                        PointValue pointValue = new PointValue(0f, (float) T);
                         LineChartFragment.newInstance().addPoint(pointValue);
                     }
                 }
@@ -214,7 +217,7 @@ public class TemperatureActivity extends AppCompatActivity {
             // 初始化点线
             List<PointValue> points = new ArrayList<>();
             points.add(new PointValue(0f, 0f).setLabel("(" + 0.0 + ", " + 0.0 + ")"));
-            points.add(new PointValue(1f, 200f).setLabel("(" + 1.0 + ", " + 200.0 + ")"));
+            points.add(new PointValue(1f, 100f).setLabel("(" + 1.0 + ", " + 100.0 + ")"));
             /*for (int i = 0; i < 50; i++) {
                 points.add(new PointValue(i, r.nextInt(100)).setLabel("(" + i + ", " + i + ")"));
             }*/
@@ -250,7 +253,7 @@ public class TemperatureActivity extends AppCompatActivity {
         private Axis initAxisY() {
              /*坐标轴Y*/
             List<AxisValue> axisValuesY = new ArrayList<>();
-            for (int i = 0; i < 200; i += 5) {
+            for (int i = 0; i < 100; i += 5) {
                 axisValuesY.add(new AxisValue(i).setLabel(i + ""));
             }
             Axis axisY = new Axis(axisValuesY).setName("温度/摄氏度").setHasLines(true);

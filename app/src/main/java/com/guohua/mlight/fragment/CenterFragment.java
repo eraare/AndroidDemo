@@ -159,8 +159,8 @@ public class CenterFragment extends Fragment {
                 }
                 break;
                 case 5: {
-                    /*Intent intent = new Intent(mContext, TemperatureActivity.class);
-                    startActivity(intent);*/
+                    Intent intent = new Intent(mContext, TemperatureActivity.class);
+                    startActivity(intent);
                 }
                 break;
                 case 6: {
@@ -192,7 +192,7 @@ public class CenterFragment extends Fragment {
         mOptionAdapter.addItem(new OptionBean(2, getString(R.string.settings_color), R.drawable.icon_color_center));
         mOptionAdapter.addItem(new OptionBean(3, getString(R.string.settings_music), R.drawable.icon_music_center));
         mOptionAdapter.addItem(new OptionBean(4, getString(R.string.settings_shake), R.drawable.icon_shake_center));
-        //mOptionAdapter.addItem(new OptionBean(5, getString(R.string.settings_temperature), R.drawable.icon_camera_center));
+        mOptionAdapter.addItem(new OptionBean(5, getString(R.string.settings_temperature), R.drawable.icon_camera_center));
         mOptionAdapter.addItem(new OptionBean(6, getString(R.string.personal_phone_func), R.drawable.icon_phone));
         mOptionAdapter.addItem(new OptionBean(7, getString(R.string.personal_about_app), R.drawable.icon_app_center));
 //        mOptionAdapter.addItem(new OptionBean(7, getString(R.string.personal_about_us), R.drawable.icon_about_us));
