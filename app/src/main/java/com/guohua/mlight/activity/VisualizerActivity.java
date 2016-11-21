@@ -18,21 +18,32 @@ import com.guohua.mlight.service.VisualizerService;
 import com.guohua.mlight.util.Constant;
 import com.guohua.mlight.view.VisualizerView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * @author Leo
  * @detail 音乐律动时频谱的显示
  * @time 2015-11-17
  */
 public class VisualizerActivity extends AppCompatActivity implements IObserver {
-    private VisualizerView mVisualizerView;//频谱视图
-    private TextView valueShow;//显示值
-    private SeekBar personal;//随身感
+    /*Section: 绑定控件*/
+    @BindView(R.id.vv_show_visualizer)
+    VisualizerView mVisualizerView;
+    @BindView(R.id.tv_show_visualizer)
+    TextView valueShow;
+    @BindView(R.id.sb_personal_visualizer)
+    SeekBar personal;
+    private Unbinder unbinder;
+    /*Section: 属性*/
     private int value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visualizer);
+        unbinder = ButterKnife.bind(this);
         init();
     }
 
@@ -41,7 +52,7 @@ public class VisualizerActivity extends AppCompatActivity implements IObserver {
      */
     private void init() {
         initValues();
-        findViewsByIds();
+        initViews();
         Intent service = new Intent(this, VisualizerService.class);
         bindService(service, mServiceConnection, BIND_AUTO_CREATE);
     }
@@ -54,14 +65,12 @@ public class VisualizerActivity extends AppCompatActivity implements IObserver {
     /**
      * 初始化控件
      */
-    private void findViewsByIds() {
-        mVisualizerView = (VisualizerView) findViewById(R.id.vv_show_visualizer);
-        valueShow = (TextView) findViewById(R.id.tv_show_visualizer);
-        personal = (SeekBar) findViewById(R.id.sb_personal_visualizer);
+    private void initViews() {
         personal.setProgress(value);
         valueShow.setText(getString(R.string.visualizer_feel) + value);
         personal.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
     }
+
 
     private SeekBar.OnSeekBarChangeListener mOnSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
@@ -132,6 +141,9 @@ public class VisualizerActivity extends AppCompatActivity implements IObserver {
     protected void onDestroy() {
         super.onDestroy();
         unbindService(mServiceConnection);
+        if (unbinder != null) {
+            unbinder.unbind();
+        }
     }
 
     public void back(View v) {

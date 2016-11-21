@@ -27,23 +27,39 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.service.ShakeService;
 import com.guohua.mlight.util.Constant;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
 /**
  * @author Leo
  * @detail 摇一摇界面设计实现 可以切换摇一摇模式 开关或者随机变色
  * @time 2015-11-11
  */
 public class ShakeActivity extends AppCompatActivity {
-    private ImageView shake;//摇一摇图片
-    private TextView show, switcher, color;//模式控件
+    /*Section: 绑定控件*/
+    @BindView(R.id.sb_threshold_shake)
+    SeekBar threshold;
+    @BindView(R.id.tv_current_shake)
+    TextView current;
+    @BindView(R.id.iv_shake_shake)
+    ImageView shake;
+    @BindView(R.id.tv_show_shake)
+    TextView show;
+    @BindView(R.id.tv_switch_shake)
+    TextView switcher;
+    @BindView(R.id.tv_color_shake)
+    TextView color;
+    private Unbinder mUnbinder;
     private boolean isSwitch = true;//状态变量
-    private SeekBar threshold;
-    private TextView current;
     private int currentValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shake);
+        mUnbinder = ButterKnife.bind(this);
         /**
          * 绑定服务
          */
@@ -68,7 +84,7 @@ public class ShakeActivity extends AppCompatActivity {
      */
     private void init() {
         initValue();
-        findViewsByIds();
+        initViews();
     }
 
     /**
@@ -92,15 +108,7 @@ public class ShakeActivity extends AppCompatActivity {
     /**
      * 获取控件绑定事件
      */
-    private void findViewsByIds() {
-        threshold = (SeekBar) findViewById(R.id.sb_threshold_shake);
-        current = (TextView) findViewById(R.id.tv_current_shake);
-        shake = (ImageView) findViewById(R.id.iv_shake_shake);
-        show = (TextView) findViewById(R.id.tv_show_shake);
-        switcher = (TextView) findViewById(R.id.tv_switch_shake);
-        color = (TextView) findViewById(R.id.tv_color_shake);
-        color.setOnClickListener(mOnClickListener);
-        switcher.setOnClickListener(mOnClickListener);
+    private void initViews() {
         changeMode();
         threshold.setProgress(currentValue);
         show.setText(getString(R.string.shake_weak));
@@ -167,24 +175,22 @@ public class ShakeActivity extends AppCompatActivity {
     /**
      * 监听事件
      */
-    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int id = v.getId();
-            switch (id) {
-                case R.id.tv_switch_shake:
-                    isSwitch = true;
-                    break;
-                case R.id.tv_color_shake:
-                    isSwitch = false;
-                    break;
-                default:
-                    Toast.makeText(ShakeActivity.this, R.string.default_text, Toast.LENGTH_SHORT).show();
-                    break;
-            }
-            changeMode();
+    @OnClick({R.id.tv_switch_shake, R.id.tv_color_shake})
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.tv_switch_shake:
+                isSwitch = true;
+                break;
+            case R.id.tv_color_shake:
+                isSwitch = false;
+                break;
+            default:
+                Toast.makeText(ShakeActivity.this, R.string.default_text, Toast.LENGTH_SHORT).show();
+                break;
         }
-    };
+        changeMode();
+    }
 
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -228,6 +234,9 @@ public class ShakeActivity extends AppCompatActivity {
             methods = null;
         }
         unbindService(mServiceConnection);//解绑服务
+        if (mUnbinder != null) {
+            mUnbinder.unbind();
+        }
     }
 
     public void back(View v) {
