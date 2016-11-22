@@ -19,6 +19,10 @@ import android.widget.Toast;
 import com.guohua.mlight.util.Constant;
 import com.guohua.mlight.util.ToolUtils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * @author Leo
  * @detail 程序进入时的首页面主要做公司宣传程序版本数据加载操作
@@ -27,13 +31,16 @@ import com.guohua.mlight.util.ToolUtils;
 public class SplashActivity extends AppCompatActivity {
     public static final long DELAY = 2000;//等待时延
     private Handler mHandler = new Handler();//控制Handler
-    private TextView title;//标题 魔小灯
+    /*Section: 加载控件*/
+    @BindView(R.id.tv_title_splash)
+    TextView title;//标题 魔小灯
+    private Unbinder mUnbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        title = (TextView) findViewById(R.id.tv_title_splash);
+        mUnbinder = ButterKnife.bind(this);
 
         //android6.0 运行时申请蓝牙权限
         ToolUtils.requestPermissions(this, Manifest.permission.BLUETOOTH, Constant.MY_PERMISSIONS_REQUEST_BLUETOOTH);
@@ -139,5 +146,13 @@ public class SplashActivity extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mUnbinder != null) {
+            mUnbinder.unbind();
+        }
     }
 }

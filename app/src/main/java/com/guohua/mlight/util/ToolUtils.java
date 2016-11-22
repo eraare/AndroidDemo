@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
+import android.widget.Toast;
 
 import com.guohua.mlight.bean.SceneListInfo;
 
@@ -23,6 +24,7 @@ import java.util.List;
 public final class ToolUtils {
     /**
      * 读取蓝牙的最初状态
+     *
      * @param context
      * @return
      */
@@ -30,6 +32,7 @@ public final class ToolUtils {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         return sp.getBoolean(Constant.KEY_BLUETOOTH_INIT_STATE, false);
     }
+
     /**
      * 应用程序运行命令获取 Root权限，设备必须已破解(获得ROOT权限)
      *
@@ -129,47 +132,36 @@ public final class ToolUtils {
     public static void requestPermissions(Activity context, String permission, int myPermissionCode) {
         //android6.0 运行时申请蓝牙权限
         // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(context, permission)) {
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
+                Toast.makeText(context, "Please Authorize", Toast.LENGTH_SHORT).show();
             } else {
-
-                // No explanation needed, we can request the permission.
-
                 ActivityCompat.requestPermissions(context, new String[]{permission}, myPermissionCode);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
     }
 
-    public static int[] getSceneGradientRampByteArray(SceneListInfo.SceneInfo ss){
+    public static int[] getSceneGradientRampByteArray(SceneListInfo.SceneInfo ss) {
 
         System.out.println("getSceneGradientRampByteArray SceneListInfo.SceneInfo ss: " + ss.toString());
 
-        byte ctrMode = (byte) (0x78 + (((ss.SceneCurClickColorImgOnOff[1]<<2) + (ss.SceneCurClickColorImgOnOff[2]<<1) + (ss.SceneCurClickColorImgOnOff[3])) & 0x0ff));
+        byte ctrMode = (byte) (0x78 + (((ss.SceneCurClickColorImgOnOff[1] << 2) + (ss.SceneCurClickColorImgOnOff[2] << 1) + (ss.SceneCurClickColorImgOnOff[3])) & 0x0ff));
 
         int deta_red = (ss.SceneGradientRampGradientGap[1] & 0x0ff);
         int deta_green = (ss.SceneGradientRampGradientGap[2] & 0x0ff);
         int deta_blue = (ss.SceneGradientRampGradientGap[3] & 0x0ff);
         int deta_red_time = (ss.SceneGradientRampStopGap[1] & 0x0ff);
         int deta_green_time = (ss.SceneGradientRampStopGap[2] & 0x0ff);
-        int deta_blue_time =  (ss.SceneGradientRampStopGap[3] & 0x0ff);
+        int deta_blue_time = (ss.SceneGradientRampStopGap[3] & 0x0ff);
 
         int sum = deta_red + deta_green + deta_blue + deta_red_time + deta_green_time + deta_blue_time;
 
         int highBit = 0, lowBit = 0;
-        while(sum > 255){
+        while (sum > 255) {
             highBit = (sum & 0xff00) >> 8;
             lowBit = sum & 0x00ff;
-            sum =  highBit + lowBit;
+            sum = highBit + lowBit;
         }
 
         final int[] datas = new int[8];
