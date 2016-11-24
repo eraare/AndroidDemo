@@ -3,14 +3,12 @@ package com.guohua.mlight;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -34,6 +32,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.guohua.ios.dialog.AlertDialog;
 import com.guohua.mlight.bean.Device;
 import com.guohua.mlight.communication.BLEConstant;
 import com.guohua.mlight.communication.BLERecord;
@@ -327,17 +326,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            new AlertDialog.Builder(this).setTitle(R.string.dialog_title).setIcon(R.mipmap.ic_launcher).setMessage(R.string.dialog_message).setPositiveButton(R.string.dialog_positive, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    background();
-                }
-            }).setNegativeButton(R.string.dialog_negative, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    exit();
-                }
-            }).setNeutralButton(R.string.dialog_neutral, null).show();
+            new AlertDialog(this).builder()
+                    .setCancelable(true)
+                    .setTitle(getString(R.string.dialog_title))
+                    .setMsg(getString(R.string.dialog_message))
+                    .setPositiveButton(getString(R.string.dialog_positive), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            background();
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.dialog_negative), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            exit();
+                        }
+                    }).show();
             return true;
         }
         return super.onKeyDown(keyCode, event);

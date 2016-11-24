@@ -39,7 +39,7 @@ public class AppContext extends Application {
     public static int curClickColorImgOnOff[] = {0, 0, 0, 0};
     public static int gradientRampStopGap[] = {Constant.DEFAULTSTOPGAPVALUE, Constant.DEFAULTSTOPGAPVALUE, Constant.DEFAULTSTOPGAPVALUE, Constant.DEFAULTSTOPGAPVALUE};
     public static int gradientRampGradientGap[] = {Constant.DEFAULTGRADIENTGAPVALUE, Constant.DEFAULTGRADIENTGAPVALUE, Constant.DEFAULTGRADIENTGAPVALUE, Constant.DEFAULTGRADIENTGAPVALUE};
-    public static ArrayList<Timer> timers;
+    //public static ArrayList<Timer> timers;
 
     public static int isStartGradientRampService = 0;
     public static boolean isGradientGapRedCBChecked = false;

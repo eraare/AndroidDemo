@@ -29,7 +29,7 @@ import butterknife.Unbinder;
  * @time 2015-10-30
  */
 public class SplashActivity extends AppCompatActivity {
-    public static final long DELAY = 2000;//等待时延
+    public static final long DELAY = 1500;//等待时延
     private Handler mHandler = new Handler();//控制Handler
     /*Section: 加载控件*/
     @BindView(R.id.tv_title_splash)

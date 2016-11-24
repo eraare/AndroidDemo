@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -26,6 +25,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.guohua.ios.dialog.ActionSheetDialog;
+import com.guohua.ios.dialog.AlertDialog;
 import com.guohua.mlight.AppContext;
 import com.guohua.mlight.MainActivity;
 import com.guohua.mlight.R;
@@ -206,7 +206,7 @@ public class CenterFragment extends Fragment {
      */
     private void changePassword() {
         final View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_password_settings, null);
-        new AlertDialog.Builder(mContext).setIcon(R.mipmap.ic_launcher).setTitle(R.string.settings_password).setView(view)
+        new android.support.v7.app.AlertDialog.Builder(mContext).setIcon(R.mipmap.ic_launcher).setTitle(R.string.settings_password).setView(view)
                 .setPositiveButton(R.string.settings_positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -269,7 +269,7 @@ public class CenterFragment extends Fragment {
      */
     private void changeAccount() {
         final View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_account_settings, null);
-        new AlertDialog.Builder(mContext).setIcon(R.mipmap.ic_launcher).setTitle(R.string.settings_name).setView(view)
+        new android.support.v7.app.AlertDialog.Builder(mContext).setIcon(R.mipmap.ic_launcher).setTitle(R.string.settings_name).setView(view)
                 .setPositiveButton(R.string.settings_positive, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -305,10 +305,13 @@ public class CenterFragment extends Fragment {
      * 设置当前颜色为开机颜色
      */
     private void currentColor() {
-        new AlertDialog.Builder(mContext).setIcon(R.mipmap.ic_launcher).setTitle(R.string.settings_color).setMessage(R.string.settings_color_message)
-                .setPositiveButton(R.string.settings_positive, new DialogInterface.OnClickListener() {
+        new AlertDialog(mContext).builder()
+                .setTitle(getString(R.string.settings_color))
+                .setMsg(getString(R.string.settings_color_message))
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.settings_positive), new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
                         final String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_COLOR, null);
                         ThreadPool.getInstance().addTask(new SendRunnable(data));
 
@@ -351,9 +354,13 @@ public class CenterFragment extends Fragment {
                                 }).start();
                             }
                         }, Constant.HANDLERDELAY * 3);
-
                     }
-                }).setNegativeButton(R.string.settings_negative, null).show();
+                })
+                .setNegativeButton(getString(R.string.settings_negative), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                }).show();
     }
 
     private void showTelphonyDialog() {
@@ -401,7 +408,7 @@ public class CenterFragment extends Fragment {
 
         final View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_call_reminder, null);
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
-        final AlertDialog dialog = new AlertDialog.Builder(mContext).setIcon(R.mipmap.ic_launcher).setTitle(R.string.choose_call_reminder).setView(view).setNegativeButton(
+        final android.support.v7.app.AlertDialog dialog = new android.support.v7.app.AlertDialog.Builder(mContext).setIcon(R.mipmap.ic_launcher).setTitle(R.string.choose_call_reminder).setView(view).setNegativeButton(
                 R.string.settings_negative, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
