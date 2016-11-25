@@ -45,7 +45,7 @@ import com.guohua.mlight.util.VibrateUtil;
 public class SceneModeActivity extends AppCompatActivity {
     private static final String TAG = SceneModeActivity.class.getSimpleName();
 
-    private ImageView iv_back_drive;
+    //private ImageView iv_back_drive;
 
     ListView mSamrtList;
 
@@ -116,7 +116,7 @@ public class SceneModeActivity extends AppCompatActivity {
         tv_title_title.setText(curSceneName);
 
         mSamrtList = (ListView) findViewById(R.id.smart_mode_list);
-        iv_back_drive = (ImageView) findViewById(R.id.iv_back_drive);
+        //iv_back_drive = (ImageView) findViewById(R.id.iv_back_drive);
         iv_model_saved = (ImageView) findViewById(R.id.iv_model_saved);
 //        tv_show_curColor = (TextView) findViewById(R.id.tv_show_curColor);
 
@@ -212,7 +212,7 @@ public class SceneModeActivity extends AppCompatActivity {
         gradient_green = (TextView) findViewById(R.id.gradient_green);
         gradient_blue = (TextView) findViewById(R.id.gradient_blue);
 
-        iv_back_drive.setOnClickListener(mOnClickListener);
+        //iv_back_drive.setOnClickListener(mOnClickListener);
         iv_model_saved.setOnClickListener(mOnClickListener);
 //        gradient_white.setOnClickListener(mOnClickListener);
         gradient_red.setOnClickListener(mOnClickListener);
@@ -483,14 +483,14 @@ public class SceneModeActivity extends AppCompatActivity {
             int clickPos = -1;
             VibrateUtil.vibrate(SceneModeActivity.this, 50);
             switch (id) {
-                case R.id.iv_back_drive: {
+                /*case R.id.iv_back_drive: {
 //                    AppContext.isSceneSunRun = false;
 //                    AppContext.isSceneRgbRun = false;
 //                    Intent intent = new Intent(SceneModeActivity.this, MainActivity.class);
 //                    startActivity(intent);
                     finish();
                 }
-                break;
+                break;*/
                 case R.id.tv_savemode: {//来电提醒的自定义闪烁模式值保存
                     SceneListInfo.SceneInfo savedMode = new SceneListInfo.SceneInfo(curSceneInfoId, curSceneName, CUR_RED_GRADIENT_DELAY, CUR_GREEN_GRADIENT_DELAY,
                             CUR_BLUE_GRADIENT_DELAY, curIsStartGradientRampService, CURSCENESTOPGAPVALUE, CURSCENEGRADIENTGAPVALUE, curSceneGradientGapRedCBChecked,
@@ -647,12 +647,6 @@ public class SceneModeActivity extends AppCompatActivity {
         gradient_green.setBackgroundResource(R.drawable.design_green_point);
         gradient_blue.setBackgroundResource(R.drawable.design_blue_point);
     }
-
-    @Override
-    public void finish() {
-        super.finish();
-    }
-
 
     private ThreadPool pool = null;//线程池 向蓝牙设备发送控制数据等
 

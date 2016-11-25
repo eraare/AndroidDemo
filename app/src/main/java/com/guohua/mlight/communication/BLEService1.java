@@ -279,7 +279,7 @@ public class BLEService1 extends Service {
                     sp = PreferenceManager.getDefaultSharedPreferences(mContext);
                 }
                 String passport = (Constant.DEFAULT_PASSWORD_HEAD + sp.getString(deviceAddress, CodeUtils.password));
-                writeToBLE(deviceAddress, passport.getBytes());
+                //writeToBLE(deviceAddress, passport.getBytes());
                 setCharacteristicNotification(gatt, characteristic, NOTIFICATION_ENABLED);
             }
         }

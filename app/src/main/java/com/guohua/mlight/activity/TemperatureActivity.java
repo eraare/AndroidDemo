@@ -4,21 +4,31 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.guohua.mlight.AppContext;
 import com.guohua.mlight.R;
+import com.guohua.mlight.bean.Device;
 import com.guohua.mlight.communication.BLEConstant;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
 import lecho.lib.hellocharts.gesture.ZoomType;
@@ -39,7 +49,6 @@ import lecho.lib.hellocharts.view.LineChartView;
  * @since 2016-11-1
  */
 public class TemperatureActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +95,7 @@ public class TemperatureActivity extends AppCompatActivity {
                                 + 8.77512419103114e-09 * Math.pow(x, 4) - 7.01484439592888e-06 * Math.pow(x, 3)
                                 + 0.00304713220829926 * Math.pow(x, 2) - 0.763588201330716 * x + 129.340455275951;
                         PointValue pointValue = new PointValue(0f, (float) T);
-                        LineChartFragment.newInstance().addPoint(pointValue);
+                        LineChartFragment.newInstance().addPoint(deviceAddress, pointValue);
                     }
                 }
 
@@ -122,11 +131,13 @@ public class TemperatureActivity extends AppCompatActivity {
         }
 
         /*Section: 主模块*/
-        private static final int POINT_NUMBER = 25; //页面显示的点数
+        private static final int POINT_NUMBER = 20; //页面显示的点数
         private TemperatureActivity mContext;
         private View rootView; //根视图
+        private TextView mShow; //显示标题
         private LineChartView mChartView; //图表视图
         private LineChartData mChartData; //图表数据
+        private HashMap<String, Line> mLines; //根据设备地址保存所有的线
 
         @Nullable
         @Override
@@ -143,9 +154,31 @@ public class TemperatureActivity extends AppCompatActivity {
             mContext = (TemperatureActivity) getActivity();
             findViewsByIds(); // 初始化控件
             initLineChartView(); // 初始化折线图
+            showTitle();
+        }
+
+        private void showTitle() {
+            StringBuilder sb = new StringBuilder();
+
+            Set<String> keys = mLines.keySet();
+            Iterator<String> iterator = keys.iterator();
+            while (iterator.hasNext()) {
+                String address = iterator.next();
+                Line line = mLines.get(address);
+                int color = line.getColor();
+                int r = Color.red(color);
+                int g = Color.green(color);
+                int b = Color.blue(color);
+                String s = "<p style=\"color:rgb(" + r + "," + g + "," + b + ");\"><b>" + address + "</b></p>";
+                sb.append(s);
+            }
+            System.out.println(sb.toString());
+            Spanned spanned = Html.fromHtml(sb.toString());
+            mShow.setText(spanned);
         }
 
         private void findViewsByIds() {
+            mShow = (TextView) rootView.findViewById(R.id.tv_show_chart);
             mChartView = (LineChartView) rootView.findViewById(R.id.lcv_chart_chart);
             mChartView.setOnValueTouchListener(mTouchListener);
         }
@@ -157,7 +190,7 @@ public class TemperatureActivity extends AppCompatActivity {
             // 获取折线图数据
             mChartData = initLineChartData();
             // 当前视角
-            Viewport viewport = initViewport();
+            Viewport viewport = initViewport(mChartData.getLines().get(0));
             // 设置属性
             mChartView.setLineChartData(mChartData);
             mChartView.setCurrentViewport(viewport);
@@ -174,14 +207,14 @@ public class TemperatureActivity extends AppCompatActivity {
          *
          * @return
          */
-        private Viewport initViewport() {
+        private Viewport initViewport(Line line) {
             Viewport viewport = new Viewport();
-            viewport.top = 200;
+            viewport.top = 100;
             viewport.bottom = 0;
             int right = 25;
             int left = 0;
             if (mChartData != null) {
-                right = mChartData.getLines().get(0).getValues().size();
+                right = line.getValues().size();
                 left = (right - POINT_NUMBER) > 0 ? (right - POINT_NUMBER) : 0;
             }
             viewport.left = left;
@@ -215,19 +248,47 @@ public class TemperatureActivity extends AppCompatActivity {
         private List<Line> initLines() {
             //Random r = new Random();
             // 初始化点线
-            List<PointValue> points = new ArrayList<>();
-            points.add(new PointValue(0f, 0f).setLabel("(" + 0.0 + ", " + 0.0 + ")"));
-            points.add(new PointValue(1f, 100f).setLabel("(" + 1.0 + ", " + 100.0 + ")"));
-            /*for (int i = 0; i < 50; i++) {
-                points.add(new PointValue(i, r.nextInt(100)).setLabel("(" + i + ", " + i + ")"));
-            }*/
             List<Line> lines = new ArrayList<>();
+            // 根据已有设备建立曲线
+            ArrayList<Device> devices = AppContext.getInstance().devices;
+            // 判空
+            if (devices == null) {
+                return lines;
+            }
+            int size = devices.size();
+            if (size <= 0) {
+                return lines;
+            }
+            mLines = new HashMap<>();
+            for (int i = 0; i < size; i++) {
+                Device device = devices.get(i);
+                String deviceAddress = device.getDeviceAddress();
+                Line line = initLine(randomColor());
+                mLines.put(deviceAddress, line);
+                lines.add(line);
+            }
+            return lines;
+        }
+
+        private int randomColor() {
+            Random r = new Random();
+            int alpha = 255;
+            int red = r.nextInt(256);
+            int green = r.nextInt(256);
+            int blue = r.nextInt(256);
+            return Color.argb(alpha, red, green, blue);
+        }
+
+        private Line initLine(int color) {
+            List<PointValue> points = new ArrayList<>();
+            points.add(new PointValue(0f, 0f)/*.setLabel("(0, 0)")*/);
+            points.add(new PointValue(1f, 100f)/*.setLabel("(100, 100)")*/);
             Line line = new Line(points);
             line.setCubic(true);
-            line.setHasLabels(false);
-            line.setShape(ValueShape.DIAMOND);
-            lines.add(line);
-            return lines;
+            line.setHasLabels(true);
+            line.setShape(ValueShape.CIRCLE);
+            line.setColor(color);
+            return line;
         }
 
         /**
@@ -238,7 +299,7 @@ public class TemperatureActivity extends AppCompatActivity {
         private Axis initAxisX() {
             /*坐标轴X*/
             List<AxisValue> axisValuesX = new ArrayList<>();
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 500; i += 5) {
                 axisValuesX.add(new AxisValue(i).setLabel(i + ""));
             }
             Axis axisX = new Axis(axisValuesX).setName("时间/时").setHasLines(true);
@@ -253,7 +314,7 @@ public class TemperatureActivity extends AppCompatActivity {
         private Axis initAxisY() {
              /*坐标轴Y*/
             List<AxisValue> axisValuesY = new ArrayList<>();
-            for (int i = 0; i < 100; i += 5) {
+            for (int i = 0; i < 100; i += 10) {
                 axisValuesY.add(new AxisValue(i).setLabel(i + ""));
             }
             Axis axisY = new Axis(axisValuesY).setName("温度/摄氏度").setHasLines(true);
@@ -265,12 +326,16 @@ public class TemperatureActivity extends AppCompatActivity {
          *
          * @param pointValue
          */
-        public void addPoint(PointValue pointValue) {
-            List<PointValue> pointValues = mChartData.getLines().get(0).getValues();
+        public void addPoint(String deviceAddress, PointValue pointValue) {
+            Line line = mLines.get(deviceAddress);
+            if (line == null) {
+                return;
+            }
+            List<PointValue> pointValues = line.getValues();
             pointValue.set(pointValues.size() + 1, pointValue.getY());
             pointValues.add(pointValue);
             mChartData.getLines().get(0).setValues(pointValues);
-            Viewport viewport = initViewport();
+            Viewport viewport = initViewport(line);
             mChartView.setCurrentViewportWithAnimation(viewport);
             mChartView.setLineChartData(mChartData);
         }

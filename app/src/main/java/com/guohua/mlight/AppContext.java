@@ -178,12 +178,9 @@ public class AppContext extends Application {
     }
 
     public void connectAll() {
-        //boolean isConnected;
         for (Device device : devices) {
             if (device.isSelected()) {
-                /*isConnected = */
                 connect(device.getDeviceAddress());
-                //device.setConnected(isConnected);
             }
         }
     }

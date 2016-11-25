@@ -45,7 +45,7 @@ import com.guohua.mlight.util.VibrateUtil;
 public class GradientRampActivity extends AppCompatActivity {
     private static final String TAG = GradientRampActivity.class.getSimpleName();
 
-    private ImageView iv_back_drive;
+    //private ImageView iv_back_drive;
 
     public static final int REQUEST_SELECT_LAMP = 1;
     public static final int REQUEST_SELECT_COLOR = 2;
@@ -119,7 +119,7 @@ public class GradientRampActivity extends AppCompatActivity {
         setContentView(R.layout.gradient_ramp);
 
         mSamrtList = (ListView) findViewById(R.id.smart_mode_list);
-        iv_back_drive = (ImageView) findViewById(R.id.iv_back_drive);
+        //iv_back_drive = (ImageView) findViewById(R.id.iv_back_drive);
         iv_model_saved = (ImageView) findViewById(R.id.iv_model_saved);
 //        tv_show_curColor = (TextView) findViewById(R.id.tv_show_curColor);
 
@@ -215,7 +215,7 @@ public class GradientRampActivity extends AppCompatActivity {
         gradient_green = (TextView) findViewById(R.id.gradient_green);
         gradient_blue = (TextView) findViewById(R.id.gradient_blue);
 
-        iv_back_drive.setOnClickListener(mOnClickListener);
+        //iv_back_drive.setOnClickListener(mOnClickListener);
         iv_model_saved.setOnClickListener(mOnClickListener);
 //        gradient_white.setOnClickListener(mOnClickListener);
         gradient_red.setOnClickListener(mOnClickListener);
@@ -442,12 +442,12 @@ public class GradientRampActivity extends AppCompatActivity {
             int clickPos = -1;
             VibrateUtil.vibrate(GradientRampActivity.this, 50);
             switch (id) {
-                case R.id.iv_back_drive: {
+                /*case R.id.iv_back_drive: {
                     Intent intent = new Intent(GradientRampActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
-                break;
+                break;*/
                 case R.id.iv_model_saved: {
                     ToastUtill.showToast(GradientRampActivity.this, getString(R.string.gradient_model_saved), Constant.TOASTLENGTH).show();
                 }

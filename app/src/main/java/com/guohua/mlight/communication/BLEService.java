@@ -23,91 +23,28 @@ import android.widget.Toast;
 import com.guohua.mlight.util.CodeUtils;
 import com.guohua.mlight.util.Constant;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Leo
- * @time 2016-06-27
- * @detail BLE连接通信
+ * @version 2.0
+ *          #detail BLE连接通信
+ * @since 2016-06-27
  */
 @SuppressLint("NewApi")
 public class BLEService extends Service {
-    public static final String TAG = BLEService.class.getSimpleName();//标志 用语调试等
+    /*Section: 属性区域*/
+    public static final String TAG = BLEService1.class.getSimpleName();//标志 用于调试等
     private BLEService mContext;// 上下文
     private BluetoothAdapter mBluetoothAdapter = null;// 本地设备
     private static final boolean AUTO_CONNECT = true;// 是否自动连接
     private static final boolean NOTIFICATION_ENABLED = true;
-    private boolean isServiceDiscovered = false;//发现服务否
-    private HashMap<String, BLEDevice> mBLEDevices;//保存连接设备的Gatt 以device address为key
+    private ConcurrentHashMap<String, BLEDevice> mBLEDevices;//保存连接设备的Gatt 以device address为key
     private SharedPreferences sp;
 
-    //private boolean isConfirmed = false;//密码验证
-
-    /*private IBLEService.Stub mService = new IBLEService.Stub() {
-        @Override
-        public boolean connect(String deviceAddress) throws RemoteException {
-            return mContext.connect(deviceAddress);
-        }
-
-        @Override
-        public boolean send(String deviceAddress, String message) throws RemoteException {
-            return mContext.writeToBLE(deviceAddress, message);
-        }
-
-
-        @Override
-        public void disconnect(String deviceAddress) throws RemoteException {
-            mContext.disconnect(deviceAddress, false);
-        }
-
-        @Override
-        public boolean isConnected(String deviceAddress) throws RemoteException {
-            return mContext.isConnected(deviceAddress);
-        }
-
-        @Override
-        public void disconnectAll() throws RemoteException {
-            mContext.disconnectAll();
-        }
-
-        @Override
-        public boolean sendAll(String message) throws RemoteException {
-            return mContext.sendAll(message);
-        }
-
-        @Override
-        public void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString) throws RemoteException {
-
-        }
-
-        @Override
-        public boolean sendAllByte(byte[] message) throws RemoteException {
-            return mContext.sendAll(message);
-        }
-
-        @Override
-        public boolean sendByte(String deviceAddress, byte[] message) throws RemoteException {
-            return mContext.writeToBLE(deviceAddress, message);
-        }
-
-    };*/
-    /*绑定服务时返回自己*/
-    public class LocalBinder extends Binder {
-        public BLEService getService() {
-            return BLEService.this;
-        }
-    }
-
-    @Override
-    public IBinder onBind(Intent arg0) {
-        // TODO Auto-generated method stub
-//        return mService;
-        return new LocalBinder();
-    }
-
+    /*Section: 生命周期*/
     @Override
     public void onCreate() {
         // TODO Auto-generated method stub
@@ -116,10 +53,9 @@ public class BLEService extends Service {
     }
 
     @Override
-    public void onDestroy() {
+    public IBinder onBind(Intent arg0) {
         // TODO Auto-generated method stub
-        super.onDestroy();
-        suiside();
+        return new LocalBinder();
     }
 
     @Override
@@ -129,6 +65,15 @@ public class BLEService extends Service {
         return Service.START_STICKY;
     }
 
+    @Override
+    public void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+        suiside();
+    }
+
+    /*Section: onCreate()*/
+
     /**
      * 各种初始化信息
      */
@@ -136,17 +81,8 @@ public class BLEService extends Service {
         if (!initBluetooth()) {
             stopSelf();
         }
-
         mContext = this;//初始化
-        isServiceDiscovered = false;
-        mBLEDevices = new HashMap<>();//初始化集合默认大小为10超过会自增
-    }
-
-    /**
-     * 吐丝
-     */
-    private void toast(String text) {
-        Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
+        mBLEDevices = new ConcurrentHashMap<>();//初始化集合默认大小为10超过会自增
     }
 
     /**
@@ -165,6 +101,16 @@ public class BLEService extends Service {
         return true;
     }
 
+    /*Section: onBind()*/
+    /*绑定服务时返回自己*/
+    public class LocalBinder extends Binder {
+        public BLEService getService() {
+            return BLEService.this;
+        }
+    }
+
+    /*Section: onDestroy()*/
+
     /**
      * 自殺
      */
@@ -179,14 +125,265 @@ public class BLEService extends Service {
         }
     }
 
+    /*Section: common methods*/
+
+    /**
+     * 吐丝
+     */
+    private void toast(String text) {
+        Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 向外发送收到的数据广播
+     *
+     * @param rcv
+     */
+    private void sendDataBroadcast(String rcv, String address) {
+        if (rcv == null || TextUtils.equals(rcv, ""))
+            return;
+        Intent intent = new Intent();
+        intent.putExtra(BLEConstant.EXTRA_RECEIVED_DATA, rcv);
+        intent.putExtra(BLEConstant.EXTRA_DEVICE_ADDRESS, address);
+        if (rcv.startsWith("T:") || rcv.startsWith("t:")) {
+            intent.setAction(BLEConstant.ACTION_RECEIVED_TEMPERATURE);
+        } else if (rcv.startsWith("V:") || rcv.startsWith("v:")) {
+            intent.setAction(BLEConstant.ACTION_RECEIVED_VOLTAGE);
+        } else if (rcv.startsWith("VER:") || rcv.startsWith("ver:")) {
+            intent.setAction(BLEConstant.ACTION_RECEIVED_VERSION);
+        }
+        sendBroadcast(intent);
+    }
+
+    /**
+     * 向外发送状态广播
+     *
+     * @param action
+     * @param address
+     */
+    private void sendStateBroadcast(String action, String address) {
+        if (action == null || TextUtils.equals(action, ""))
+            return;
+        Intent intent = new Intent();
+        intent.putExtra(BLEConstant.EXTRA_DEVICE_ADDRESS, address);
+        intent.setAction(action);
+        sendBroadcast(intent);
+    }
+
+    /*Section: BLE连接通信的回调函数*/
+    /**
+     * GATT通信回調函數
+     */
+    @SuppressLint("NewApi")
+    private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
+        @Override
+        public void onCharacteristicChanged(BluetoothGatt gatt,
+                                            BluetoothGattCharacteristic characteristic) {
+            // TODO Auto-generated method stub
+            super.onCharacteristicChanged(gatt, characteristic);
+            String deviceAddress = gatt.getDevice().getAddress();
+            String received = new String(characteristic.getValue());
+            sendDataBroadcast(received, deviceAddress);
+            System.out.println("我收到了" + deviceAddress + "的数据:" + received);
+        }
+
+        @Override
+        public void onCharacteristicRead(BluetoothGatt gatt,
+                                         BluetoothGattCharacteristic characteristic, int status) {
+            // TODO Auto-generated method stub
+            super.onCharacteristicRead(gatt, characteristic, status);
+            System.out.println("onCharacteristicRead()");
+        }
+
+        @Override
+        public void onCharacteristicWrite(BluetoothGatt gatt,
+                                          BluetoothGattCharacteristic characteristic, int status) {
+            // TODO Auto-generated method stub
+            super.onCharacteristicWrite(gatt, characteristic, status);
+            System.out.println("onCharacteristicWrite()");
+        }
+
+        @Override
+        public void onConnectionStateChange(BluetoothGatt gatt, int status,
+                                            int newState) {
+            // TODO Auto-generated method stub
+            super.onConnectionStateChange(gatt, status, newState);
+            String deviceAddress = gatt.getDevice().getAddress();
+            if (!mBLEDevices.containsKey(deviceAddress)) {
+                return;
+            }
+            BLEDevice mDevice = mBLEDevices.get(deviceAddress);
+            if (newState == BluetoothProfile.STATE_CONNECTED) {
+                BluetoothGatt mGatt = mDevice.gatt;
+                if (mGatt != null)
+                    mGatt.discoverServices();
+                mDevice.state = BLEDevice.STATE_CONNECTED;
+                System.out.println("state connected");
+            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                mDevice.state = BLEDevice.STATE_DISCONNECTED;
+                sendStateBroadcast(BLEConstant.ACTION_BLE_DISCONNECTED, deviceAddress);
+                System.out.println("state disconnected");
+            }
+        }
+
+        @Override
+        public void onDescriptorRead(BluetoothGatt gatt,
+                                     BluetoothGattDescriptor descriptor, int status) {
+            // TODO Auto-generated method stub
+            super.onDescriptorRead(gatt, descriptor, status);
+            System.out.println("onDescriptorRead()");
+        }
+
+        @Override
+        public void onDescriptorWrite(BluetoothGatt gatt,
+                                      BluetoothGattDescriptor descriptor, int status) {
+            // TODO Auto-generated method stub
+            super.onDescriptorWrite(gatt, descriptor, status);
+            System.out.println("onDescriptorWrite()");
+        }
+
+        @Override
+        public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
+            // TODO Auto-generated method stub
+            super.onReadRemoteRssi(gatt, rssi, status);
+            System.out.println("onReadRemoteRssi()");
+        }
+
+        @Override
+        public void onReliableWriteCompleted(BluetoothGatt gatt, int status) {
+            // TODO Auto-generated method stub
+            super.onReliableWriteCompleted(gatt, status);
+            System.out.println("onReliableWriteCompleted()");
+        }
+
+        @Override
+        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+            // TODO Auto-generated method stub
+            super.onServicesDiscovered(gatt, status);
+            System.out.println("found service----------------------------");
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                BluetoothGattService service = gatt.getService(SampleGattAttributes.UUID_SERVICE);
+                if (service == null) {
+                    return;
+                }
+                BluetoothGattCharacteristic characteristic = service.getCharacteristic(SampleGattAttributes.UUID_CHARACTERISTIC);
+                if (characteristic == null) {
+                    return;
+                }
+
+                String deviceAddress = gatt.getDevice().getAddress();
+                BLEDevice device = mBLEDevices.get(deviceAddress);
+                if (device == null) {
+                    return;
+                }
+                device.characteristic = characteristic;
+                if (sp == null) {
+                    sp = PreferenceManager.getDefaultSharedPreferences(mContext);
+                }
+                String passport = (Constant.DEFAULT_PASSWORD_HEAD + sp.getString(deviceAddress, CodeUtils.password));
+                new Thread(new ConfigRunnable(deviceAddress, passport)).start();
+            }
+        }
+    };
+
+    /**
+     * 设置后可以使用通知 设备给手机发送通知时可触发onCharacteristicChanged()
+     *
+     * @param mBluetoothGatt
+     * @param characteristic
+     * @param enabled
+     */
+    private void setCharacteristicNotification(final BluetoothGatt mBluetoothGatt, final BluetoothGattCharacteristic characteristic, boolean enabled) {
+        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+            return;
+        }
+        mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
+        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(SampleGattAttributes.UUID_DESCRIPTOR);
+        if (descriptor != null) {
+            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            mBluetoothGatt.writeDescriptor(descriptor);
+        }
+    }
+
+    private synchronized void setCharacteristicNotification(String address, boolean enabled) {
+        BLEDevice device = mBLEDevices.get(address);
+        BluetoothGatt gatt = device.gatt;
+        BluetoothGattCharacteristic characteristic = device.characteristic;
+        if (mBluetoothAdapter == null || gatt == null) {
+            return;
+        }
+        gatt.setCharacteristicNotification(characteristic, enabled);
+        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(SampleGattAttributes.UUID_DESCRIPTOR);
+        if (descriptor != null) {
+            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            gatt.writeDescriptor(descriptor);
+        }
+    }
+
     /**
      * 关闭通信
      */
-    public void close(BluetoothGatt mBluetoothGatt) {
+    private void close(BluetoothGatt mBluetoothGatt) {
         if (mBluetoothGatt == null) {
             return;
         }
         mBluetoothGatt.close();
+    }
+
+    /**
+     * 通信接口 通过此函数即可向BLE设备写入数据
+     *
+     * @param value
+     * @return
+     */
+    private synchronized boolean writeToBLE(String address, byte[] value) {
+        if (mBluetoothAdapter == null || address == null || TextUtils.equals(address, "")) {
+            return false;
+        }
+        if (!mBLEDevices.containsKey(address)) {
+            return false;
+        }
+
+        BLEDevice mDevice = mBLEDevices.get(address);
+        if (mDevice.state != BLEDevice.STATE_CONNECTED) {
+            return false;
+        }
+
+        BluetoothGatt mGatt = mDevice.gatt;
+        BluetoothGattCharacteristic mCharacteristic = mDevice.characteristic;
+
+        if (mGatt == null || mCharacteristic == null) {
+            return false;
+        }
+
+        mCharacteristic.setValue(value);
+        boolean isSucc = mGatt.writeCharacteristic(mCharacteristic);
+
+        return isSucc;
+    }
+
+    public boolean sendAll(String message) {
+        return sendAll(message.getBytes());
+    }
+
+    public boolean sendAll(byte[] message) {
+        //遍历所有的连接线程去写数据
+        boolean flag = true;//标志位
+        Set<Map.Entry<String, BLEDevice>> mEnterySet = mBLEDevices.entrySet();
+        for (Map.Entry<String, BLEDevice> entry : mEnterySet) {
+            BLEDevice mDevice = entry.getValue();
+            if (mDevice != null) {
+                if (!writeToBLE(mDevice.address, message)) {
+                    flag = false;
+                }
+            }
+        }
+        //写完就走 别再烦我
+        return flag;
+    }
+
+    public boolean send(String deviceAddress, byte[] data) {
+        return writeToBLE(deviceAddress, data);
     }
 
     public boolean isConnected(String deviceAddress) {
@@ -281,360 +478,28 @@ public class BLEService extends Service {
         mBLEDevices.clear();
     }
 
-    /**
-     * 向外发送收到的数据广播
-     *
-     * @param rcv
-     */
-    private void sendDataBroadcast(String rcv, String address) {
-        if (rcv == null || TextUtils.equals(rcv, ""))
-            return;
-        Intent intent = new Intent();
-        intent.putExtra(BLEConstant.EXTRA_RECEIVED_DATA, rcv);
-        intent.putExtra(BLEConstant.EXTRA_DEVICE_ADDRESS, address);
-        if (rcv.startsWith("T:") || rcv.startsWith("t:")) {
-            intent.setAction(BLEConstant.ACTION_RECEIVED_TEMPERATURE);
-        } else if (rcv.startsWith("V:") || rcv.startsWith("v:")) {
-            intent.setAction(BLEConstant.ACTION_RECEIVED_VOLTAGE);
-        } else if (rcv.startsWith("VER:") || rcv.startsWith("ver:")) {
-            intent.setAction(BLEConstant.ACTION_RECEIVED_VERSION);
-        }
-        sendBroadcast(intent);
-    }
+    private class ConfigRunnable implements Runnable {
+        private String mAddress;
+        private String mPassword;
 
-    /**
-     * 向外发送状态广播
-     *
-     * @param action
-     * @param address
-     */
-    private void sendStateBroadcast(String action, String address) {
-        if (action == null || TextUtils.equals(action, ""))
-            return;
-        Intent intent = new Intent();
-        intent.putExtra(BLEConstant.EXTRA_DEVICE_ADDRESS, address);
-        intent.setAction(action);
-        sendBroadcast(intent);
-    }
-
-    /**
-     * GATT通信回調函數
-     */
-    @SuppressLint("NewApi")
-    private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
-
-        @Override
-        public void onCharacteristicChanged(BluetoothGatt gatt,
-                                            BluetoothGattCharacteristic characteristic) {
-            // TODO Auto-generated method stub
-            // super.onCharacteristicChanged(gatt, characteristic);
-            System.out.println("接收数据----------------------");
-            String deviceAddress = gatt.getDevice().getAddress();
-            String rcv = new String(characteristic.getValue());
-            System.out.println("我收到了" + deviceAddress + "的数据:" + rcv);
-            sendDataBroadcast(rcv, deviceAddress);
+        public ConfigRunnable(String address, String password) {
+            this.mAddress = address;
+            this.mPassword = password;
         }
 
         @Override
-        public void onCharacteristicRead(BluetoothGatt gatt,
-                                         BluetoothGattCharacteristic characteristic, int status) {
-            // TODO Auto-generated method stub
-            super.onCharacteristicRead(gatt, characteristic, status);
-            System.out.println("onCharacteristicRead()");
+        public void run() {
+            writeToBLE(mAddress, mPassword.getBytes());
+            delay(150);
+            setCharacteristicNotification(mAddress, NOTIFICATION_ENABLED);
         }
 
-        @Override
-        public void onCharacteristicWrite(BluetoothGatt gatt,
-                                          BluetoothGattCharacteristic characteristic, int status) {
-            // TODO Auto-generated method stub
-            //super.onCharacteristicWrite(gatt, characteristic, status);
-            if (status != BluetoothGatt.GATT_SUCCESS) {
-                String deviceAddress = gatt.getDevice().getAddress();
-                gatt.disconnect();
-//                System.out.println("write failed");
-            } else {
-//                System.out.println("write succeed");
+        private void delay(long time) {
+            try {
+                Thread.sleep(time);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-
-        @Override
-        public void onConnectionStateChange(BluetoothGatt gatt, int status,
-                                            int newState) {
-            // TODO Auto-generated method stub
-            // super.onConnectionStateChange(gatt, status, newState);
-            String deviceAddress = gatt.getDevice().getAddress();
-            if (!mBLEDevices.containsKey(deviceAddress)) {
-                return;
-            }
-            BLEDevice mDevice = mBLEDevices.get(deviceAddress);
-            if (newState == BluetoothProfile.STATE_CONNECTED) {
-                BluetoothGatt mGatt = mDevice.gatt;
-                if (mGatt != null)
-                    mGatt.discoverServices();
-                mDevice.state = BLEDevice.STATE_CONNECTED;
-                System.out.println("state connected");
-//				sendStateBroadcast(BLEConstant.ACTION_BLE_CONNECTED, deviceAddress);
-            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                // connect(mBluetoothDeviceAddress);
-                mDevice.state = BLEDevice.STATE_DISCONNECTED;
-                System.out.println("state disconnected");
-                sendStateBroadcast(BLEConstant.ACTION_BLE_DISCONNECTED, deviceAddress);
-                //isConfirmed = false;
-            }
-        }
-
-        @Override
-        public void onDescriptorRead(BluetoothGatt gatt,
-                                     BluetoothGattDescriptor descriptor, int status) {
-            // TODO Auto-generated method stub
-            super.onDescriptorRead(gatt, descriptor, status);
-            System.out.println("onDescriptorRead()");
-        }
-
-        @Override
-        public void onDescriptorWrite(BluetoothGatt gatt,
-                                      BluetoothGattDescriptor descriptor, int status) {
-            // TODO Auto-generated method stub
-            super.onDescriptorWrite(gatt, descriptor, status);
-            System.out.println("onDescriptorWrite()");
-        }
-
-        @Override
-        public void onReadRemoteRssi(BluetoothGatt gatt, int rssi, int status) {
-            // TODO Auto-generated method stub
-            super.onReadRemoteRssi(gatt, rssi, status);
-            System.out.println("onReadRemoteRssi()");
-            //读到的远程设备的rssi
-//			Intent intent1 = new Intent();// 创建Intent对象
-//			/*Bundle bundle = new Bundle();
-//			// 序列化列表，发送后在本地重建数据
-//			bundle.putString(Constant.KEY_DATA_RECEIVED, rev);*/
-//			intent1.setAction(BLEConstant.ACTION_RSSI);
-//			//intent.putExtras(bundle);
-//			intent1.putExtra(BLEConstant.KEY_DATA_RSSI, rssi);
-//			sendBroadcast(intent1);// 发送广播
-        }
-
-        @Override
-        public void onReliableWriteCompleted(BluetoothGatt gatt, int status) {
-            // TODO Auto-generated method stub
-            super.onReliableWriteCompleted(gatt, status);
-            System.out.println("onReliableWriteCompleted()");
-        }
-
-        @Override
-        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-            // TODO Auto-generated method stub
-            // super.onServicesDiscovered(gatt, status);
-            if (status == BluetoothGatt.GATT_SUCCESS) {
-                BluetoothGattService service = gatt.getService(SampleGattAttributes.UUID_SERVICE);
-                if (service == null) {
-                    return;
-                }
-                BluetoothGattCharacteristic characteristic = service.getCharacteristic(SampleGattAttributes.UUID_CHARACTERISTIC);
-                if (characteristic == null) {
-                    return;
-                }
-                String deviceAddress = gatt.getDevice().getAddress();
-                BLEDevice device = mBLEDevices.get(deviceAddress);
-                if (device == null) {
-                    return;
-                }
-                device.gatt = gatt;
-                device.characteristic = characteristic;
-                if (sp == null) {
-                    sp = PreferenceManager.getDefaultSharedPreferences(mContext);
-                }
-                String passport = (Constant.DEFAULT_PASSWORD_HEAD + sp.getString(deviceAddress, CodeUtils.password));
-                //writeToBLE(deviceAddress, passport.getBytes());
-                characteristic.setValue(passport.getBytes());
-                gatt.writeCharacteristic(characteristic);
-                //setCharacteristicNotification(gatt, characteristic, NOTIFICATION_ENABLED);
-                sendStateBroadcast(BLEConstant.ACTION_BLE_CONNECTED, deviceAddress);
-            }
-        }
-    };
-
-    private BluetoothGattService getService(BluetoothGatt nGatt, UUID nUuid) {
-        return nGatt.getService(nUuid);
     }
-
-    private BluetoothGattCharacteristic getCharacteristic(BluetoothGatt nGatt, UUID nServiceUuid, UUID nCharacteristicUuid) {
-        BluetoothGattService nService = nGatt.getService(nServiceUuid);
-        return nService.getCharacteristic(nCharacteristicUuid);
-    }
-
-    /**
-     * 设置后可以使用通知 设备给手机发送通知时可触发onCharacteristicChanged()
-     *
-     * @param mBluetoothGatt
-     * @param mCharacteristic
-     * @param enabled
-     */
-    private synchronized void setCharacteristicNotification(BluetoothGatt mBluetoothGatt, BluetoothGattCharacteristic mCharacteristic, boolean enabled) {
-        if (mBluetoothAdapter == null || mBluetoothGatt == null)
-            return;
-        mBluetoothGatt.setCharacteristicNotification(mCharacteristic, enabled);
-        BluetoothGattDescriptor descriptor = mCharacteristic.getDescriptor(SampleGattAttributes.UUID_DESCRIPTOR);
-        if (descriptor != null) {
-            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            while (!mBluetoothGatt.writeDescriptor(descriptor)) ;
-        }
-    }
-
-    /**
-     * 通信接口 通过此函数即可向BLE设备写入数据
-     *
-     * @param value
-     * @return
-     */
-    /*private synchronized boolean writeToBLE(String address, String value) {
-        if (mBluetoothAdapter == null || address == null || TextUtils.equals(address, "")) {
-            return false;
-        }
-        if (!mBLEDevices.containsKey(address)) {
-            return false;
-        }
-
-        BLEDevice mDevice = mBLEDevices.get(address);
-        if (mDevice.state != BLEDevice.STATE_CONNECTED) {
-            return false;
-        }
-
-        BluetoothGatt mGatt = mDevice.gatt;
-        BluetoothGattCharacteristic mCharacteristic = mDevice.characteristic;
-
-        if (mGatt == null || mCharacteristic == null) {
-            return false;
-        }
-
-        mCharacteristic.setValue(value);
-
-        if (mGatt.writeCharacteristic(mCharacteristic)) {
-            return true;
-        }
-
-        return false;
-    }*/
-
-    /**
-     * 通信接口 通过此函数即可向BLE设备写入数据
-     *
-     * @param value
-     * @return
-     */
-    private synchronized boolean writeToBLE(String address, byte[] value) {
-
-        if (mBluetoothAdapter == null || address == null || TextUtils.equals(address, "")) {
-            return false;
-        }
-        if (!mBLEDevices.containsKey(address)) {
-            return false;
-        }
-
-        BLEDevice mDevice = mBLEDevices.get(address);
-        if (mDevice.state != BLEDevice.STATE_CONNECTED) {
-            return false;
-        }
-
-        BluetoothGatt mGatt = mDevice.gatt;
-        BluetoothGattCharacteristic mCharacteristic = mDevice.characteristic;
-
-        if (mGatt == null || mCharacteristic == null) {
-            return false;
-        }
-
-        mCharacteristic.setValue(value);
-
-        boolean isSucc = false;
-        isSucc = mGatt.writeCharacteristic(mCharacteristic);
-
-		/*synchronized(this)
-        {
-			try {
-				this.wait(50); // 暂停线程
-			}catch(InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
-		synchronized(this)
-		{
-			this.notify(); // 恢复线程
-		}*/
-
-		/*try {
-            Thread.sleep(50);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
-
-        return isSucc;
-
-		/*if (isSucc) {
-            return true;
-		}
-
-		return false;*/
-    }
-
-    private boolean sendAll(String message) {
-        //遍历所有的连接线程去写数据
-        boolean flag = true;//标志位
-        Set<Map.Entry<String, BLEDevice>> mEnterySet = mBLEDevices.entrySet();
-        for (Map.Entry<String, BLEDevice> entry : mEnterySet) {
-            BLEDevice mDevice = entry.getValue();
-            if (mDevice != null) {
-                if (!writeToBLE(mDevice.address, message.getBytes())) {
-                    flag = false;
-                }
-            }
-        }
-        //写完就走 别再烦我
-        return flag;
-    }
-
-    private boolean sendAll(byte[] message) {
-        //遍历所有的连接线程去写数据
-        boolean flag = true;//标志位
-        Set<Map.Entry<String, BLEDevice>> mEnterySet = mBLEDevices.entrySet();
-        for (Map.Entry<String, BLEDevice> entry : mEnterySet) {
-            BLEDevice mDevice = entry.getValue();
-            if (mDevice != null) {
-                if (!writeToBLE(mDevice.address, message)) {
-                    flag = false;
-                }
-            }
-        }
-        //写完就走 别再烦我
-        return flag;
-    }
-
-    public boolean send(String deviceAddress, byte[] data) {
-        return writeToBLE(deviceAddress, data);
-    }
-
-//	/**
-//	 * 通信接口 从BLE设备读数据
-//	 *
-//	 * @return
-//	 */
-//	public byte[] readFromBLE() {
-//		byte[] value = null;
-//
-//		if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-//			return null;
-//		}
-//
-//		if ((mConnectionState != STATE_CONNECTED) || !isServiceDiscovered) {
-//			return null;
-//		}
-//
-//		boolean isSuccess = mBluetoothGatt.readCharacteristic(mCharacteristic);
-//		if (isSuccess) {
-//			value = mCharacteristic.getValue();
-//		}
-//
-//		return value;
-//	}
 }

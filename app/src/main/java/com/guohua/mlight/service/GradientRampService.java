@@ -54,9 +54,9 @@ public class GradientRampService extends Service{
                 .setContentTitle(getString(R.string.notification_title)).setContentText(notification_content_title)
                 .setContentIntent(mPendingIntent).setPriority(Notification.PRIORITY_MAX).build();
         startForeground(-1213, notification);
-        flags = START_STICKY;//杀不死
-
-        return super.onStartCommand(intent, flags, startId);
+//        flags = Service.START_STICKY;//杀不死
+        return START_STICKY;
+        //return super.onStartCommand(intent, flags, startId);
     }
 
 
