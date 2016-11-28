@@ -158,6 +158,15 @@ public class TemperatureActivity extends AppCompatActivity {
         }
 
         private void showTitle() {
+            if (mLines == null) {
+                mShow.setText("No Devices");
+                return;
+            }
+            int size = mLines.size();
+            if (size <= 0) {
+                mShow.setText("No Devices");
+                return;
+            }
             StringBuilder sb = new StringBuilder();
 
             Set<String> keys = mLines.keySet();
@@ -166,15 +175,24 @@ public class TemperatureActivity extends AppCompatActivity {
                 String address = iterator.next();
                 Line line = mLines.get(address);
                 int color = line.getColor();
-                int r = Color.red(color);
-                int g = Color.green(color);
-                int b = Color.blue(color);
-                String s = "<p style=\"color:rgb(" + r + "," + g + "," + b + ");\"><b>" + address + "</b></p>";
+                String r = int2HexString(Color.red(color));
+                String g = int2HexString(Color.green(color));
+                String b = int2HexString(Color.blue(color));
+
+                String s = "<p><font color=\"#" + r + g + b + "\"><b>" + address + "</b></font></p>";
                 sb.append(s);
             }
             System.out.println(sb.toString());
             Spanned spanned = Html.fromHtml(sb.toString());
             mShow.setText(spanned);
+        }
+
+        private String int2HexString(int dec) {
+            String hex = Integer.toHexString(dec);
+            if (dec < 16) {
+                hex = "0" + hex;
+            }
+            return hex;
         }
 
         private void findViewsByIds() {
@@ -190,10 +208,10 @@ public class TemperatureActivity extends AppCompatActivity {
             // 获取折线图数据
             mChartData = initLineChartData();
             // 当前视角
-            Viewport viewport = initViewport(mChartData.getLines().get(0));
+            //Viewport viewport = initViewport(mChartData.getLines().get(0));
             // 设置属性
             mChartView.setLineChartData(mChartData);
-            mChartView.setCurrentViewport(viewport);
+            //mChartView.setCurrentViewport(viewport);
             mChartView.setInteractive(true);// 可交互
             mChartView.setScrollEnabled(true);//是否可滚动
             mChartView.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL);//滚动类型
@@ -209,7 +227,7 @@ public class TemperatureActivity extends AppCompatActivity {
          */
         private Viewport initViewport(Line line) {
             Viewport viewport = new Viewport();
-            viewport.top = 100;
+            viewport.top = 110;
             viewport.bottom = 0;
             int right = 25;
             int left = 0;
@@ -314,7 +332,7 @@ public class TemperatureActivity extends AppCompatActivity {
         private Axis initAxisY() {
              /*坐标轴Y*/
             List<AxisValue> axisValuesY = new ArrayList<>();
-            for (int i = 0; i < 100; i += 10) {
+            for (int i = 0; i < 110; i += 10) {
                 axisValuesY.add(new AxisValue(i).setLabel(i + ""));
             }
             Axis axisY = new Axis(axisValuesY).setName("温度/摄氏度").setHasLines(true);

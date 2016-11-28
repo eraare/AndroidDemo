@@ -13,14 +13,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="我的设备"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/iv_icon_tab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/tv_title_tab"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:src="@drawable/icon_center_checked" />
 </RelativeLayout>
