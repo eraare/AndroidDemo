@@ -170,7 +170,6 @@ public class AppContext extends Application {
      * @param deviceAddress
      */
     public boolean connect(String deviceAddress) {
-        System.out.println(deviceAddress + " ----------------------- ");
         if (mBLEService == null) {
             return false;
         }

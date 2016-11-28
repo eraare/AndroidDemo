@@ -43,7 +43,7 @@ public class TimerFragment extends android.support.v4.app.DialogFragment {
 
     public static TimerFragment getInstance() {
         if (timerFragment == null) {
-            synchronized (Scene1Fragment.class) {
+            synchronized (TimerFragment.class) {
                 if (timerFragment == null) {
                     timerFragment = new TimerFragment();
                 }

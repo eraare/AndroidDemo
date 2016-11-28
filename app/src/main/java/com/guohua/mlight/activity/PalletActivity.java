@@ -30,7 +30,6 @@ import com.guohua.mlight.fragment.DialogFragment;
 import com.guohua.mlight.fragment.MainFragment;
 import com.guohua.mlight.fragment.MainFragment1;
 import com.guohua.mlight.fragment.SceneFragment;
-import com.guohua.mlight.library.BluetoothConstant;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.service.GradientRampService;
@@ -182,8 +181,8 @@ public class PalletActivity extends AppCompatActivity {
             }
             return;
             case R.id.iv_settings_title: {
-                Intent intent = new Intent(PalletActivity.this, SettingsActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(PalletActivity.this, SettingsActivity.class);
+                //startActivity(intent);
             }
             return;
             case R.id.btn_red_main:
@@ -514,7 +513,7 @@ public class PalletActivity extends AppCompatActivity {
 
     private String deviceName;//设备名称
     private String deviceAddress;
-    private ArrayList<String> selectedScanDeviceList = new ArrayList<String>();
+    private ArrayList<String> selectedScanDeviceList = new ArrayList<>();
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -522,7 +521,7 @@ public class PalletActivity extends AppCompatActivity {
         //super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == BluetoothConstant.REQUEST_DEVICE_SCAN) {
+            if (requestCode == BLEConstant.REQUEST_DEVICE_SCAN) {
                 //                deviceName = data.getStringExtra(BluetoothConstant.EXTRA_DEVICE_NAME);
 //                deviceAddress = data.getStringExtra(BluetoothConstant.EXTRA_DEVICE_ADDRESS);
 //                DialogFragment.getInstance().onResult(new Device(deviceName, deviceAddress, true));

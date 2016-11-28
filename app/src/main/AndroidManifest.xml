@@ -51,9 +51,6 @@
             android:screenOrientation="portrait" />
         -->
         <activity
-            android:name=".activity.SelectColorActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activity.GradientRampActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -61,9 +58,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.PalletActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.DriveModeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".library.ScanBluetoothDevice"

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.guohua.mlight.AppContext;
 import com.guohua.mlight.R;
 import com.guohua.mlight.bean.Device;
-import com.guohua.mlight.library.BluetoothUtil;
+import com.guohua.mlight.communication.BluetoothUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;

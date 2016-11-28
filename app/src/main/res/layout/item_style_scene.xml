@@ -55,7 +55,7 @@
             android:background="@drawable/shape_circle_bg"
             android:padding="1dp"
             android:scaleType="fitXY"
-            android:src="@drawable/play" />
+            android:src="@drawable/icon_center_normal" />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

@@ -1,4 +1,4 @@
-package com.guohua.mlight.library;
+package com.guohua.mlight.communication;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -6,7 +6,7 @@ import android.bluetooth.BluetoothDevice;
 import java.lang.reflect.Method;
 
 /**
- * Created by Leo on 2016/5/20.
+ * Created by HHH on 2016/11/28.
  */
 public final class BluetoothUtil {
     /**

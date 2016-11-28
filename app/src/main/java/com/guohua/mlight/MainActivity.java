@@ -43,7 +43,6 @@ import com.guohua.mlight.fragment.SceneFragment;
 import com.guohua.mlight.fragment.TimerFragment;
 import com.guohua.mlight.guard.WatcherKingService;
 import com.guohua.mlight.guard.WatcherQueenService;
-import com.guohua.mlight.library.BluetoothConstant;
 import com.guohua.mlight.upgrade.UpgradeManager;
 import com.guohua.mlight.util.CodeUtils;
 import com.guohua.mlight.util.Constant;
@@ -101,54 +100,6 @@ public class MainActivity extends AppCompatActivity {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mHandler = new android.os.Handler();
         scanLeDevice(true);
-
-        /*//用于版本更新
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                int what = msg.what;
-                switch (what) {
-                    case UpgradeManager.WHAT_UPDATE_TRUE: {
-                        System.out.println("mainactivity serverVersion WHAT_UPDATE_TRUE ");
-                        ToastUtill.showToast(MainActivity.this, getString(R.string.soft_upgrade_yes), Constant.TOASTLENGTH).show();
-                        new AlertDialog.Builder(MainActivity.this).setIcon(R.mipmap.ic_launcher).setTitle(R.string.soft_update_title).setMessage(R.string.soft_update_info)
-                                .setPositiveButton(R.string.soft_update_updatebtn, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if (upgradeManager != null) {
-                                            upgradeManager.update();
-                                        }
-                                    }
-                        }).setNegativeButton(R.string.settings_negative, null).show();
-                    }
-                    break;
-                    case UpgradeManager.WHAT_UPDATE_FALSE: {
-                        System.out.println("mainactivity serverVersion WHAT_UPDATE_FALSE ");
-                        ToastUtill.showToast(MainActivity.this, getString(R.string.soft_upgrade_no), Constant.TOASTLENGTH).show();
-                    }
-                    break;
-                    case UpgradeManager.WHAT_UPDATE_DOWNLOAD: {
-                        System.out.println("mainactivity serverVersion WHAT_UPDATE_DOWNLOAD ");
-                        if (upgradeManager != null) {
-                            upgradeManager.setProgress();
-                        }
-//                        ToastUtill.showToast(MainActivity.this, getString(R.string.soft_updating), Constant.TOASTLENGTH).show();
-                    }
-                    break;
-                    case UpgradeManager.WHAT_UPDATE_FINISH: {
-                        System.out.println("mainactivity serverVersion WHAT_UPDATE_FINISH ");
-                        if (upgradeManager != null) {
-                            upgradeManager.installApk();
-//                            ToastUtill.showToast(MainActivity.this, getString(R.string.soft_updating), Constant.TOASTLENGTH).show();
-                        }
-                    }
-                    default:
-                        break;
-                }
-            }
-        };
-        upgradeManager = new UpgradeManager(this, mHandler);
-        checkUpgrade();*/
     }
 
     private Runnable mStopRunnable = new Runnable() {
@@ -426,24 +377,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == BluetoothConstant.REQUEST_DEVICE_SCAN) {
+            if (requestCode == BLEConstant.REQUEST_DEVICE_SCAN) {
 
 //                deviceName = data.getStringExtra(BluetoothConstant.EXTRA_DEVICE_NAME);
 //                deviceAddress = data.getStringExtra(BluetoothConstant.EXTRA_DEVICE_ADDRESS);
 //                DialogFragment.getInstance().onResult(new Device(deviceName, deviceAddress, true));
 
                 selectedScanDeviceList = data.getStringArrayListExtra(BLEConstant.EXTRA_DEVICE_LIST);
-                ArrayList<Device> resultDevList = new ArrayList<Device>();
-                String addrAndName = "";
-                System.out.println("mainactivity onActivityResult selectedScanDeviceList------------selectedScanDeviceList.size()-------------- " + selectedScanDeviceList.size());
+                ArrayList<Device> resultDevList = new ArrayList<>();
+                String addrAndName;
                 for (int i = 0; i < selectedScanDeviceList.size(); i++) {
                     addrAndName = selectedScanDeviceList.get(i);
                     int splitPos = addrAndName.indexOf(";");
                     resultDevList.add(new Device(addrAndName.substring(splitPos + 1), addrAndName.substring(0, splitPos), true));
-                    System.out.println("addrAndName: " + addrAndName + "; splitPos: " + splitPos +
-                            "; addr: " + addrAndName.substring(0, splitPos) + "        name: " + addrAndName.substring(splitPos + 1));
                 }
-                System.out.println("mainactivity onActivityResult selectedScanDeviceList--------------------------");
                 DialogFragment.getInstance().onResult(resultDevList);
             }
         }
@@ -461,13 +408,6 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            //系统自带的蓝牙状态判断
-//            if (TextUtils.equals(action, BluetoothDevice.ACTION_ACL_CONNECTED)) {
-//                Snackbar.make(title, R.string.main_state_online, Snackbar.LENGTH_LONG).show();
-//            } else if (TextUtils.equals(action, BluetoothDevice.ACTION_ACL_DISCONNECTED)) {
-//                Snackbar.make(title, R.string.main_state_offline, Snackbar.LENGTH_SHORT).show();
-//            } else
-
             if (TextUtils.equals(action, Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
                 //startGuard();
             } else if (TextUtils.equals(action, BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
@@ -484,11 +424,7 @@ public class MainActivity extends AppCompatActivity {
                 if (DialogFragment.getInstance().mProgressDialog != null) {
                     DialogFragment.getInstance().mProgressDialog.dismiss();
                 }
-            }/*else if (TextUtils.equals(action, BluetoothConstant.ACTION_CONNECT_SUCCESS)) {
-                //连接成功
-            } else if (TextUtils.equals(action, BluetoothConstant.ACTION_CONNECT_ERROR)) {
-                //连接失败
-            }*/
+            }
             DialogFragment.getInstance().updateAdapter();
         }
     };
@@ -504,24 +440,10 @@ public class MainActivity extends AppCompatActivity {
         mIntentFilter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
         mIntentFilter.addAction(BLEConstant.ACTION_BLE_CONNECTED);
         mIntentFilter.addAction(BLEConstant.ACTION_BLE_DISCONNECTED);
-//        mIntentFilter.addAction(BluetoothConstant.ACTION_CONNECT_ERROR);
-//        mIntentFilter.addAction(BluetoothConstant.ACTION_CONNECT_SUCCESS);
 
         mIntentFilter.setPriority(Integer.MAX_VALUE);
         registerReceiver(mBroadcastReceiver, mIntentFilter);
     }
-
-    /*public void checkUpgrade() {
-        if (!ToolUtils.isNetworkAvailable(this)) {
-            Toast.makeText(this, R.string.about_no_network, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (upgradeManager != null) {
-            System.out.println("start checkUpgrade........................");
-            upgradeManager.check();
-            System.out.println("finished checkUpgrade........................");
-        }
-    }*/
 
     /*Section: Debug Log System.out.println*/
     private boolean isDebug = true; //调试模式

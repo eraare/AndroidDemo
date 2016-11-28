@@ -51,7 +51,7 @@
             android:layout_height="@dimen/large_icon_size"
             android:layout_margin="@dimen/content_margin"
             android:adjustViewBounds="true"
-            android:src="@drawable/icon_drive" />
+            android:src="@drawable/icon_center_normal" />
 
         <TextView
             android:id="@+id/tv_scene_list"
@@ -107,7 +107,7 @@
             android:layout_height="@dimen/large_icon_size"
             android:layout_margin="@dimen/content_margin"
             android:adjustViewBounds="true"
-            android:src="@drawable/icon_drive" />
+            android:src="@drawable/icon_center_normal" />
 
         <TextView
             android:id="@+id/tv_pallet_scene"
@@ -134,7 +134,7 @@
             android:layout_height="@dimen/large_icon_size"
             android:layout_margin="@dimen/content_margin"
             android:adjustViewBounds="true"
-            android:src="@drawable/icon_music_normal" />
+            android:src="@drawable/icon_center_normal" />
 
         <TextView
             android:id="@+id/tv_music_scene"
@@ -214,7 +214,7 @@
             android:layout_height="@dimen/large_icon_size"
             android:layout_margin="@dimen/content_margin"
             android:adjustViewBounds="true"
-            android:src="@drawable/icon_drive" />
+            android:src="@drawable/icon_center_normal" />
         <TextView
             android:id="@+id/tv_drive_scene"
             android:layout_width="wrap_content"

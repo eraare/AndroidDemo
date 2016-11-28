@@ -48,7 +48,7 @@ public class DialogFragment extends android.support.v4.app.DialogFragment {
 
     public static DialogFragment getInstance() {
         if (dialogFragment == null) {
-            synchronized (Scene1Fragment.class) {
+            synchronized (DialogFragment.class) {
                 if (dialogFragment == null) {
                     dialogFragment = new DialogFragment();
                 }

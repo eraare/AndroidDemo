@@ -42,7 +42,7 @@ public class PalletDeviceDialogFragment extends android.support.v4.app.DialogFra
 
     public static PalletDeviceDialogFragment getInstance() {
         if (dialogFragment == null) {
-            synchronized (Scene1Fragment.class) {
+            synchronized (PalletDeviceDialogFragment.class) {
                 if (dialogFragment == null) {
                     dialogFragment = new PalletDeviceDialogFragment();
                 }
