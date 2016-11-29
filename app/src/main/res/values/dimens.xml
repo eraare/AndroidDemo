@@ -9,7 +9,7 @@
     <dimen name="bluetooth_spp_padding">5dp</dimen>
     <dimen name="framelayout_height">300dp</dimen>
 
-    <dimen name="button_horizontal_margin">1dp</dimen>
+    <dimen name="button_horizontal_margin">5dp</dimen>
 
     <dimen name="button_color_size">50dp</dimen>
     <dimen name="padding">16dp</dimen>

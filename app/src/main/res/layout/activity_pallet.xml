@@ -184,7 +184,7 @@
                 android:layout_marginRight="@dimen/button_horizontal_margin"
                 android:background="@drawable/shape_circle_white"
                 android:text="@string/white"
-                android:textColor="@color/green500" />
+                android:textColor="@color/main" />
 
         </LinearLayout>
 

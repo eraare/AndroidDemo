@@ -82,5 +82,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="512" />
+
+        <Switch
+            android:id="@+id/s_background_visualizer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="后台运行" />
     </LinearLayout>
 </LinearLayout>

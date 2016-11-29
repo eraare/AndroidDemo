@@ -59,9 +59,9 @@
         <activity
             android:name=".activity.PalletActivity"
             android:screenOrientation="portrait" />
-        <activity
+        <!--<activity
             android:name=".library.ScanBluetoothDevice"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" />-->
         <!-- 主Activity -->
         <activity
             android:name=".MainActivity"
@@ -98,22 +98,8 @@
             android:name=".communication.BLEActivity"
             android:screenOrientation="portrait" />
         <!-- 音乐律动服务和摇一摇服务 -->
-        <service
-            android:name=".service.VisualizerService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.guohua.glight.service.VisualizerService" />
-            </intent-filter>
-        </service>
-        <service
-            android:name=".service.ShakeService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.guohua.glight.service.ShakeService" />
-            </intent-filter>
-        </service>
+        <service android:name=".service.VisualizerService" />
+        <service android:name=".service.ShakeService" />
 
         <!-- 日出日落模式服务 -->
         <service

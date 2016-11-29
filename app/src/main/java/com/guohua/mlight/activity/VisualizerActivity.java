@@ -4,12 +4,15 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.SyncStatusObserver;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.guohua.mlight.R;
@@ -20,6 +23,7 @@ import com.guohua.mlight.view.VisualizerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.Unbinder;
 
 /**
@@ -35,6 +39,8 @@ public class VisualizerActivity extends AppCompatActivity implements IObserver {
     TextView valueShow;
     @BindView(R.id.sb_personal_visualizer)
     SeekBar personal;
+    /*@BindView(R.id.s_background_visualizer)
+    Switch switcher;*/
     private Unbinder unbinder;
     /*Section: 属性*/
     private int value;
@@ -71,6 +77,31 @@ public class VisualizerActivity extends AppCompatActivity implements IObserver {
         personal.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
     }
 
+    @OnCheckedChanged(R.id.s_background_visualizer)
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            startTheService();
+        } else {
+            stopTheService();
+        }
+        System.out.println("Service" + isChecked);
+    }
+
+    /**
+     * 后台运行开启服务
+     */
+    private void startTheService() {
+        Intent service = new Intent(this, VisualizerService.class);
+        stopService(service);
+    }
+
+    /**
+     * 关闭后台运行
+     */
+    private void stopTheService() {
+        Intent service = new Intent(this, VisualizerService.class);
+        startService(service);
+    }
 
     private SeekBar.OnSeekBarChangeListener mOnSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
