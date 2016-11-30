@@ -14,15 +14,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.os.Looper;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.guohua.mlight.bean.Device;
-import com.guohua.mlight.bean.Timer;
 import com.guohua.mlight.communication.BLEService;
 import com.guohua.mlight.fragment.MainFragment;
 import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.util.CrashHandler;
 
 import java.util.ArrayList;
 
@@ -32,21 +30,15 @@ import java.util.ArrayList;
  * @time 2015-10-29
  */
 public class AppContext extends Application {
-//    public static boolean isLightOn;
     public static int currentColor;
-    public static int driveModeCheckedPos = -1;
-    public static int driveModeFreqGap = 150;
     public static int curClickColorImgOnOff[] = {0, 0, 0, 0};
     public static int gradientRampStopGap[] = {Constant.DEFAULTSTOPGAPVALUE, Constant.DEFAULTSTOPGAPVALUE, Constant.DEFAULTSTOPGAPVALUE, Constant.DEFAULTSTOPGAPVALUE};
     public static int gradientRampGradientGap[] = {Constant.DEFAULTGRADIENTGAPVALUE, Constant.DEFAULTGRADIENTGAPVALUE, Constant.DEFAULTGRADIENTGAPVALUE, Constant.DEFAULTGRADIENTGAPVALUE};
-    //public static ArrayList<Timer> timers;
 
     public static int isStartGradientRampService = 0;
     public static boolean isGradientGapRedCBChecked = false;
     public static boolean isGradientGapGreenCBChecked = false;
     public static boolean isGradientGapBlueCBChecked = false;
-//    public static boolean isSceneSunRun = false;
-//    public static boolean isSceneRgbRun = false;
 
     /**
      * 以下为单例模式
@@ -57,66 +49,17 @@ public class AppContext extends Application {
         return mAppContext;
     }
 
-    /**
-     * 以下为uncaught exception的处理代码 防止程序崩溃
-     */
-    private Thread.UncaughtExceptionHandler mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-    private Thread.UncaughtExceptionHandler mUncaughtExceptionHandler = new Thread.UncaughtExceptionHandler() {
-        @Override
-        public void uncaughtException(Thread thread, Throwable ex) {
-            closeBLEService();//捕捉到崩溃异常首先关闭BLE服务
-            if (!handleException(ex) && mDefaultHandler != null) {
-                mDefaultHandler.uncaughtException(thread, ex);
-            } else {
-                restartApplication();
-            }
-            System.exit(0);
-            android.os.Process.killProcess(android.os.Process.myPid());
-        }
-    };
-
-    /**
-     * 处理异常
-     *
-     * @param ex
-     * @return
-     */
-    private boolean handleException(Throwable ex) {
-        if (ex == null) {
-            return false;
-        }
-
-        new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        Looper.prepare();
-                        Toast.makeText(getApplicationContext(), R.string.error_info, Toast.LENGTH_SHORT).show();
-                        Looper.loop();
-                    }
-                }
-        ).start();
-        return true;
-    }
-
-    /**
-     * 重启程序
-     */
-    private void restartApplication() {
-        Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-    }
-
-    private boolean isDebug = true;//调试版本和正式版本的标志
-
     @Override
     public void onCreate() {
         super.onCreate();
-        System.out.println("Appcontext start");
-        if (!isDebug) {
-            Thread.setDefaultUncaughtExceptionHandler(mUncaughtExceptionHandler);
-        }
+        System.out.println("Application start");
+        // 开启异常捕捉
+        new CrashHandler.Builder(getApplicationContext())
+                .debug(false)
+                .tip(getString(R.string.error_info))
+                .file("log", "crash", ".err")
+                .build()
+                .catching();
         mAppContext = this;
         openBLEService();
     }
@@ -216,12 +159,12 @@ public class AppContext extends Application {
      * @param message
      */
     public boolean send(String deviceAddress, String message) {
-        if(message.contains("close") || message.contains("ctl:0:0:0:0:")){
+        if (message.contains("close") || message.contains("ctl:0:0:0:0:")) {
 //            System.out.println("send   R.drawable.icon_light_off");
             MainFragment.isLighting = false;
-        }else if(message.contains("de") || message.contains("dl")){//定时功能
+        } else if (message.contains("de") || message.contains("dl")) {//定时功能
 
-        }else{
+        } else {
             // System.out.println("send  R.drawable.icon_light_on");
             MainFragment.isLighting = true;
         }
@@ -293,10 +236,10 @@ public class AppContext extends Application {
     public void exitApplication() {
         int currentVersion = android.os.Build.VERSION.SDK_INT;//获取当前版本
         if (currentVersion > android.os.Build.VERSION_CODES.ECLAIR_MR1) {
-//            Intent startMain = new Intent(Intent.ACTION_MAIN);
-//            startMain.addCategory(Intent.CATEGORY_HOME);
-//            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(startMain);
+         /*   Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);*/
             System.exit(0);//退出的重点在这里
 //            android.os.Process.killProcess(android.os.Process.myPid());
         } else {// android2.1

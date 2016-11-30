@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.SyncStatusObserver;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -19,12 +18,12 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.ai.IObserver;
 import com.guohua.mlight.service.VisualizerService;
 import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.util.ToolUtils;
 import com.guohua.mlight.view.VisualizerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
-import butterknife.Unbinder;
 
 /**
  * @author Leo
@@ -39,9 +38,9 @@ public class VisualizerActivity extends AppCompatActivity implements IObserver {
     TextView valueShow;
     @BindView(R.id.sb_personal_visualizer)
     SeekBar personal;
-    /*@BindView(R.id.s_background_visualizer)
-    Switch switcher;*/
-    private Unbinder unbinder;
+    @BindView(R.id.s_background_visualizer)
+    Switch background;
+    //private Unbinder unbinder;
     /*Section: 属性*/
     private int value;
 
@@ -49,7 +48,7 @@ public class VisualizerActivity extends AppCompatActivity implements IObserver {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visualizer);
-        unbinder = ButterKnife.bind(this);
+        ButterKnife.bind(this);
         init();
     }
 
@@ -75,6 +74,10 @@ public class VisualizerActivity extends AppCompatActivity implements IObserver {
         personal.setProgress(value);
         valueShow.setText(getString(R.string.visualizer_feel) + value);
         personal.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
+        if (!ToolUtils.isServiceRunning(getApplicationContext(), VisualizerService.class.getName())) {
+            System.out.println("false");
+            background.setChecked(false);
+        }
     }
 
     @OnCheckedChanged(R.id.s_background_visualizer)
@@ -92,7 +95,7 @@ public class VisualizerActivity extends AppCompatActivity implements IObserver {
      */
     private void startTheService() {
         Intent service = new Intent(this, VisualizerService.class);
-        stopService(service);
+        startService(service);
     }
 
     /**
@@ -100,7 +103,7 @@ public class VisualizerActivity extends AppCompatActivity implements IObserver {
      */
     private void stopTheService() {
         Intent service = new Intent(this, VisualizerService.class);
-        startService(service);
+        stopService(service);
     }
 
     private SeekBar.OnSeekBarChangeListener mOnSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
@@ -172,9 +175,9 @@ public class VisualizerActivity extends AppCompatActivity implements IObserver {
     protected void onDestroy() {
         super.onDestroy();
         unbindService(mServiceConnection);
-        if (unbinder != null) {
+        /*if (unbinder != null) {
             unbinder.unbind();
-        }
+        }*/
     }
 
     public void back(View v) {

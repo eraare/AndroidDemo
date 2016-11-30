@@ -18,17 +18,21 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.service.ShakeService;
 import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.util.ToolUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
@@ -51,6 +55,8 @@ public class ShakeActivity extends AppCompatActivity {
     TextView switcher;
     @BindView(R.id.tv_color_shake)
     TextView color;
+    @BindView(R.id.s_background_shake)
+    Switch background;
     private Unbinder mUnbinder;
     private boolean isSwitch = true;//状态变量
     private int currentValue;
@@ -60,11 +66,6 @@ public class ShakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shake);
         mUnbinder = ButterKnife.bind(this);
-        /**
-         * 绑定服务
-         */
-        Intent service = new Intent(this, ShakeService.class);
-        bindService(service, mServiceConnection, BIND_AUTO_CREATE);
         init();
     }
 
@@ -85,6 +86,11 @@ public class ShakeActivity extends AppCompatActivity {
     private void init() {
         initValue();
         initViews();
+        /**
+         * 绑定服务
+         */
+        Intent service = new Intent(this, ShakeService.class);
+        bindService(service, mServiceConnection, BIND_AUTO_CREATE);
     }
 
     /**
@@ -114,6 +120,10 @@ public class ShakeActivity extends AppCompatActivity {
         show.setText(getString(R.string.shake_weak));
         current.setText(getString(R.string.shake_sensitive) + currentValue);
         threshold.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
+        if (!ToolUtils.isServiceRunning(getApplicationContext(), ShakeService.class.getName())) {
+            System.out.println("ShakeService: " + ShakeService.class.getName());
+            background.setChecked(false);
+        }
     }
 
     /**
@@ -170,6 +180,26 @@ public class ShakeActivity extends AppCompatActivity {
         animationSet.addAnimation(animation);
         animationSet.setDuration(100);
         shake.startAnimation(animationSet);
+    }
+
+    @OnCheckedChanged(R.id.s_background_shake)
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            startTheService();
+        } else {
+            stopTheService();
+        }
+        System.out.println("Service" + isChecked);
+    }
+
+    private void startTheService() {
+        Intent service = new Intent(this, ShakeService.class);
+        startService(service);
+    }
+
+    private void stopTheService() {
+        Intent service = new Intent(this, ShakeService.class);
+        stopService(service);
     }
 
     /**
