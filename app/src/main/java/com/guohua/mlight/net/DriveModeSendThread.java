@@ -2,8 +2,8 @@ package com.guohua.mlight.net;
 
 import android.util.Log;
 
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.config.Constants;
+import com.guohua.mlight.common.util.CodeUtils;
 
 /**
  * @author Leo
@@ -20,35 +20,35 @@ public class DriveModeSendThread extends Thread {
         Log.e("DriveModeSendThread", "DriveModeSendThread delay 1111111111-------------------  " + delay);
         isRunning = true;
         switch (driveModeCode) {
-            case Constant.DRIVEMODE_RED_CODE: {
-                colors = new int[]{Constant.RED};
+            case Constants.DRIVEMODE_RED_CODE: {
+                colors = new int[]{Constants.RED};
             }
             break;
-            case Constant.DRIVEMODE_GREEN_CODE: {
-                colors = new int[]{Constant.GREEN};
+            case Constants.DRIVEMODE_GREEN_CODE: {
+                colors = new int[]{Constants.GREEN};
             }
             break;
-            case Constant.DRIVEMODE_BLUE_CODE: {
-                colors = new int[]{Constant.BLUE};
+            case Constants.DRIVEMODE_BLUE_CODE: {
+                colors = new int[]{Constants.BLUE};
             }
             break;
-            case Constant.DRIVEMODE_REDGREEN_CODE: {
-                colors = new int[]{Constant.RED, Constant.GREEN};
+            case Constants.DRIVEMODE_REDGREEN_CODE: {
+                colors = new int[]{Constants.RED, Constants.GREEN};
             }
             break;
-            case Constant.DRIVEMODE_REDBLUE_CODE: {
-                colors = new int[]{Constant.RED, Constant.BLUE};
+            case Constants.DRIVEMODE_REDBLUE_CODE: {
+                colors = new int[]{Constants.RED, Constants.BLUE};
             }
             break;
-            case Constant.DRIVEMODE_BLUEGREEN_CODE: {
-                colors = new int[]{Constant.BLUE, Constant.GREEN};
+            case Constants.DRIVEMODE_BLUEGREEN_CODE: {
+                colors = new int[]{Constants.BLUE, Constants.GREEN};
             }
             break;
-            case Constant.DRIVEMODE_MIX_CODE: {
-                colors = new int[]{Constant.RED, Constant.GREEN, Constant.BLUE};
+            case Constants.DRIVEMODE_MIX_CODE: {
+                colors = new int[]{Constants.RED, Constants.GREEN, Constants.BLUE};
             }
             break;
-            case Constant.DRIVEMODE_DIY_CODE: {
+            case Constants.DRIVEMODE_DIY_CODE: {
 
             }
             break;
@@ -70,7 +70,7 @@ public class DriveModeSendThread extends Thread {
                     e.printStackTrace();
                 }
                 ThreadPool.getInstance().addTask(
-                        new SendRunnable(CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SWITCH, new Object[]{Constant.CMD_CLOSE_LIGHT})));
+                        new SendRunnable(CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SWITCH, new Object[]{Constants.CMD_CLOSE_LIGHT})));
                 try {
                     Thread.sleep(threadDelay);
                 } catch (InterruptedException e) {

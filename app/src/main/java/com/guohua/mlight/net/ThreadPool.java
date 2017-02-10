@@ -2,9 +2,9 @@ package com.guohua.mlight.net;
 
 import android.os.Handler;
 
-import com.guohua.mlight.AppContext;
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.base.AppContext;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.config.Constants;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -56,7 +56,7 @@ public class ThreadPool {
             public void run() {
                 AppContext.getInstance().sendAll(CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SWITCH, new Object[]{CodeUtils.SWITCH_CLOSE}));
             }
-        }, Constant.HANDLERDELAY);
+        }, Constants.HANDLERDELAY);
     }
 
     public void addOtherTask(Runnable r) {

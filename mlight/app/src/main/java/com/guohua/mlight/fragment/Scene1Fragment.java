@@ -1,4 +1,4 @@
-package com.guohua.mlight.fragment;
+package com.guohua.mlight.view.fragment;
 
 import android.Manifest;
 import android.content.Intent;
@@ -20,12 +20,12 @@ import android.widget.Toast;
 
 import com.guohua.mlight.MainActivity;
 import com.guohua.mlight.R;
-import com.guohua.mlight.activity.DriveModeActivity;
-import com.guohua.mlight.activity.GradientRampActivity;
+import com.guohua.mlight.view.activity.DriveModeActivity;
+import com.guohua.mlight.view.activity.GradientRampActivity;
 import com.guohua.mlight.service.ShakeService;
 import com.guohua.mlight.service.VisualizerService;
-import com.guohua.mlight.util.Constant;
-import com.guohua.mlight.util.ToolUtils;
+import com.guohua.mlight.common.util.Constant;
+import com.guohua.mlight.common.util.ToolUtils;
 
 /**
  * @author Leo

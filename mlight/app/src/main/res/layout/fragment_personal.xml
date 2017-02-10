@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.guohua.mlight.fragment.PersonalFragment">
+    tools:context="com.guohua.mlight.view.fragment.PersonalFragment">
 
     <ListView
         android:id="@+id/lv_options_personal"

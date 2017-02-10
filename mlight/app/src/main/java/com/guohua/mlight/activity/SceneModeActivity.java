@@ -1,4 +1,4 @@
-package com.guohua.mlight.activity;
+package com.guohua.mlight.view.activity;
 
 import android.content.ComponentName;
 import android.content.DialogInterface;
@@ -27,15 +27,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guohua.mlight.R;
-import com.guohua.mlight.bean.SceneListInfo;
+import com.guohua.mlight.model.bean.SceneListInfo;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.service.GradientRampService;
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
-import com.guohua.mlight.util.ToastUtill;
-import com.guohua.mlight.util.ToolUtils;
-import com.guohua.mlight.util.VibrateUtil;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.util.Constant;
+import com.guohua.mlight.common.util.ToastUtill;
+import com.guohua.mlight.common.util.ToolUtils;
+import com.guohua.mlight.common.util.VibrateUtil;
 
 /**
  * @author

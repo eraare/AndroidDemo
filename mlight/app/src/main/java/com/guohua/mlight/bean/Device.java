@@ -1,4 +1,4 @@
-package com.guohua.mlight.bean;
+package com.guohua.mlight.model.bean;
 
 /**
  * 设备类

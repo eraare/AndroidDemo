@@ -1,4 +1,4 @@
-package com.guohua.mlight.fragment;
+package com.guohua.mlight.view.fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,16 +18,16 @@ import android.widget.Toast;
 
 import com.guohua.mlight.MainActivity;
 import com.guohua.mlight.R;
-import com.guohua.mlight.bean.DatetimeBean;
+import com.guohua.mlight.model.bean.DatetimeBean;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.util.Constant;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.guohua.mlight.fragment.MainFragment.currentOpenTime;
+import static com.guohua.mlight.view.fragment.MainFragment.currentOpenTime;
 
 /**
  * @author Leo

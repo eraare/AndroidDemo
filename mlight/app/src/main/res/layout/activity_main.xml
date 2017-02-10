@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.guohua.mlight.MainActivity">
+    tools:context="com.guohua.mlight.view.activity.MainActivity">
 
-    <com.guohua.mlight.view.TitleView
+    <com.guohua.mlight.view.widget.TitleView
         android:id="@+id/tv_title_main"
         android:layout_width="match_parent"
         android:layout_height="44dp"
@@ -26,7 +26,7 @@
 
     </FrameLayout>
 
-    <com.guohua.mlight.view.TabBarView
+    <com.guohua.mlight.view.widget.TabBarView
         android:id="@+id/tbv_bar_main"
         android:layout_width="match_parent"
         android:layout_height="49dp" />

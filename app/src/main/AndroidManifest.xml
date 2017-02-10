@@ -5,11 +5,6 @@
     <!-- 所需要的所有权限 蓝牙 震动 音乐信息采集 外部存储读写 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
-    <!-- Android6.0 蓝牙扫描才需要 -->
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION"/> -->
-
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -18,16 +13,21 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- Bmob用到的权限 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Android6.0 蓝牙扫描才需要 -->
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
 
-    <!-- 实现自定义Application存储全局数据处理程序崩溃 -->
     <!-- 加入persistent提高程序的系统优先级让程序不被轻易杀死 -->
     <application
-        android:name=".AppContext"
-        android:allowBackup="false"
+        android:name=".common.base.AppContext"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:persistent="true"
@@ -36,7 +36,7 @@
 
         <!-- 欢迎界面 -->
         <activity
-            android:name=".SplashActivity"
+            android:name=".view.activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen">
             <intent-filter>
@@ -45,53 +45,57 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".view.activity.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.GradientRampActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.SceneModeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.PalletActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.MeActivity"
+            android:screenOrientation="portrait" />
         <!--
             <activity
-            android:name="com.guohua.mlight.ConnectActivity"
+            android:name=".library.ScanBluetoothDevice"
             android:screenOrientation="portrait" />
         -->
-        <activity
-            android:name=".activity.GradientRampActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.SceneModeActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.PalletActivity"
-            android:screenOrientation="portrait" />
-        <!--<activity
-            android:name=".library.ScanBluetoothDevice"
-            android:screenOrientation="portrait" />-->
         <!-- 主Activity -->
         <activity
-            android:name=".MainActivity"
+            android:name=".view.activity.MainActivity"
             android:configChanges="keyboard"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!-- 设置界面 -->
         <!--
             <activity
-            android:name="com.guohua.mlight.activity.SettingsActivity"
+            android:name="com.guohua.mlight.view.activity.SettingsActivity"
             android:screenOrientation="portrait" />
         -->
         <!-- 扫描蓝牙设备 -->
         <!-- 音乐律动和摇一摇功能 -->
         <activity
-            android:name=".activity.ShakeActivity"
+            android:name=".view.activity.ShakeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.VisualizerActivity"
+            android:name=".view.activity.VisualizerActivity"
             android:screenOrientation="portrait" />
         <!--
             <activity
-            android:name="com.guohua.mlight.activity.SelfieActivity"
+            android:name="com.guohua.mlight.view.activity.SelfieActivity"
             android:screenOrientation="portrait" />
         -->
         <activity
-            android:name=".activity.AboutActivity"
+            android:name=".view.activity.AboutActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.HelpActivity"
+            android:name=".view.activity.HelpActivity"
             android:screenOrientation="portrait" />
         <!-- 以下是BLE通信 -->
         <activity
@@ -179,13 +183,15 @@
         <service android:name=".communication.BLEService" />
 
         <!-- 接收通知的NotificationService -->
-        <!--<service
+        <!--
+        <service
             android:name=".service.NotificationService"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
-        </service>-->
+        </service>
+        -->
 
         <receiver android:name=".receiver.TelephonyReceiver">
             <intent-filter android:priority="2147483647">
@@ -194,9 +200,10 @@
         </receiver>
 
         <activity
-            android:name=".activity.TemperatureActivity"
+            android:name=".view.activity.TemperatureActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen" />
+        <activity android:name=".view.activity.TesterActivity"></activity>
     </application>
 
 </manifest>

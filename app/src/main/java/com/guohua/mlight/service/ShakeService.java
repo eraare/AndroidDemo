@@ -21,13 +21,13 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 
-import com.guohua.mlight.MainActivity;
 import com.guohua.mlight.R;
-import com.guohua.mlight.activity.ShakeActivity;
+import com.guohua.mlight.common.config.Constants;
+import com.guohua.mlight.common.util.CodeUtils;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.view.activity.MainActivity;
+import com.guohua.mlight.view.activity.ShakeActivity;
 
 import java.util.Random;
 
@@ -66,7 +66,7 @@ public class ShakeService extends Service {
                 .setContentIntent(mPendingIntent).setPriority(Notification.PRIORITY_MAX).build();
         startForeground(-1213, notification);
         //foregroundCompat.startForegroundCompat(-1213, notification);
-        flags = START_STICKY;//杀不死
+        flags = Service.START_FLAG_RETRY;//杀不死
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -96,11 +96,11 @@ public class ShakeService extends Service {
          * 注册退出广播
          */
         IntentFilter mFilter = new IntentFilter();
-        mFilter.addAction(Constant.ACTION_EXIT);
+        mFilter.addAction(Constants.ACTION_EXIT);
         mFilter.setPriority(Integer.MAX_VALUE);
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, mFilter);
 
-        shakeMode = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constant.KEY_SHAKE_MODE, true);
+        shakeMode = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.KEY_SHAKE_MODE, true);
         pool = ThreadPool.getInstance();
 
         manager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);//获取传感器管理服务
@@ -113,7 +113,7 @@ public class ShakeService extends Service {
 
     private void initTheValue() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        VALUE = sp.getInt(Constant.KEY_THRESHOLD, 17);
+        VALUE = sp.getInt(Constants.KEY_THRESHOLD, 17);
     }
 
     private static final long SHAKE_DELAY = 800;
@@ -202,7 +202,7 @@ public class ShakeService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (TextUtils.equals(action, Constant.ACTION_EXIT)) {
+            if (TextUtils.equals(action, Constants.ACTION_EXIT)) {
                 stopSelf();
             }
         }

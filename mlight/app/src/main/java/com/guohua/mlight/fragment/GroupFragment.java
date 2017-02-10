@@ -1,4 +1,4 @@
-package com.guohua.mlight.fragment;
+package com.guohua.mlight.view.fragment;
 
 
 import android.Manifest;
@@ -30,15 +30,15 @@ import android.widget.TextView;
 import com.guohua.mlight.AppContext;
 import com.guohua.mlight.ConnectActivity;
 import com.guohua.mlight.R;
-import com.guohua.mlight.adapter.GroupAdapter;
-import com.guohua.mlight.bean.Device;
+import com.guohua.mlight.view.adapter.GroupAdapter;
+import com.guohua.mlight.model.bean.Device;
 import com.guohua.mlight.communication.BLERecord;
-import com.guohua.mlight.util.Constant;
-import com.guohua.mlight.util.ToolUtils;
-import com.guohua.mlight.view.swipemenulistview.SwipeMenu;
-import com.guohua.mlight.view.swipemenulistview.SwipeMenuCreator;
-import com.guohua.mlight.view.swipemenulistview.SwipeMenuItem;
-import com.guohua.mlight.view.swipemenulistview.SwipeMenuListView;
+import com.guohua.mlight.common.util.Constant;
+import com.guohua.mlight.common.util.ToolUtils;
+import com.guohua.mlight.view.widget.swipemenulistview.SwipeMenu;
+import com.guohua.mlight.view.widget.swipemenulistview.SwipeMenuCreator;
+import com.guohua.mlight.view.widget.swipemenulistview.SwipeMenuItem;
+import com.guohua.mlight.view.widget.swipemenulistview.SwipeMenuListView;
 
 import java.util.ArrayList;
 import java.util.Set;

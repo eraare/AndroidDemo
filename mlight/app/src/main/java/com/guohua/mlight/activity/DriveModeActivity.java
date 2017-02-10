@@ -1,4 +1,4 @@
-package com.guohua.mlight.activity;
+package com.guohua.mlight.view.activity;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -32,9 +32,9 @@ import com.guohua.mlight.MainActivity;
 import com.guohua.mlight.R;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.service.DriveModeService;
-import com.guohua.mlight.util.Constant;
-import com.guohua.mlight.util.VibrateUtil;
-import com.guohua.mlight.widget.SwitchButton;
+import com.guohua.mlight.common.util.Constant;
+import com.guohua.mlight.common.util.VibrateUtil;
+import com.guohua.mlight.view.widget.SwitchButton;
 
 /**
  * @author Leo

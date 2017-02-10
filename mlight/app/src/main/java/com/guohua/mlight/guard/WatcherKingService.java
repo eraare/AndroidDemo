@@ -11,7 +11,7 @@ import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.Constant;
 
 import java.util.List;
 

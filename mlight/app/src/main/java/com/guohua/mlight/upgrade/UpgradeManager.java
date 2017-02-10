@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.guohua.mlight.R;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.Constant;
 
 import java.io.File;
 import java.io.FileOutputStream;

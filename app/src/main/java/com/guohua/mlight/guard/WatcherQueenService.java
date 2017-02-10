@@ -10,7 +10,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.config.Constants;
 
 import java.util.List;
 
@@ -80,7 +80,7 @@ public class WatcherQueenService extends Service {
 
     private void registerExitReceiver() {
         IntentFilter mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(Constant.ACTION_EXIT);
+        mIntentFilter.addAction(Constants.ACTION_EXIT);
         mIntentFilter.setPriority(Integer.MAX_VALUE);
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, mIntentFilter);
     }

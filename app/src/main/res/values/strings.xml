@@ -6,6 +6,46 @@
     <string name="default_tobecontinued">mlight to be continued... Thank you~</string>
     <string name="splash_words">Really know you, Enjoy the new life.</string>
 
+    <!--AppContext.java-->
+    <string name="app_crash_tip">I am sorry.</string>
+    <string name="activity_back">返回</string>
+    <!--MainActivity.java 和 HomeFragment.java 以及对应layout中用到的文字-->
+    <string-array name="activity_titles_main">
+        <item>首页</item>
+        <item>情境</item>
+        <item>我的</item>
+    </string-array>
+    <string-array name="fragment_alias_main">
+        <item>魔小灯</item>
+        <item>情境模式</item>
+        <item>个人中心</item>
+    </string-array>
+    <!--SplashActivity1.java 和 SplashFragment.java 以及对应layout中用到的文字-->
+    <string name="fragment_content_splash">智家行千里，神灯永相伴</string>
+    <string name="fragment_describe_first_introduce">路漫漫其修远兮，吾将上下而求索。</string>
+    <string name="fragment_describe_second_introduce">爱情像月亮，也会有阴晴阳缺的。</string>
+    <string name="fragment_describe_third_introduce">非学无以广才，非志无以成学。</string>
+    <!--LoginFragment.java 和 fragment_login.xml中用到的文字-->
+    <string name="fragment_username_hint_login">+86</string>
+    <string name="fragment_password_hint_login">密码</string>
+    <string name="fragment_login_login">登录</string>
+    <string name="fragment_register_login">注册</string>
+    <string name="fragment_forget_login">忘记密码</string>
+    <string name="fragment_phone_hint_login">手机号</string>
+    <string name="fragment_captcha_hint_login">验证码</string>
+    <string name="fragment_captcha_login">获取验证码</string>
+    <string name="fragment_captcha_retry_login">s后重试</string>
+    <string name="fragment_reset_password_login">重置密码</string>
+    <string name="fragment_agreement_login">我已阅读并同意服务条款</string>
+    <string name="fragment_reset_succeed_login">重置密码成功</string>
+    <string name="fragment_register_succeed_login">注册成功</string>
+    <string name="fragment_login_succeed_login">注册成功</string>
+    <string name="fragment_invalid_phone_login">无效的手机号</string>
+    <string name="fragment_invalid_captcha_login">无效的验证码</string>
+    <string name="fragment_invalid_password_login">无效的密码</string>
+    <!--MeFragment.java 和 fragment_me.xml中用到的文字-->
+    <string name="fragment_me_setting">我</string>
+
     <!--TimerFragment.java中用到的文字-->
     <string name="timeearly_thannow_warning">Please select a correct time after this moment!</string>
 
@@ -22,7 +62,7 @@
     <string name="choose_call_reminder_blue">Blue</string>
     <string name="choose_call_reminder_diy">Diy mode</string>
 
-    <!--MainFragment.java中用到的文字-->
+    <!--HomeFragment.java中用到的文字-->
     <string name="unfinised_open_light_timer">open light timer is still running</string>
     <string name="finised_open_light_timer">open light timer has been finished</string>
     <string name="unfinised_close_light_timer">close light timer is still running</string>

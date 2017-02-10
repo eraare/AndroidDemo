@@ -1,4 +1,4 @@
-package com.guohua.mlight.activity;
+package com.guohua.mlight.view.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,9 +18,9 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.upgrade.UpgradeManager;
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
-import com.guohua.mlight.util.ToolUtils;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.util.Constant;
+import com.guohua.mlight.common.util.ToolUtils;
 
 /**
  * @author Leo

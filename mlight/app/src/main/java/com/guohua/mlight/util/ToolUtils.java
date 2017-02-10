@@ -1,4 +1,4 @@
-package com.guohua.mlight.util;
+package com.guohua.mlight.common.util;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -12,7 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 
-import com.guohua.mlight.bean.SceneListInfo;
+import com.guohua.mlight.model.bean.SceneListInfo;
 
 import java.io.DataOutputStream;
 import java.util.List;

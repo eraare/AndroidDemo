@@ -1,4 +1,4 @@
-package com.guohua.mlight.adapter;
+package com.guohua.mlight.view.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.guohua.mlight.R;
-import com.guohua.mlight.bean.OptionBean;
+import com.guohua.mlight.model.bean.OptionBean;
 
 import java.util.ArrayList;
 import java.util.List;

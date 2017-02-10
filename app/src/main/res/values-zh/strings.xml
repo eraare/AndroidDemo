@@ -6,6 +6,35 @@
     <string name="default_tobecontinued">魔小灯未完待续... 谢谢~</string>
     <string name="splash_words">真正懂得你，乐享新生活</string>
 
+    <!--AppContext.java-->
+    <string name="app_crash_tip">I am sorry.</string>
+    <string name="activity_back">返回</string>
+    <!--SplashActivity1.java 和 SplashFragment.java 以及对应layout中用到的文字-->
+    <string name="fragment_content_splash">智家行千里，神灯永相伴</string>
+    <string name="fragment_describe_first_introduce">路漫漫其修远兮，吾将上下而求索。</string>
+    <string name="fragment_describe_second_introduce">爱情像月亮，也会有阴晴阳缺的。</string>
+    <string name="fragment_describe_third_introduce">非学无以广才，非志无以成学。</string>
+    <!--LoginFragment.java 和 fragment_login.xml中用到的文字-->
+    <string name="fragment_username_hint_login">+86</string>
+    <string name="fragment_password_hint_login">密码</string>
+    <string name="fragment_login_login">登录</string>
+    <string name="fragment_register_login">注册</string>
+    <string name="fragment_forget_login">忘记密码</string>
+    <string name="fragment_phone_hint_login">手机号</string>
+    <string name="fragment_captcha_hint_login">验证码</string>
+    <string name="fragment_captcha_login">获取验证码</string>
+    <string name="fragment_captcha_retry_login">s后重试</string>
+    <string name="fragment_reset_password_login">重置密码</string>
+    <string name="fragment_agreement_login">我已阅读并同意服务条款</string>
+    <string name="fragment_reset_succeed_login">重置密码成功</string>
+    <string name="fragment_register_succeed_login">注册成功</string>
+    <string name="fragment_login_succeed_login">注册成功</string>
+    <string name="fragment_invalid_phone_login">无效的手机号</string>
+    <string name="fragment_invalid_captcha_login">无效的验证码</string>
+    <string name="fragment_invalid_password_login">无效的密码</string>
+    <!--MeFragment.java 和 fragment_me.xml中用到的文字-->
+    <string name="fragment_me_setting">我</string>
+
     <!--gradient_ramp.xml-->
     <string name="tv_save">保存</string>
 
@@ -70,7 +99,7 @@
     <string name="close_light_timer">延时关灯</string>
     <string name="light_timer_unit">分钟</string>
 
-    <!--MainFragment.java中用到的文字-->
+    <!--HomeFragment.java中用到的文字-->
     <string name="unfinised_open_light_timer">定时开灯任务正在运行</string>
     <string name="finised_open_light_timer">定时开灯任务已结束</string>
     <string name="unfinised_close_light_timer">定时关灯任务正在运行</string>

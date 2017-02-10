@@ -85,7 +85,7 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <com.guohua.mlight.view.TimerView
+            <com.guohua.mlight.view.widget.TimerView
                 android:id="@+id/tv_timer_five_main"
                 android:layout_width="@dimen/timer_view_width_main"
                 android:layout_height="@dimen/timer_view_width_main"
@@ -94,7 +94,7 @@
                 app:unit="@string/light_timer_unit"
                 app:value="5" />
 
-            <com.guohua.mlight.view.TimerView
+            <com.guohua.mlight.view.widget.TimerView
                 android:id="@+id/tv_timer_fifteen_main"
                 android:layout_width="@dimen/timer_view_width_main"
                 android:layout_height="@dimen/timer_view_width_main"
@@ -103,7 +103,7 @@
                 app:unit="@string/light_timer_unit"
                 app:value="15" />
 
-            <com.guohua.mlight.view.TimerView
+            <com.guohua.mlight.view.widget.TimerView
                 android:id="@+id/tv_timer_thirty_main"
                 android:layout_width="@dimen/timer_view_width_main"
                 android:layout_height="@dimen/timer_view_width_main"
@@ -112,7 +112,7 @@
                 app:unit="@string/light_timer_unit"
                 app:value="30" />
 
-            <com.guohua.mlight.view.TimerView
+            <com.guohua.mlight.view.widget.TimerView
                 android:id="@+id/tv_timer_sixty_main"
                 android:layout_width="@dimen/timer_view_width_main"
                 android:layout_height="@dimen/timer_view_width_main"

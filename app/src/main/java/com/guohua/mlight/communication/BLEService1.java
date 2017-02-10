@@ -20,8 +20,8 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.config.Constants;
+import com.guohua.mlight.common.util.CodeUtils;
 
 import java.util.Map;
 import java.util.Set;
@@ -278,7 +278,7 @@ public class BLEService1 extends Service {
                 if (sp == null) {
                     sp = PreferenceManager.getDefaultSharedPreferences(mContext);
                 }
-                String passport = (Constant.DEFAULT_PASSWORD_HEAD + sp.getString(deviceAddress, CodeUtils.password));
+                String passport = (Constants.DEFAULT_PASSWORD_HEAD + sp.getString(deviceAddress, CodeUtils.password));
                 //writeToBLE(deviceAddress, passport.getBytes());
                 setCharacteristicNotification(gatt, characteristic, NOTIFICATION_ENABLED);
             }

@@ -1,8 +1,8 @@
-package com.guohua.mlight.util;
+package com.guohua.mlight.common.util;
 
 import android.graphics.Color;
 
-import com.guohua.mlight.bean.SceneListInfo;
+import com.guohua.mlight.model.bean.SceneListInfo;
 
 /**
  * Created by Leo on 2015/10/30.

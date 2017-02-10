@@ -20,14 +20,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.guohua.mlight.MainActivity;
 import com.guohua.mlight.R;
-import com.guohua.mlight.ai.IObserver;
-import com.guohua.mlight.ai.ISubject;
+import com.guohua.mlight.common.config.Constants;
+import com.guohua.mlight.model.ai.IObserver;
+import com.guohua.mlight.model.ai.ISubject;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.view.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -63,7 +63,7 @@ public class VisualizerService extends Service implements ISubject {
                 //super.handleMessage(msg);
                 int what = msg.what;
                 switch (what) {
-                    case Constant.WHAT_CHANGE_COLOR: {
+                    case Constants.WHAT_CHANGE_COLOR: {
                         Random random = new Random();
                         int r = random.nextInt(7);
                         color = getAutoModeColor(r, LEVEL);
@@ -126,7 +126,7 @@ public class VisualizerService extends Service implements ISubject {
     private TimerTask timerTask = new TimerTask() {
         @Override
         public void run() {
-            mHandler.sendEmptyMessage(Constant.WHAT_CHANGE_COLOR);
+            mHandler.sendEmptyMessage(Constants.WHAT_CHANGE_COLOR);
         }
     };
 
@@ -150,7 +150,7 @@ public class VisualizerService extends Service implements ISubject {
          * 注册退出广播
          */
         IntentFilter mFilter = new IntentFilter();
-        mFilter.addAction(Constant.ACTION_EXIT);
+        mFilter.addAction(Constants.ACTION_EXIT);
         mFilter.setPriority(Integer.MAX_VALUE);
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, mFilter);
 
@@ -165,8 +165,8 @@ public class VisualizerService extends Service implements ISubject {
 
     private void initValues() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        size = sp.getInt(Constant.KEY_PERSONAL_FEEL, 2);
-        color = sp.getInt(Constant.KEY_COLOR, Color.argb(LEVEL, 255, 255, 255));
+        size = sp.getInt(Constants.KEY_PERSONAL_FEEL, 2);
+        color = sp.getInt(Constants.KEY_COLOR, Color.argb(LEVEL, 255, 255, 255));
     }
 
     /**
@@ -233,7 +233,7 @@ public class VisualizerService extends Service implements ISubject {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (TextUtils.equals(action, Constant.ACTION_EXIT)) {
+            if (TextUtils.equals(action, Constants.ACTION_EXIT)) {
                 stopSelf();
             }
         }
@@ -336,13 +336,13 @@ public class VisualizerService extends Service implements ISubject {
         brightness = (sb / brightStandard) * 255;
         //int alpha = (int) (Color.alpha(color) * brightness / 255);
         ///////////////////////////////关闭了白光////////////////////////////////////
-        alpha = 0;//关闭白灯
+        alpha = 255;//关闭白灯
         red = (int) (Color.red(color) * brightness / 255);
         green = (int) (Color.green(color) * brightness / 255);
         blue = (int) (Color.blue(color) * brightness / 255);
         color = Color.argb(alpha, red, green, blue);
         if (red == 0 && green == 0 && blue == 0) {
-            color = Color.argb(alpha, 6, 6, 6);
+            color = Color.argb(alpha, 0, 0, 5);
         }
         return color;
     }

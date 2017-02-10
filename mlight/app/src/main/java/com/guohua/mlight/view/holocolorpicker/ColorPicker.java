@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.guohua.mlight.view.holocolorpicker;
+package com.guohua.mlight.view.widget.holocolorpicker;
 
 import android.content.Context;
 import android.content.res.Resources;

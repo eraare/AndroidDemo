@@ -1,4 +1,4 @@
-package com.guohua.mlight.bean;
+package com.guohua.mlight.model.bean;
 
 public class OptionBean {
     public Object tag;

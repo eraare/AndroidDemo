@@ -1,4 +1,4 @@
-package com.guohua.mlight.adapter;
+package com.guohua.mlight.view.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.guohua.mlight.AppContext;
 import com.guohua.mlight.R;
-import com.guohua.mlight.bean.Device;
+import com.guohua.mlight.model.bean.Device;
 import com.guohua.mlight.library.BluetoothUtil;
 
 import java.util.ArrayList;

@@ -3,8 +3,8 @@ package com.guohua.mlight.net;
 import android.os.Handler;
 
 import com.guohua.mlight.AppContext;
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.util.Constant;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

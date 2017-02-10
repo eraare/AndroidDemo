@@ -1,11 +1,11 @@
-package com.guohua.mlight.bean;
+package com.guohua.mlight.model.bean;
 
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.guohua.mlight.util.Constant;
-import com.guohua.mlight.util.LogUtil;
+import com.guohua.mlight.common.util.Constant;
+import com.guohua.mlight.common.util.LogUtil;
 
 import java.io.Serializable;
 import java.util.Arrays;

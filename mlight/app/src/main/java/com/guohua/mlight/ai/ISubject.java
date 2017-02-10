@@ -1,4 +1,4 @@
-package com.guohua.mlight.ai;
+package com.guohua.mlight.model.ai;
 
 /**
  * @author Leo

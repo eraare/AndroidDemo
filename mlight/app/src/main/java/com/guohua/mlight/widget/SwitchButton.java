@@ -1,4 +1,4 @@
-package com.guohua.mlight.widget;
+package com.guohua.mlight.view.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;

@@ -26,7 +26,7 @@
     <string name="diyshine">Diy Shine</string>
     <string name="diyshine_description">Design your own series of gradients</string>
 
-    <!--MainFragment.java中用到的文字-->
+    <!--HomeFragment.java中用到的文字-->
     <string name="unfinised_open_light_timer">open light timer is still running</string>
     <string name="finised_open_light_timer">open light timer has been finished</string>
     <string name="unfinised_close_light_timer">close light timer is still running</string>

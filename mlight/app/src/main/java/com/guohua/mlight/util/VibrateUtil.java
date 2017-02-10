@@ -1,4 +1,4 @@
-package com.guohua.mlight.util;
+package com.guohua.mlight.common.util;
 
 import android.app.Activity;
 import android.app.Service;

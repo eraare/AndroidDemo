@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/greya"
     android:orientation="vertical"
-    tools:context="com.guohua.mlight.activity.VisualizerActivity">
+    tools:context="com.guohua.mlight.view.activity.VisualizerActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:textColor="@color/white" />
     </RelativeLayout>
 
-    <com.guohua.mlight.view.VisualizerView
+    <com.guohua.mlight.view.widget.VisualizerView
         android:id="@+id/vv_show_visualizer"
         android:layout_width="match_parent"
         android:layout_height="0dp"

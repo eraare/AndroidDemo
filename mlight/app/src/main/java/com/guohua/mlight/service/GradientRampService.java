@@ -17,11 +17,11 @@ import android.text.TextUtils;
 import com.guohua.mlight.AppContext;
 import com.guohua.mlight.MainActivity;
 import com.guohua.mlight.R;
-import com.guohua.mlight.bean.SceneListInfo;
+import com.guohua.mlight.model.bean.SceneListInfo;
 import com.guohua.mlight.net.SendSceneDatasRunnable;
 import com.guohua.mlight.net.ThreadPool;
-import com.guohua.mlight.util.Constant;
-import com.guohua.mlight.util.ToolUtils;
+import com.guohua.mlight.common.util.Constant;
+import com.guohua.mlight.common.util.ToolUtils;
 
 /**
  * @author Leo

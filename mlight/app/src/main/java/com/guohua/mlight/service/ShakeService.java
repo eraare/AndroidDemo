@@ -23,11 +23,11 @@ import android.text.TextUtils;
 
 import com.guohua.mlight.MainActivity;
 import com.guohua.mlight.R;
-import com.guohua.mlight.activity.ShakeActivity;
+import com.guohua.mlight.view.activity.ShakeActivity;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.util.Constant;
 
 import java.util.Random;
 

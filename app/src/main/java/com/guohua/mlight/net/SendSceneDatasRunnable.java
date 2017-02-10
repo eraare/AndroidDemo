@@ -1,6 +1,6 @@
 package com.guohua.mlight.net;
 
-import com.guohua.mlight.AppContext;
+import com.guohua.mlight.common.base.AppContext;
 
 import java.util.ArrayList;
 

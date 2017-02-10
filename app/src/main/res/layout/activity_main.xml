@@ -6,29 +6,31 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.guohua.mlight.MainActivity">
+    tools:context="com.guohua.mlight.view.activity.MainActivity">
 
-    <com.guohua.mlight.view.TitleView
+    <com.guohua.mlight.view.widget.TitleView
         android:id="@+id/tv_title_main"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:background="@color/main"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        app:leftTitle="@string/dialog_show_title"
-        app:titleText="This is Title" />
+        android:layout_height="@dimen/top_navigation_bar_height"
+        android:elevation="2dp"
+        app:leftTitle="设备管理"
+        app:titleText="@string/app_name" />
 
-    <FrameLayout
-        android:id="@+id/fl_container_main"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_pager_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1" />
 
-    </FrameLayout>
-
-    <com.guohua.mlight.view.TabBarView
-        android:id="@+id/tbv_bar_main"
+    <com.ashokvarma.bottomnavigation.BottomNavigationBar
+        android:id="@+id/bnb_bar_main"
         android:layout_width="match_parent"
-        android:layout_height="49dp" />
+        android:layout_height="@dimen/bottom_navigation_bar_height"
+        android:layout_gravity="bottom"
+        app:bnbActiveColor="@color/main"
+        app:bnbBackgroundColor="@color/white"
+        app:bnbBackgroundStyle="background_style_default"
+        app:bnbInactiveColor="@color/assistant"
+        app:bnbMode="mode_default" />
 
 </LinearLayout>

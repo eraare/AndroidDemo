@@ -1,4 +1,4 @@
-package com.guohua.mlight.activity;
+package com.guohua.mlight.view.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.service.ShakeService;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.Constant;
 
 /**
  * @author Leo

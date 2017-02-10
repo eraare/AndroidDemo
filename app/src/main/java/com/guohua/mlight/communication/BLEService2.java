@@ -20,8 +20,8 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.config.Constants;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -408,7 +408,7 @@ public class BLEService2 extends Service {
 //			Intent intent1 = new Intent();// 创建Intent对象
 //			/*Bundle bundle = new Bundle();
 //			// 序列化列表，发送后在本地重建数据
-//			bundle.putString(Constant.KEY_DATA_RECEIVED, rev);*/
+//			bundle.putString(Constants.KEY_DATA_RECEIVED, rev);*/
 //			intent1.setAction(BLEConstant.ACTION_RSSI);
 //			//intent.putExtras(bundle);
 //			intent1.putExtra(BLEConstant.KEY_DATA_RSSI, rssi);
@@ -445,7 +445,7 @@ public class BLEService2 extends Service {
                 if (sp == null) {
                     sp = PreferenceManager.getDefaultSharedPreferences(mContext);
                 }
-                String passport = (Constant.DEFAULT_PASSWORD_HEAD + sp.getString(deviceAddress, CodeUtils.password));
+                String passport = (Constants.DEFAULT_PASSWORD_HEAD + sp.getString(deviceAddress, CodeUtils.password));
                 //writeToBLE(deviceAddress, passport.getBytes());
                 characteristic.setValue(passport.getBytes());
                 gatt.writeCharacteristic(characteristic);

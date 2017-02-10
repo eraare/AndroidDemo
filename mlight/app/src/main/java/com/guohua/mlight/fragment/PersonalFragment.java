@@ -1,4 +1,4 @@
-package com.guohua.mlight.fragment;
+package com.guohua.mlight.view.fragment;
 
 
 import android.content.Intent;
@@ -12,11 +12,11 @@ import android.widget.ListView;
 
 import com.guohua.mlight.ConnectActivity;
 import com.guohua.mlight.R;
-import com.guohua.mlight.activity.AboutActivity;
-import com.guohua.mlight.adapter.OptionsAdapter;
-import com.guohua.mlight.bean.Option;
-import com.guohua.mlight.util.Constant;
-import com.guohua.mlight.util.ToastUtill;
+import com.guohua.mlight.view.activity.AboutActivity;
+import com.guohua.mlight.view.adapter.OptionsAdapter;
+import com.guohua.mlight.model.bean.Option;
+import com.guohua.mlight.common.util.Constant;
+import com.guohua.mlight.common.util.ToastUtill;
 
 /**
  * A simple {@link Fragment} subclass.

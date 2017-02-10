@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="horizontal"
-    tools:context="com.guohua.mlight.fragment.StatusFragment"
+    tools:context="com.guohua.mlight.view.fragment.StatusFragment"
     android:visibility="gone">
 
     <TextView

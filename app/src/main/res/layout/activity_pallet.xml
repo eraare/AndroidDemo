@@ -6,7 +6,7 @@
         android:background="@color/greya"
         android:orientation="vertical"
         android:id="@+id/ll_activity_pallet"
-        tools:context="com.guohua.mlight.activity.PalletActivity">
+        tools:context=".view.activity.PalletActivity">
 
         <include
             layout="@layout/include_title"

@@ -1,4 +1,4 @@
-package com.guohua.mlight.fragment;
+package com.guohua.mlight.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,19 +13,19 @@ import android.view.ViewGroup;
 
 import com.guohua.mlight.MainActivity;
 import com.guohua.mlight.R;
-import com.guohua.mlight.activity.PalletActivity;
-import com.guohua.mlight.activity.SceneModeActivity;
-import com.guohua.mlight.adapter.SceneAdapter;
-import com.guohua.mlight.bean.SceneBean;
-import com.guohua.mlight.bean.SceneListInfo;
+import com.guohua.mlight.view.activity.PalletActivity;
+import com.guohua.mlight.view.activity.SceneModeActivity;
+import com.guohua.mlight.view.adapter.SceneAdapter;
+import com.guohua.mlight.model.bean.SceneBean;
+import com.guohua.mlight.model.bean.SceneListInfo;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.service.GradientRampService;
 import com.guohua.mlight.service.SceneSunGradientRampService;
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
-import com.guohua.mlight.util.SceneModeSaveDiyGradientRamp;
-import com.guohua.mlight.util.ToastUtill;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.util.Constant;
+import com.guohua.mlight.common.util.SceneModeSaveDiyGradientRamp;
+import com.guohua.mlight.common.util.ToastUtill;
 import com.guohua.mlight.view.RecyclerViewDivider;
 
 /**

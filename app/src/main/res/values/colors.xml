@@ -10,6 +10,8 @@
     <color name="main">#5AC3B2</color>
     <color name="main_green">#3DBD77</color>
     <color name="main_pink">#FFB3C9</color>
+    <color name="assistant">#989898</color>
+    <color name="light_grey">#ECEDF1</color>
     <!--页面颜色-->
     <color name="greya">#F0F0F0</color>
     <!--选中背景颜色-->

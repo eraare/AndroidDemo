@@ -1,4 +1,4 @@
-package com.guohua.mlight.bean;
+package com.guohua.mlight.model.bean;
 
 /**
  * Created by Aladdin on 2016-8-16.

@@ -6,7 +6,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <com.guohua.mlight.view.TitleView
+    <com.guohua.mlight.view.widget.TitleView
         android:id="@+id/tv_title_dialog"
         android:layout_width="match_parent"
         android:layout_height="44dp"
@@ -17,7 +17,7 @@
         app:rightIcon="@drawable/icon_add"
         app:titleText="@string/dialog_show_title" />
 
-    <com.guohua.mlight.view.swipemenulistview.SwipeMenuListView
+    <com.guohua.mlight.view.widget.swipemenulistview.SwipeMenuListView
         android:id="@+id/lv_devices_group_dialog"
         android:layout_width="match_parent"
         android:layout_height="0dp"

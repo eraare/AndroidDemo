@@ -2,8 +2,8 @@ package com.guohua.mlight.net;
 
 import android.util.Log;
 
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.util.Constant;
 
 /**
  * @author Leo

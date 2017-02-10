@@ -1,4 +1,4 @@
-package com.guohua.mlight.bean;
+package com.guohua.mlight.model.bean;
 
 /**
  * Created by Leo on 2015/10/31.

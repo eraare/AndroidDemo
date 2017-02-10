@@ -1,4 +1,4 @@
-package com.guohua.mlight.activity;
+package com.guohua.mlight.view.activity;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.guohua.mlight.R;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.Constant;
 
 import java.util.ArrayList;
 import java.util.HashMap;

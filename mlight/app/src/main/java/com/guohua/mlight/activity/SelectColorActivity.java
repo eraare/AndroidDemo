@@ -1,4 +1,4 @@
-package com.guohua.mlight.activity;
+package com.guohua.mlight.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

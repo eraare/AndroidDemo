@@ -1,4 +1,4 @@
-package com.guohua.mlight.util;
+package com.guohua.mlight.common.util;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

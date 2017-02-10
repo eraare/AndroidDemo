@@ -1,4 +1,4 @@
-package com.guohua.mlight.fragment;
+package com.guohua.mlight.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,13 +14,13 @@ import android.widget.Toast;
 
 import com.guohua.mlight.MainActivity;
 import com.guohua.mlight.R;
-import com.guohua.mlight.activity.PalletActivity;
-import com.guohua.mlight.activity.SceneModeActivity;
-import com.guohua.mlight.adapter.StyleAdapter;
-import com.guohua.mlight.bean.SceneListInfo;
-import com.guohua.mlight.bean.StyleBean;
+import com.guohua.mlight.view.activity.PalletActivity;
+import com.guohua.mlight.view.activity.SceneModeActivity;
+import com.guohua.mlight.view.adapter.StyleAdapter;
+import com.guohua.mlight.model.bean.SceneListInfo;
+import com.guohua.mlight.model.bean.StyleBean;
 import com.guohua.mlight.service.SceneSunGradientRampService;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.Constant;
 
 /**
  * Created by Aladdin on 2016-8-24.

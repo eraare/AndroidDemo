@@ -11,11 +11,11 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.SendSceneDatasRunnable;
 import com.guohua.mlight.net.ThreadPool;
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.CodeUtils;
 
 /**
  * 处理来电的广播接收器 接收到来电就发送状态 给第二屏，让用户选择操作，返回处理
@@ -67,14 +67,14 @@ public class TelephonyReceiver extends BroadcastReceiver {
                 ThreadPool.getInstance().addTask(new SendRunnable(data));
 
                 final int[] sendIntDatas;
-                if(sp.getInt(Constant.CALL_REMINDER_SHINEMODE, 0) == 3){
-                    String[] s = sp.getString(Constant.CALL_REMINDER_SHINEMODE_VALUE, "124;111;0;0;10;0;0;121").split(";");
+                if(sp.getInt(Constants.CALL_REMINDER_SHINEMODE, 0) == 3){
+                    String[] s = sp.getString(Constants.CALL_REMINDER_SHINEMODE_VALUE, "124;111;0;0;10;0;0;121").split(";");
                     sendIntDatas = new int[s.length];
                     for (int i = 0; i < s.length; i++) {
                         sendIntDatas[i] = Integer.parseInt(s[i]);
                     }
                 }else {
-                    sendIntDatas = Constant.REMINDERLIGHTSHINEMODE[sp.getInt(Constant.CALL_REMINDER_SHINEMODE, 0)];
+                    sendIntDatas = Constants.REMINDERLIGHTSHINEMODE[sp.getInt(Constants.CALL_REMINDER_SHINEMODE, 0)];
                 }
 
                 //与上次发数据保持一定时间间隔
@@ -88,7 +88,7 @@ public class TelephonyReceiver extends BroadcastReceiver {
                                 for(int i = 0; i < 3; i++){
                                     ThreadPool.getInstance().addTask(new SendSceneDatasRunnable(0, sendIntDatas));
                                     try {
-                                        Thread.sleep(Constant.HANDLERDELAY/3);
+                                        Thread.sleep(Constants.HANDLERDELAY/3);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -96,7 +96,7 @@ public class TelephonyReceiver extends BroadcastReceiver {
                             }
                         }).start();
                     }
-                }, Constant.HANDLERDELAY);
+                }, Constants.HANDLERDELAY);
 
                 System.out.println("data: " + data);
                 for (int i = 0; i < sendIntDatas.length; i++) {

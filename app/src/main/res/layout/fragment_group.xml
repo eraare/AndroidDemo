@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.guohua.mlight.fragment.GroupFragment">
+    tools:context=".view.fragment.GroupFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.guohua.mlight.view.swipemenulistview.SwipeMenuListView
+            <com.guohua.mlight.view.widget.swipemenulistview.SwipeMenuListView
                 android:id="@+id/lv_devices_group"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

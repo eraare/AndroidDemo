@@ -1,4 +1,4 @@
-package com.guohua.mlight.util;
+package com.guohua.mlight.common.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

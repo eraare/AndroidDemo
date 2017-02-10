@@ -9,14 +9,14 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
 
-import com.guohua.mlight.MainActivity;
 import com.guohua.mlight.R;
-import com.guohua.mlight.bean.SceneListInfo;
+import com.guohua.mlight.common.config.Constants;
+import com.guohua.mlight.model.bean.SceneListInfo;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.SendSceneDatasRunnable;
 import com.guohua.mlight.net.ThreadPool;
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.view.activity.MainActivity;
 
 /**
  * @author Leo
@@ -36,7 +36,7 @@ public class SceneSunGradientRampService extends Service {
         isRunning = true;
         String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_MUSIC_ON, null);
         ThreadPool.getInstance().addTask(new SendRunnable(data));
-        refreshDelay.sendEmptyMessageDelayed(0, Constant.HANDLERDELAY);
+        refreshDelay.sendEmptyMessageDelayed(0, Constants.HANDLERDELAY);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class SceneSunGradientRampService extends Service {
                         refreshDelay.removeCallbacks(new SendSceneDatasRunnable(0, null));
                     }
                 }
-            }, Constant.SUN_DOWN_DELAY1 * 2 + Constant.SUN_DOWN_DELAY2 * 2 + Constant.SUN_DOWN_DELAY3 * 2 + Constant.SUN_DOWN_DELAY4 * 2);
+            }, Constants.SUN_DOWN_DELAY1 * 2 + Constants.SUN_DOWN_DELAY2 * 2 + Constants.SUN_DOWN_DELAY3 * 2 + Constants.SUN_DOWN_DELAY4 * 2);
         }
     };
 
@@ -94,7 +94,7 @@ public class SceneSunGradientRampService extends Service {
 
     public void runSceneSunGradientRampTest() {
 
-        final SceneListInfo.SceneInfo ss = Constant.sunScene;
+        final SceneListInfo.SceneInfo ss = Constants.sunScene;
         System.out.println(System.currentTimeMillis() + ":  ---  " +
                 "SceneListInfo.SceneInfo ss.SceneDatasHead:  ===== 0000 =====  " + ss.SceneDatasHead[0] + ":" + (ss.SceneDatasHead[1] & 0x0ff) + ":" + (ss.SceneDatasHead[2] & 0x0ff) + ":" + (ss.SceneDatasHead[3] & 0x0ff) + ":"
                 + (ss.SceneDatasHead[4] & 0x0ff) + ":" + (ss.SceneDatasHead[5] & 0x0ff) + ":" + (ss.SceneDatasHead[6] & 0x0ff) + ":" + (ss.SceneDatasHead[7] & 0x0ff));
@@ -105,14 +105,14 @@ public class SceneSunGradientRampService extends Service {
                 (ss.SceneDatasHead[4] << 3) + (ss.SceneDatasHead[5] << 2) + (ss.SceneDatasHead[6] << 1) + (ss.SceneDatasHead[7])) & 0x0ff);
 
         final int[] start_datas = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[0] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[1] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[2] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[0] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[1] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[2] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[12] & 0x0ff), (Constant.SunSceneDefaultGradientColor[13] & 0x0ff), (Constant.SunSceneDefaultGradientColor[14] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[0] & 0x0ff), (Constant.SunSceneDefaultGradientColor[1] & 0x0ff), (Constant.SunSceneDefaultGradientColor[2] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[0] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[1] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[2] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[0] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[1] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[2] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[12] & 0x0ff), (Constants.SunSceneDefaultGradientColor[13] & 0x0ff), (Constants.SunSceneDefaultGradientColor[14] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[0] & 0x0ff), (Constants.SunSceneDefaultGradientColor[1] & 0x0ff), (Constants.SunSceneDefaultGradientColor[2] & 0x0ff)
         );
 
         ThreadPool.getInstance().addTask(new SendSceneDatasRunnable(0, start_datas));
-        System.out.println(System.currentTimeMillis() + ":  ---  " + (Constant.SUN_DOWN_DELAY1) + " ++ " + (Constant.SUN_DOWN_DELAY2) + " ++ " + (Constant.SUN_DOWN_DELAY3) + " ++ " + (Constant.SUN_DOWN_DELAY4) + " ++ " +
+        System.out.println(System.currentTimeMillis() + ":  ---  " + (Constants.SUN_DOWN_DELAY1) + " ++ " + (Constants.SUN_DOWN_DELAY2) + " ++ " + (Constants.SUN_DOWN_DELAY3) + " ++ " + (Constants.SUN_DOWN_DELAY4) + " ++ " +
                 " runSceneSunGradientRamp:  ===== 111111 =====  " + start_datas[0] + ":" + (start_datas[1] & 0x0ff) + ":" + (start_datas[2] & 0x0ff) + ":" + (start_datas[3] & 0x0ff) + ":"
                 + (start_datas[4] & 0x0ff) + ":" + (start_datas[5] & 0x0ff) + ":" + (start_datas[6] & 0x0ff) + ":" + (start_datas[7] & 0x0ff) + ":" +
                 (start_datas[8] & 0x0ff) + ":" + (start_datas[9] & 0x0ff) + ":" + (start_datas[10] & 0x0ff) + ":" + (start_datas[11] & 0x0ff) + ":" +
@@ -121,37 +121,37 @@ public class SceneSunGradientRampService extends Service {
 
         //rgb(100,0,0)->rgb(165,20,0)  detaV(1,1,0) detaT(20,65,0)                      2阶段
         final int[] end_datas2 = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[3] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[4] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[5] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[3] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[4] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[5] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[0] & 0x0ff), (Constant.SunSceneDefaultGradientColor[1] & 0x0ff), (Constant.SunSceneDefaultGradientColor[2] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[3] & 0x0ff), (Constant.SunSceneDefaultGradientColor[4] & 0x0ff), (Constant.SunSceneDefaultGradientColor[5] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[3] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[4] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[5] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[3] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[4] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[5] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[0] & 0x0ff), (Constants.SunSceneDefaultGradientColor[1] & 0x0ff), (Constants.SunSceneDefaultGradientColor[2] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[3] & 0x0ff), (Constants.SunSceneDefaultGradientColor[4] & 0x0ff), (Constants.SunSceneDefaultGradientColor[5] & 0x0ff)
         );
 
-        refreshDelay.postDelayed(new SendSceneDatasRunnable(0, end_datas2), Constant.SUN_DOWN_DELAY1);
+        refreshDelay.postDelayed(new SendSceneDatasRunnable(0, end_datas2), Constants.SUN_DOWN_DELAY1);
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
         //rgb(165,20,0)->rgb(255,200,80)  detaV(1,1,1) detaT(16,8,16)                      3阶段
         final int[] end_datas3 = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[6] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[7] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[8] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[6] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[7] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[8] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[3] & 0x0ff), (Constant.SunSceneDefaultGradientColor[4] & 0x0ff), (Constant.SunSceneDefaultGradientColor[5] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[6] & 0x0ff), (Constant.SunSceneDefaultGradientColor[7] & 0x0ff), (Constant.SunSceneDefaultGradientColor[8] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[6] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[7] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[8] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[6] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[7] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[8] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[3] & 0x0ff), (Constants.SunSceneDefaultGradientColor[4] & 0x0ff), (Constants.SunSceneDefaultGradientColor[5] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[6] & 0x0ff), (Constants.SunSceneDefaultGradientColor[7] & 0x0ff), (Constants.SunSceneDefaultGradientColor[8] & 0x0ff)
         );
 
-        refreshDelay.postDelayed(new SendSceneDatasRunnable(0, end_datas3), Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2);
+        refreshDelay.postDelayed(new SendSceneDatasRunnable(0, end_datas3), Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2);
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
         //rgb(255,200,80)->rgb(255,255,255)  detaV(0,1,1) detaT(1,25,8)                      4阶段
         final int[] end_datas4 = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[9] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[10] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[11] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[9] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[10] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[11] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[6] & 0x0ff), (Constant.SunSceneDefaultGradientColor[7] & 0x0ff), (Constant.SunSceneDefaultGradientColor[8] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[9] & 0x0ff), (Constant.SunSceneDefaultGradientColor[10] & 0x0ff), (Constant.SunSceneDefaultGradientColor[11] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[9] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[10] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[11] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[9] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[10] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[11] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[6] & 0x0ff), (Constants.SunSceneDefaultGradientColor[7] & 0x0ff), (Constants.SunSceneDefaultGradientColor[8] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[9] & 0x0ff), (Constants.SunSceneDefaultGradientColor[10] & 0x0ff), (Constants.SunSceneDefaultGradientColor[11] & 0x0ff)
         );
 
-        refreshDelay.postDelayed(new SendSceneDatasRunnable(0, end_datas4), Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 + Constant.SUN_DOWN_DELAY3);
+        refreshDelay.postDelayed(new SendSceneDatasRunnable(0, end_datas4), Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 + Constants.SUN_DOWN_DELAY3);
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -161,59 +161,59 @@ public class SceneSunGradientRampService extends Service {
 
         //rgb(255,255,255)->rgb(255,200,80)  detaV(0,1,1) detaT(1,25,8)                      5阶段
         final int[] end_datas5 = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[9] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[10] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[11] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[9] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[10] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[11] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[9] & 0x0ff), (Constant.SunSceneDefaultGradientColor[10] & 0x0ff), (Constant.SunSceneDefaultGradientColor[11] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[6] & 0x0ff), (Constant.SunSceneDefaultGradientColor[7] & 0x0ff), (Constant.SunSceneDefaultGradientColor[8] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[9] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[10] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[11] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[9] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[10] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[11] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[9] & 0x0ff), (Constants.SunSceneDefaultGradientColor[10] & 0x0ff), (Constants.SunSceneDefaultGradientColor[11] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[6] & 0x0ff), (Constants.SunSceneDefaultGradientColor[7] & 0x0ff), (Constants.SunSceneDefaultGradientColor[8] & 0x0ff)
         );
 
-        refreshDelay.postDelayed(new SendSceneDatasRunnable(0, end_datas5), Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 +
-                Constant.SUN_DOWN_DELAY3 + Constant.SUN_DOWN_DELAY4);
+        refreshDelay.postDelayed(new SendSceneDatasRunnable(0, end_datas5), Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 +
+                Constants.SUN_DOWN_DELAY3 + Constants.SUN_DOWN_DELAY4);
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
         //rgb(255,200,80)->rgb(165,20,0)  detaV(1,1,1) detaT(16,8,16)                      6阶段
         final int[] end_datas6 = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[6] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[7] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[8] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[6] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[7] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[8] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[6] & 0x0ff), (Constant.SunSceneDefaultGradientColor[7] & 0x0ff), (Constant.SunSceneDefaultGradientColor[8] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[3] & 0x0ff), (Constant.SunSceneDefaultGradientColor[4] & 0x0ff), (Constant.SunSceneDefaultGradientColor[5] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[6] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[7] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[8] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[6] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[7] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[8] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[6] & 0x0ff), (Constants.SunSceneDefaultGradientColor[7] & 0x0ff), (Constants.SunSceneDefaultGradientColor[8] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[3] & 0x0ff), (Constants.SunSceneDefaultGradientColor[4] & 0x0ff), (Constants.SunSceneDefaultGradientColor[5] & 0x0ff)
         );
 
-        refreshDelay.postDelayed(new SendSceneDatasRunnable(0, end_datas6), Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 +
-                Constant.SUN_DOWN_DELAY3 + Constant.SUN_DOWN_DELAY4 * 2);
+        refreshDelay.postDelayed(new SendSceneDatasRunnable(0, end_datas6), Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 +
+                Constants.SUN_DOWN_DELAY3 + Constants.SUN_DOWN_DELAY4 * 2);
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
         //rgb(165,20,0)->rgb(100,0,0) detaV(1,1,0) detaT(20,65,0)                      7阶段
         final int[] end_datas7 = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[3] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[4] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[5] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[3] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[4] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[5] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[3] & 0x0ff), (Constant.SunSceneDefaultGradientColor[4] & 0x0ff), (Constant.SunSceneDefaultGradientColor[5] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[0] & 0x0ff), (Constant.SunSceneDefaultGradientColor[1] & 0x0ff), (Constant.SunSceneDefaultGradientColor[2] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[3] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[4] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[5] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[3] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[4] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[5] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[3] & 0x0ff), (Constants.SunSceneDefaultGradientColor[4] & 0x0ff), (Constants.SunSceneDefaultGradientColor[5] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[0] & 0x0ff), (Constants.SunSceneDefaultGradientColor[1] & 0x0ff), (Constants.SunSceneDefaultGradientColor[2] & 0x0ff)
         );
 
-        refreshDelay.postDelayed(new SendSceneDatasRunnable(0, end_datas7), Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 +
-                Constant.SUN_DOWN_DELAY3 * 2 + Constant.SUN_DOWN_DELAY4 * 2);
+        refreshDelay.postDelayed(new SendSceneDatasRunnable(0, end_datas7), Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 +
+                Constants.SUN_DOWN_DELAY3 * 2 + Constants.SUN_DOWN_DELAY4 * 2);
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
         //rgb(100,0,0)->rgb(0,0,0) detaV(1,0,0) detaT(15,1,1)                      8阶段
         final int[] end_datas8 = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[0] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[1] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[2] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[0] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[1] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[2] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[0] & 0x0ff), (Constant.SunSceneDefaultGradientColor[1] & 0x0ff), (Constant.SunSceneDefaultGradientColor[2] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[12] & 0x0ff), (Constant.SunSceneDefaultGradientColor[13] & 0x0ff), (Constant.SunSceneDefaultGradientColor[14] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[0] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[1] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[2] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[0] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[1] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[2] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[0] & 0x0ff), (Constants.SunSceneDefaultGradientColor[1] & 0x0ff), (Constants.SunSceneDefaultGradientColor[2] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[12] & 0x0ff), (Constants.SunSceneDefaultGradientColor[13] & 0x0ff), (Constants.SunSceneDefaultGradientColor[14] & 0x0ff)
         );
 
-        refreshDelay.postDelayed(new SendSceneDatasRunnable(0, end_datas8), Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 * 2 +
-                Constant.SUN_DOWN_DELAY3 * 2 + Constant.SUN_DOWN_DELAY4 * 2);
+        refreshDelay.postDelayed(new SendSceneDatasRunnable(0, end_datas8), Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 * 2 +
+                Constants.SUN_DOWN_DELAY3 * 2 + Constants.SUN_DOWN_DELAY4 * 2);
         //////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 /*
     public void runSceneSunGradientRampTest() {
 
-        final SceneListInfo.SceneInfo ss = Constant.sunScene;
+        final SceneListInfo.SceneInfo ss = Constants.sunScene;
         System.out.println(System.currentTimeMillis() + ":  ---  " +
                 "SceneListInfo.SceneInfo ss.SceneDatasHead:  ===== 0000 =====  " + ss.SceneDatasHead[0] + ":" + (ss.SceneDatasHead[1] & 0x0ff) + ":" + (ss.SceneDatasHead[2] & 0x0ff) + ":" + (ss.SceneDatasHead[3] & 0x0ff) + ":"
                 + (ss.SceneDatasHead[4] & 0x0ff) + ":" + (ss.SceneDatasHead[5] & 0x0ff) + ":" + (ss.SceneDatasHead[6] & 0x0ff) + ":" + (ss.SceneDatasHead[7] & 0x0ff));
@@ -224,14 +224,14 @@ public class SceneSunGradientRampService extends Service {
                 (ss.SceneDatasHead[4] << 3) + (ss.SceneDatasHead[5] << 2) + (ss.SceneDatasHead[6] << 1) + (ss.SceneDatasHead[7])) & 0x0ff);
 
         final byte[] start_datas = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[0] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[1] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[2] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[0] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[1] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[2] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[12] & 0x0ff), (Constant.SunSceneDefaultGradientColor[13] & 0x0ff), (Constant.SunSceneDefaultGradientColor[14] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[0] & 0x0ff), (Constant.SunSceneDefaultGradientColor[1] & 0x0ff), (Constant.SunSceneDefaultGradientColor[2] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[0] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[1] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[2] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[0] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[1] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[2] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[12] & 0x0ff), (Constants.SunSceneDefaultGradientColor[13] & 0x0ff), (Constants.SunSceneDefaultGradientColor[14] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[0] & 0x0ff), (Constants.SunSceneDefaultGradientColor[1] & 0x0ff), (Constants.SunSceneDefaultGradientColor[2] & 0x0ff)
         );
 
         AppContext.getInstance().sendAll(start_datas);
-        System.out.println(System.currentTimeMillis() + ":  ---  " + (Constant.SUN_DOWN_DELAY1) + " ++ " + (Constant.SUN_DOWN_DELAY2) + " ++ " + (Constant.SUN_DOWN_DELAY3) + " ++ " + (Constant.SUN_DOWN_DELAY4) + " ++ " +
+        System.out.println(System.currentTimeMillis() + ":  ---  " + (Constants.SUN_DOWN_DELAY1) + " ++ " + (Constants.SUN_DOWN_DELAY2) + " ++ " + (Constants.SUN_DOWN_DELAY3) + " ++ " + (Constants.SUN_DOWN_DELAY4) + " ++ " +
                 " runSceneSunGradientRamp:  ===== 111111 =====  " + start_datas[0] + ":" + (start_datas[1] & 0x0ff) + ":" + (start_datas[2] & 0x0ff) + ":" + (start_datas[3] & 0x0ff) + ":"
                 + (start_datas[4] & 0x0ff) + ":" + (start_datas[5] & 0x0ff) + ":" + (start_datas[6] & 0x0ff) + ":" + (start_datas[7] & 0x0ff) + ":" +
                 (start_datas[8] & 0x0ff) + ":" + (start_datas[9] & 0x0ff) + ":" + (start_datas[10] & 0x0ff) + ":" + (start_datas[11] & 0x0ff) + ":" +
@@ -240,10 +240,10 @@ public class SceneSunGradientRampService extends Service {
 
         //rgb(100,0,0)->rgb(165,20,0)  detaV(1,1,0) detaT(20,65,0)                      2阶段
         final byte[] end_datas2 = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[3] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[4] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[5] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[3] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[4] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[5] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[0] & 0x0ff), (Constant.SunSceneDefaultGradientColor[1] & 0x0ff), (Constant.SunSceneDefaultGradientColor[2] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[3] & 0x0ff), (Constant.SunSceneDefaultGradientColor[4] & 0x0ff), (Constant.SunSceneDefaultGradientColor[5] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[3] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[4] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[5] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[3] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[4] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[5] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[0] & 0x0ff), (Constants.SunSceneDefaultGradientColor[1] & 0x0ff), (Constants.SunSceneDefaultGradientColor[2] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[3] & 0x0ff), (Constants.SunSceneDefaultGradientColor[4] & 0x0ff), (Constants.SunSceneDefaultGradientColor[5] & 0x0ff)
         );
 
         refreshDelay.postDelayed(new Runnable() {
@@ -251,21 +251,21 @@ public class SceneSunGradientRampService extends Service {
             public void run() {
                 AppContext.getInstance().sendAll(end_datas2);
                 System.out.println(System.currentTimeMillis() + ":  ---  " +
-                        Constant.SUN_DOWN_DELAY1 + "; runSceneSunGradientRamp:  ===== 2222222 =====  " + end_datas2[0] + ":" + (end_datas2[1] & 0x0ff) + ":" + (end_datas2[2] & 0x0ff) + ":" + (end_datas2[3] & 0x0ff) + ":"
+                        Constants.SUN_DOWN_DELAY1 + "; runSceneSunGradientRamp:  ===== 2222222 =====  " + end_datas2[0] + ":" + (end_datas2[1] & 0x0ff) + ":" + (end_datas2[2] & 0x0ff) + ":" + (end_datas2[3] & 0x0ff) + ":"
                         + (end_datas2[4] & 0x0ff) + ":" + (end_datas2[5] & 0x0ff) + ":" + (end_datas2[6] & 0x0ff) + ":" + (end_datas2[7] & 0x0ff) + ":" +
                         (end_datas2[8] & 0x0ff) + ":" + (end_datas2[9] & 0x0ff) + ":" + (end_datas2[10] & 0x0ff) + ":" + (end_datas2[11] & 0x0ff) + ":" +
                         (end_datas2[12] & 0x0ff) + ":" + (end_datas2[13] & 0x0ff));
             }
-        }, Constant.SUN_DOWN_DELAY1);
+        }, Constants.SUN_DOWN_DELAY1);
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
         //rgb(165,20,0)->rgb(255,200,80)  detaV(1,1,1) detaT(16,8,16)                      3阶段
         final byte[] end_datas3 = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[6] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[7] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[8] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[6] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[7] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[8] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[3] & 0x0ff), (Constant.SunSceneDefaultGradientColor[4] & 0x0ff), (Constant.SunSceneDefaultGradientColor[5] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[6] & 0x0ff), (Constant.SunSceneDefaultGradientColor[7] & 0x0ff), (Constant.SunSceneDefaultGradientColor[8] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[6] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[7] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[8] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[6] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[7] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[8] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[3] & 0x0ff), (Constants.SunSceneDefaultGradientColor[4] & 0x0ff), (Constants.SunSceneDefaultGradientColor[5] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[6] & 0x0ff), (Constants.SunSceneDefaultGradientColor[7] & 0x0ff), (Constants.SunSceneDefaultGradientColor[8] & 0x0ff)
         );
 
         refreshDelay.postDelayed(new Runnable() {
@@ -273,21 +273,21 @@ public class SceneSunGradientRampService extends Service {
             public void run() {
                 AppContext.getInstance().sendAll(end_datas3);
                 System.out.println(System.currentTimeMillis() + ":  ---  " +
-                        (Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2) + "; runSceneSunGradientRamp:  ===== 333333333 =====  " + end_datas3[0] + ":" + (end_datas3[1] & 0x0ff) + ":" + (end_datas3[2] & 0x0ff) + ":" + (end_datas3[3] & 0x0ff) + ":"
+                        (Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2) + "; runSceneSunGradientRamp:  ===== 333333333 =====  " + end_datas3[0] + ":" + (end_datas3[1] & 0x0ff) + ":" + (end_datas3[2] & 0x0ff) + ":" + (end_datas3[3] & 0x0ff) + ":"
                         + (end_datas3[4] & 0x0ff) + ":" + (end_datas3[5] & 0x0ff) + ":" + (end_datas3[6] & 0x0ff) + ":" + (end_datas3[7] & 0x0ff) + ":" +
                         (end_datas3[8] & 0x0ff) + ":" + (end_datas3[9] & 0x0ff) + ":" + (end_datas3[10] & 0x0ff) + ":" + (end_datas3[11] & 0x0ff) + ":" +
                         (end_datas3[12] & 0x0ff) + ":" + (end_datas3[13] & 0x0ff));
             }
-        }, (Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2));
+        }, (Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2));
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
         //rgb(255,200,80)->rgb(255,255,255)  detaV(0,1,1) detaT(1,25,8)                      4阶段
         final byte[] end_datas4 = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[9] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[10] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[11] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[9] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[10] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[11] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[6] & 0x0ff), (Constant.SunSceneDefaultGradientColor[7] & 0x0ff), (Constant.SunSceneDefaultGradientColor[8] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[9] & 0x0ff), (Constant.SunSceneDefaultGradientColor[10] & 0x0ff), (Constant.SunSceneDefaultGradientColor[11] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[9] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[10] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[11] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[9] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[10] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[11] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[6] & 0x0ff), (Constants.SunSceneDefaultGradientColor[7] & 0x0ff), (Constants.SunSceneDefaultGradientColor[8] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[9] & 0x0ff), (Constants.SunSceneDefaultGradientColor[10] & 0x0ff), (Constants.SunSceneDefaultGradientColor[11] & 0x0ff)
         );
 
         refreshDelay.postDelayed(new Runnable() {
@@ -295,12 +295,12 @@ public class SceneSunGradientRampService extends Service {
             public void run() {
                 AppContext.getInstance().sendAll(end_datas4);
                 System.out.println(System.currentTimeMillis() + ":  ---  " +
-                        (Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 + Constant.SUN_DOWN_DELAY3) + "; runSceneSunGradientRamp:  ===== 444444444444 =====  " + end_datas4[0] + ":" + (end_datas4[1] & 0x0ff) + ":" + (end_datas4[2] & 0x0ff) + ":" + (end_datas4[3] & 0x0ff) + ":"
+                        (Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 + Constants.SUN_DOWN_DELAY3) + "; runSceneSunGradientRamp:  ===== 444444444444 =====  " + end_datas4[0] + ":" + (end_datas4[1] & 0x0ff) + ":" + (end_datas4[2] & 0x0ff) + ":" + (end_datas4[3] & 0x0ff) + ":"
                         + (end_datas4[4] & 0x0ff) + ":" + (end_datas4[5] & 0x0ff) + ":" + (end_datas4[6] & 0x0ff) + ":" + (end_datas4[7] & 0x0ff) + ":" +
                         (end_datas4[8] & 0x0ff) + ":" + (end_datas4[9] & 0x0ff) + ":" + (end_datas4[10] & 0x0ff) + ":" + (end_datas4[11] & 0x0ff) + ":" +
                         (end_datas4[12] & 0x0ff) + ":" + (end_datas4[13] & 0x0ff));
             }
-        }, (Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 + Constant.SUN_DOWN_DELAY3));
+        }, (Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 + Constants.SUN_DOWN_DELAY3));
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -310,10 +310,10 @@ public class SceneSunGradientRampService extends Service {
 
         //rgb(255,255,255)->rgb(255,200,80)  detaV(0,1,1) detaT(1,25,8)                      5阶段
         final byte[] end_datas5 = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[9] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[10] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[11] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[9] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[10] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[11] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[9] & 0x0ff), (Constant.SunSceneDefaultGradientColor[10] & 0x0ff), (Constant.SunSceneDefaultGradientColor[11] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[6] & 0x0ff), (Constant.SunSceneDefaultGradientColor[7] & 0x0ff), (Constant.SunSceneDefaultGradientColor[8] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[9] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[10] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[11] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[9] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[10] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[11] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[9] & 0x0ff), (Constants.SunSceneDefaultGradientColor[10] & 0x0ff), (Constants.SunSceneDefaultGradientColor[11] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[6] & 0x0ff), (Constants.SunSceneDefaultGradientColor[7] & 0x0ff), (Constants.SunSceneDefaultGradientColor[8] & 0x0ff)
         );
 
         refreshDelay.postDelayed(new Runnable() {
@@ -321,21 +321,21 @@ public class SceneSunGradientRampService extends Service {
             public void run() {
                 AppContext.getInstance().sendAll(end_datas5);
                 System.out.println(System.currentTimeMillis() + ":  ---  " +
-                        (Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 + Constant.SUN_DOWN_DELAY3 + Constant.SUN_DOWN_DELAY4) + "; runSceneSunGradientRamp:  ===== 555555555555555555555 =====  " + end_datas5[0] + ":" + (end_datas5[1] & 0x0ff) + ":" + (end_datas5[2] & 0x0ff) + ":" + (end_datas5[3] & 0x0ff) + ":"
+                        (Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 + Constants.SUN_DOWN_DELAY3 + Constants.SUN_DOWN_DELAY4) + "; runSceneSunGradientRamp:  ===== 555555555555555555555 =====  " + end_datas5[0] + ":" + (end_datas5[1] & 0x0ff) + ":" + (end_datas5[2] & 0x0ff) + ":" + (end_datas5[3] & 0x0ff) + ":"
                         + (end_datas5[4] & 0x0ff) + ":" + (end_datas5[5] & 0x0ff) + ":" + (end_datas5[6] & 0x0ff) + ":" + (end_datas5[7] & 0x0ff) + ":" +
                         (end_datas5[8] & 0x0ff) + ":" + (end_datas5[9] & 0x0ff) + ":" + (end_datas5[10] & 0x0ff) + ":" + (end_datas5[11] & 0x0ff) + ":" +
                         (end_datas5[12] & 0x0ff) + ":" + (end_datas5[13] & 0x0ff));
             }
-        }, (Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 + Constant.SUN_DOWN_DELAY3 + Constant.SUN_DOWN_DELAY4));
+        }, (Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 + Constants.SUN_DOWN_DELAY3 + Constants.SUN_DOWN_DELAY4));
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
         //rgb(255,200,80)->rgb(165,20,0)  detaV(1,1,1) detaT(16,8,16)                      6阶段
         final byte[] end_datas6 = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[6] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[7] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[8] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[6] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[7] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[8] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[6] & 0x0ff), (Constant.SunSceneDefaultGradientColor[7] & 0x0ff), (Constant.SunSceneDefaultGradientColor[8] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[3] & 0x0ff), (Constant.SunSceneDefaultGradientColor[4] & 0x0ff), (Constant.SunSceneDefaultGradientColor[5] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[6] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[7] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[8] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[6] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[7] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[8] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[6] & 0x0ff), (Constants.SunSceneDefaultGradientColor[7] & 0x0ff), (Constants.SunSceneDefaultGradientColor[8] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[3] & 0x0ff), (Constants.SunSceneDefaultGradientColor[4] & 0x0ff), (Constants.SunSceneDefaultGradientColor[5] & 0x0ff)
         );
 
         refreshDelay.postDelayed(new Runnable() {
@@ -343,21 +343,21 @@ public class SceneSunGradientRampService extends Service {
             public void run() {
                 AppContext.getInstance().sendAll(end_datas6);
                 System.out.println(System.currentTimeMillis() + ":  ---  " +
-                        (Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 + Constant.SUN_DOWN_DELAY3 + Constant.SUN_DOWN_DELAY4 * 2) + "; runSceneSunGradientRamp:  ===== 66666666666666666666 =====  " + end_datas6[0] + ":" + (end_datas6[1] & 0x0ff) + ":" + (end_datas6[2] & 0x0ff) + ":" + (end_datas6[3] & 0x0ff) + ":"
+                        (Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 + Constants.SUN_DOWN_DELAY3 + Constants.SUN_DOWN_DELAY4 * 2) + "; runSceneSunGradientRamp:  ===== 66666666666666666666 =====  " + end_datas6[0] + ":" + (end_datas6[1] & 0x0ff) + ":" + (end_datas6[2] & 0x0ff) + ":" + (end_datas6[3] & 0x0ff) + ":"
                         + (end_datas6[4] & 0x0ff) + ":" + (end_datas6[5] & 0x0ff) + ":" + (end_datas6[6] & 0x0ff) + ":" + (end_datas6[7] & 0x0ff) + ":" +
                         (end_datas6[8] & 0x0ff) + ":" + (end_datas6[9] & 0x0ff) + ":" + (end_datas6[10] & 0x0ff) + ":" + (end_datas6[11] & 0x0ff) + ":" +
                         (end_datas6[12] & 0x0ff) + ":" + (end_datas6[13] & 0x0ff));
             }
-        }, (Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 + Constant.SUN_DOWN_DELAY3 + Constant.SUN_DOWN_DELAY4 * 2));
+        }, (Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 + Constants.SUN_DOWN_DELAY3 + Constants.SUN_DOWN_DELAY4 * 2));
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
         //rgb(165,20,0)->rgb(100,0,0) detaV(1,1,0) detaT(20,65,0)                      7阶段
         final byte[] end_datas7 = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[3] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[4] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[5] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[3] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[4] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[5] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[3] & 0x0ff), (Constant.SunSceneDefaultGradientColor[4] & 0x0ff), (Constant.SunSceneDefaultGradientColor[5] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[0] & 0x0ff), (Constant.SunSceneDefaultGradientColor[1] & 0x0ff), (Constant.SunSceneDefaultGradientColor[2] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[3] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[4] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[5] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[3] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[4] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[5] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[3] & 0x0ff), (Constants.SunSceneDefaultGradientColor[4] & 0x0ff), (Constants.SunSceneDefaultGradientColor[5] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[0] & 0x0ff), (Constants.SunSceneDefaultGradientColor[1] & 0x0ff), (Constants.SunSceneDefaultGradientColor[2] & 0x0ff)
         );
 
         refreshDelay.postDelayed(new Runnable() {
@@ -365,34 +365,34 @@ public class SceneSunGradientRampService extends Service {
             public void run() {
                 AppContext.getInstance().sendAll(end_datas7);
                 System.out.println(System.currentTimeMillis() + ":  ---  " +
-                        (Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 + Constant.SUN_DOWN_DELAY3 * 2 + Constant.SUN_DOWN_DELAY4 * 2) + "; runSceneSunGradientRamp:  ===== 7777777777777777 =====  " + end_datas7[0] + ":" + (end_datas7[1] & 0x0ff) + ":" + (end_datas7[2] & 0x0ff) + ":" + (end_datas7[3] & 0x0ff) + ":"
+                        (Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 + Constants.SUN_DOWN_DELAY3 * 2 + Constants.SUN_DOWN_DELAY4 * 2) + "; runSceneSunGradientRamp:  ===== 7777777777777777 =====  " + end_datas7[0] + ":" + (end_datas7[1] & 0x0ff) + ":" + (end_datas7[2] & 0x0ff) + ":" + (end_datas7[3] & 0x0ff) + ":"
                         + (end_datas7[4] & 0x0ff) + ":" + (end_datas7[5] & 0x0ff) + ":" + (end_datas7[6] & 0x0ff) + ":" + (end_datas7[7] & 0x0ff) + ":" +
                         (end_datas7[8] & 0x0ff) + ":" + (end_datas7[9] & 0x0ff) + ":" + (end_datas7[10] & 0x0ff) + ":" + (end_datas7[11] & 0x0ff) + ":" +
                         (end_datas7[12] & 0x0ff) + ":" + (end_datas7[13] & 0x0ff));
             }
-        }, Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 + Constant.SUN_DOWN_DELAY3 * 2 + Constant.SUN_DOWN_DELAY4 * 2);
+        }, Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 + Constants.SUN_DOWN_DELAY3 * 2 + Constants.SUN_DOWN_DELAY4 * 2);
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
         //rgb(100,0,0)->rgb(0,0,0) detaV(1,0,0) detaT(15,1,1)                      8阶段
         final byte[] end_datas8 = getSceneDatas(ctrMode,
-                (Constant.SunSceneDefaultGradientColorDeta[0] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[1] & 0x0ff), (Constant.SunSceneDefaultGradientColorDeta[2] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColorTime[0] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[1] & 0x0ff), (Constant.SunSceneDefaultGradientColorTime[2] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[0] & 0x0ff), (Constant.SunSceneDefaultGradientColor[1] & 0x0ff), (Constant.SunSceneDefaultGradientColor[2] & 0x0ff),
-                (Constant.SunSceneDefaultGradientColor[12] & 0x0ff), (Constant.SunSceneDefaultGradientColor[13] & 0x0ff), (Constant.SunSceneDefaultGradientColor[14] & 0x0ff)
+                (Constants.SunSceneDefaultGradientColorDeta[0] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[1] & 0x0ff), (Constants.SunSceneDefaultGradientColorDeta[2] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColorTime[0] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[1] & 0x0ff), (Constants.SunSceneDefaultGradientColorTime[2] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[0] & 0x0ff), (Constants.SunSceneDefaultGradientColor[1] & 0x0ff), (Constants.SunSceneDefaultGradientColor[2] & 0x0ff),
+                (Constants.SunSceneDefaultGradientColor[12] & 0x0ff), (Constants.SunSceneDefaultGradientColor[13] & 0x0ff), (Constants.SunSceneDefaultGradientColor[14] & 0x0ff)
         );
 
         refreshDelay.postDelayed(new Runnable() {
             @Override
             public void run() {
                 AppContext.getInstance().sendAll(end_datas8);
-                System.out.println(System.currentTimeMillis() + ":  ---  " + (Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 * 2 + Constant.SUN_DOWN_DELAY3 * 2 + Constant.SUN_DOWN_DELAY4 * 2) + " ++ " + (Constant.SUN_DOWN_DELAY2) + " ++ " + (Constant.SUN_DOWN_DELAY3) + " ++ " + (Constant.SUN_DOWN_DELAY4) + " ++ " +
+                System.out.println(System.currentTimeMillis() + ":  ---  " + (Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 * 2 + Constants.SUN_DOWN_DELAY3 * 2 + Constants.SUN_DOWN_DELAY4 * 2) + " ++ " + (Constants.SUN_DOWN_DELAY2) + " ++ " + (Constants.SUN_DOWN_DELAY3) + " ++ " + (Constants.SUN_DOWN_DELAY4) + " ++ " +
                         " runSceneSunGradientRamp:  ===== 888888888888 =====  " + end_datas8[0] + ":" + (end_datas8[1] & 0x0ff) + ":" + (end_datas8[2] & 0x0ff) + ":" + (end_datas8[3] & 0x0ff) + ":"
                         + (end_datas8[4] & 0x0ff) + ":" + (end_datas8[5] & 0x0ff) + ":" + (end_datas8[6] & 0x0ff) + ":" + (end_datas8[7] & 0x0ff) + ":" +
                         (end_datas8[8] & 0x0ff) + ":" + (end_datas8[9] & 0x0ff) + ":" + (end_datas8[10] & 0x0ff) + ":" + (end_datas8[11] & 0x0ff) + ":" +
                         (end_datas8[12] & 0x0ff) + ":" + (end_datas8[13] & 0x0ff));
             }
-        }, Constant.SUN_DOWN_DELAY1 + Constant.SUN_DOWN_DELAY2 * 2 + Constant.SUN_DOWN_DELAY3 * 2 + Constant.SUN_DOWN_DELAY4 * 2);
+        }, Constants.SUN_DOWN_DELAY1 + Constants.SUN_DOWN_DELAY2 * 2 + Constants.SUN_DOWN_DELAY3 * 2 + Constants.SUN_DOWN_DELAY4 * 2);
         //////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 */

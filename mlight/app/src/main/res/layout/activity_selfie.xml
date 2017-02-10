@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/greya"
     android:orientation="vertical"
-    tools:context="com.guohua.mlight.activity.SelfieActivity">
+    tools:context="com.guohua.mlight.view.activity.SelfieActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

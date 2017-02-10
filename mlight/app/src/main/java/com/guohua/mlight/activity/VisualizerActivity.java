@@ -1,4 +1,4 @@
-package com.guohua.mlight.activity;
+package com.guohua.mlight.view.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -13,9 +13,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.guohua.mlight.R;
-import com.guohua.mlight.ai.IObserver;
+import com.guohua.mlight.model.ai.IObserver;
 import com.guohua.mlight.service.VisualizerService;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.Constant;
 import com.guohua.mlight.view.VisualizerView;
 
 /**

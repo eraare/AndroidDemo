@@ -13,7 +13,7 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.Constant;
 
 import java.util.HashMap;
 import java.util.Map;

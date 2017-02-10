@@ -20,8 +20,8 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.config.Constants;
 
 import java.util.Map;
 import java.util.Set;
@@ -218,6 +218,7 @@ public class BLEService extends Service {
                 if (mGatt != null)
                     mGatt.discoverServices();
                 mDevice.state = BLEDevice.STATE_CONNECTED;
+                sendStateBroadcast(BLEConstant.ACTION_BLE_CONNECTED, deviceAddress);
                 System.out.println("state connected");
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 mDevice.state = BLEDevice.STATE_DISCONNECTED;
@@ -280,7 +281,7 @@ public class BLEService extends Service {
                 if (sp == null) {
                     sp = PreferenceManager.getDefaultSharedPreferences(mContext);
                 }
-                String passport = (Constant.DEFAULT_PASSWORD_HEAD + sp.getString(deviceAddress, CodeUtils.password));
+                String passport = (Constants.DEFAULT_PASSWORD_HEAD + sp.getString(deviceAddress, CodeUtils.password));
                 new Thread(new ConfigRunnable(deviceAddress, passport)).start();
             }
         }

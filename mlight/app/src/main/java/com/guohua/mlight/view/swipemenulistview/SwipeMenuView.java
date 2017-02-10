@@ -1,4 +1,4 @@
-package com.guohua.mlight.view.swipemenulistview;
+package com.guohua.mlight.view.widget.swipemenulistview;
 
 import java.util.List;
 

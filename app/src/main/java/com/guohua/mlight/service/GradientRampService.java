@@ -14,14 +14,14 @@ import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 
-import com.guohua.mlight.AppContext;
-import com.guohua.mlight.MainActivity;
+import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.R;
-import com.guohua.mlight.bean.SceneListInfo;
+import com.guohua.mlight.model.bean.SceneListInfo;
 import com.guohua.mlight.net.SendSceneDatasRunnable;
 import com.guohua.mlight.net.ThreadPool;
-import com.guohua.mlight.util.Constant;
-import com.guohua.mlight.util.ToolUtils;
+import com.guohua.mlight.common.config.Constants;
+import com.guohua.mlight.common.util.ToolUtils;
+import com.guohua.mlight.view.activity.MainActivity;
 
 /**
  * @author Leo
@@ -80,7 +80,7 @@ public class GradientRampService extends Service{
          * 注册广播
          */
         IntentFilter mFilter = new IntentFilter();
-        mFilter.addAction(Constant.ACTION_EXIT);
+        mFilter.addAction(Constants.ACTION_EXIT);
         mFilter.setPriority(Integer.MAX_VALUE);
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, mFilter);
 
@@ -92,7 +92,7 @@ public class GradientRampService extends Service{
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (TextUtils.equals(action, Constant.ACTION_EXIT)) {
+            if (TextUtils.equals(action, Constants.ACTION_EXIT)) {
                 stopSelf();
             }
         }

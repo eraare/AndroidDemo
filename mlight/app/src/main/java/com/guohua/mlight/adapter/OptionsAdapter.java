@@ -1,4 +1,4 @@
-package com.guohua.mlight.adapter;
+package com.guohua.mlight.view.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.guohua.mlight.R;
-import com.guohua.mlight.bean.Option;
+import com.guohua.mlight.model.bean.Option;
 
 import java.util.ArrayList;
 

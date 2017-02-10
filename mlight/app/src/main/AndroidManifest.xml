@@ -52,19 +52,19 @@
             android:screenOrientation="portrait" />
         -->
         <activity
-            android:name=".activity.SelectColorActivity"
+            android:name=".view.activity.SelectColorActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.GradientRampActivity"
+            android:name=".view.activity.GradientRampActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.SceneModeActivity"
+            android:name=".view.activity.SceneModeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.PalletActivity"
+            android:name=".view.activity.PalletActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.DriveModeActivity"
+            android:name=".view.activity.DriveModeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".library.ScanBluetoothDevice"
@@ -78,27 +78,27 @@
         <!-- 设置界面 -->
         <!--
             <activity
-            android:name="com.guohua.mlight.activity.SettingsActivity"
+            android:name="com.guohua.mlight.view.activity.SettingsActivity"
             android:screenOrientation="portrait" />
         -->
         <!-- 扫描蓝牙设备 -->
         <!-- 音乐律动和摇一摇功能 -->
         <activity
-            android:name=".activity.ShakeActivity"
+            android:name=".view.activity.ShakeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.VisualizerActivity"
+            android:name=".view.activity.VisualizerActivity"
             android:screenOrientation="portrait" />
         <!--
             <activity
-            android:name="com.guohua.mlight.activity.SelfieActivity"
+            android:name="com.guohua.mlight.view.activity.SelfieActivity"
             android:screenOrientation="portrait" />
         -->
         <activity
-            android:name=".activity.AboutActivity"
+            android:name=".view.activity.AboutActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.HelpActivity"
+            android:name=".view.activity.HelpActivity"
             android:screenOrientation="portrait" />
         <!-- 以下是BLE通信 -->
         <activity

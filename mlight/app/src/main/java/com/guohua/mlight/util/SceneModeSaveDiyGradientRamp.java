@@ -1,10 +1,10 @@
-package com.guohua.mlight.util;
+package com.guohua.mlight.common.util;
 
 import android.os.Handler;
 import android.os.Message;
 
 import com.guohua.mlight.AppContext;
-import com.guohua.mlight.fragment.SceneFragment;
+import com.guohua.mlight.view.fragment.SceneFragment;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 

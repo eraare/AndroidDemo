@@ -21,11 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guohua.mlight.communication.BLEConstant;
-import com.guohua.mlight.fragment.GroupFragment;
-import com.guohua.mlight.fragment.PersonalFragment;
-import com.guohua.mlight.util.Constant;
-import com.guohua.mlight.util.EverydayWords;
-import com.guohua.mlight.util.ToolUtils;
+import com.guohua.mlight.view.fragment.GroupFragment;
+import com.guohua.mlight.view.fragment.PersonalFragment;
+import com.guohua.mlight.common.util.Constant;
+import com.guohua.mlight.common.util.EverydayWords;
+import com.guohua.mlight.common.util.ToolUtils;
 
 /**
  * @author Leo

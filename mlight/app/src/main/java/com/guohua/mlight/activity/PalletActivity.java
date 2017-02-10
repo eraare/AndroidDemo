@@ -1,4 +1,4 @@
-package com.guohua.mlight.activity;
+package com.guohua.mlight.view.activity;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -24,20 +24,20 @@ import android.widget.TextView;
 
 import com.guohua.mlight.AppContext;
 import com.guohua.mlight.R;
-import com.guohua.mlight.bean.Device;
+import com.guohua.mlight.model.bean.Device;
 import com.guohua.mlight.communication.BLEConstant;
-import com.guohua.mlight.fragment.DialogFragment;
-import com.guohua.mlight.fragment.MainFragment;
-import com.guohua.mlight.fragment.MainFragment1;
-import com.guohua.mlight.fragment.SceneFragment;
+import com.guohua.mlight.view.fragment.DialogFragment;
+import com.guohua.mlight.view.fragment.MainFragment;
+import com.guohua.mlight.view.fragment.MainFragment1;
+import com.guohua.mlight.view.fragment.SceneFragment;
 import com.guohua.mlight.library.BluetoothConstant;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.service.GradientRampService;
 import com.guohua.mlight.service.SceneSunGradientRampService;
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
-import com.guohua.mlight.util.SceneModeSaveDiyGradientRamp;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.util.Constant;
+import com.guohua.mlight.common.util.SceneModeSaveDiyGradientRamp;
 
 import java.util.ArrayList;
 

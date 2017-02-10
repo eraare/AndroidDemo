@@ -1,4 +1,4 @@
-package com.guohua.mlight.activity;
+package com.guohua.mlight.view.activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,9 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guohua.mlight.R;
-import com.guohua.mlight.util.Constant;
-import com.guohua.mlight.util.ShellUtils;
-import com.guohua.mlight.util.ToolUtils;
+import com.guohua.mlight.common.util.Constant;
+import com.guohua.mlight.common.util.ShellUtils;
+import com.guohua.mlight.common.util.ToolUtils;
 
 /**
  * Created by Leo on 2016/3/18.

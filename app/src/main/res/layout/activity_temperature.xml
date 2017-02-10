@@ -4,7 +4,7 @@
     android:id="@+id/activity_temperature"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.guohua.mlight.activity.TemperatureActivity">
+    tools:context=".view.activity.TemperatureActivity">
 
     <FrameLayout
         android:id="@+id/fl_container_temperature"

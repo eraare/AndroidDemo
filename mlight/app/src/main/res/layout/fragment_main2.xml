@@ -108,7 +108,7 @@
 
     </LinearLayout>
 
-    <com.guohua.mlight.view.holocolorpicker.ColorPicker
+    <com.guohua.mlight.view.widget.holocolorpicker.ColorPicker
         android:id="@+id/cp_picker_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

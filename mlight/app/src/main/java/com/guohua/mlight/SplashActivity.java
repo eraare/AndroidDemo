@@ -16,8 +16,8 @@ import android.view.animation.Animation;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.guohua.mlight.util.Constant;
-import com.guohua.mlight.util.ToolUtils;
+import com.guohua.mlight.common.util.Constant;
+import com.guohua.mlight.common.util.ToolUtils;
 
 /**
  * @author Leo

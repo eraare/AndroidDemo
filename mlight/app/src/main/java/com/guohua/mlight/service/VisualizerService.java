@@ -22,12 +22,12 @@ import android.widget.Toast;
 
 import com.guohua.mlight.MainActivity;
 import com.guohua.mlight.R;
-import com.guohua.mlight.ai.IObserver;
-import com.guohua.mlight.ai.ISubject;
+import com.guohua.mlight.model.ai.IObserver;
+import com.guohua.mlight.model.ai.ISubject;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.util.Constant;
 
 import java.util.ArrayList;
 import java.util.Random;

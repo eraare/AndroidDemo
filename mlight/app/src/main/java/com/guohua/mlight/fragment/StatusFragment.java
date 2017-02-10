@@ -1,4 +1,4 @@
-package com.guohua.mlight.fragment;
+package com.guohua.mlight.view.fragment;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

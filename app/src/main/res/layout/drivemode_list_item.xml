@@ -12,7 +12,7 @@
         android:paddingBottom="1dp"
         android:paddingTop="1dp">
 
-        <com.guohua.mlight.widget.SwitchButton
+        <com.guohua.mlight.view.widget.SwitchButton
             android:id="@+id/drivemode_listitem"
             style="@style/item"
             android:background="@drawable/selector_preference_center"

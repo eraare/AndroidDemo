@@ -14,8 +14,8 @@ import android.util.Log;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.SendSceneDatasRunnable;
 import com.guohua.mlight.net.ThreadPool;
-import com.guohua.mlight.util.CodeUtils;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.util.Constant;
 
 /**
  * 处理来电的广播接收器 接收到来电就发送状态 给第二屏，让用户选择操作，返回处理

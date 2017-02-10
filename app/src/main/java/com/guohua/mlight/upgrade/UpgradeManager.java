@@ -17,7 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.guohua.mlight.R;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.common.config.Constants;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -53,7 +53,7 @@ public class UpgradeManager {
      */
     public void check() {
         try {
-            mAsyncTask.execute(Constant.UPGRADE_ADDRESS);
+            mAsyncTask.execute(Constants.UPGRADE_ADDRESS);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
@@ -191,7 +191,7 @@ public class UpgradeManager {
             try {
                 if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                     String sdpath = Environment.getExternalStorageDirectory() + "/";
-                    mSavePath = sdpath + Constant.CONTENT_DIR;
+                    mSavePath = sdpath + Constants.CONTENT_DIR;
                     URL url = new URL(serverUrl);
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     conn.connect();

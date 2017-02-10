@@ -1,12 +1,12 @@
-package com.guohua.mlight.util;
+package com.guohua.mlight.common.util;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import com.guohua.mlight.bean.Word;
-import com.guohua.mlight.fragment.GroupFragment;
+import com.guohua.mlight.model.bean.Word;
+import com.guohua.mlight.view.fragment.GroupFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;

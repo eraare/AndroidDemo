@@ -18,11 +18,11 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.guohua.mlight.bean.Device;
-import com.guohua.mlight.bean.Timer;
+import com.guohua.mlight.model.bean.Device;
+import com.guohua.mlight.model.bean.Timer;
 import com.guohua.mlight.communication.BLEService;
-import com.guohua.mlight.fragment.MainFragment;
-import com.guohua.mlight.util.Constant;
+import com.guohua.mlight.view.fragment.MainFragment;
+import com.guohua.mlight.common.util.Constant;
 
 import java.util.ArrayList;
 

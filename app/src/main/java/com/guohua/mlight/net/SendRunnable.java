@@ -2,7 +2,7 @@ package com.guohua.mlight.net;
 
 import android.text.TextUtils;
 
-import com.guohua.mlight.AppContext;
+import com.guohua.mlight.common.base.AppContext;
 
 /**
  * @author Leo
