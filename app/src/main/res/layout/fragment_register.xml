@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.guohua.mlight.view.widget.TitleView
+        android:id="@+id/tv_title_register"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_navigation_bar_height"
+        app:leftTitle="@string/activity_back"
+        app:titleText="@string/fragment_register_login" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:layout_marginTop="@dimen/vertical_margin"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_margin="@dimen/content_margin"
+            android:src="@drawable/icon_phone" />
+
+        <EditText
+            android:id="@+id/et_phone_register"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:hint="@string/fragment_phone_hint_login"
+            android:inputType="phone"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_body" />
+
+        <Button
+            android:id="@+id/btn_captcha_register"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/verification_button_height_login"
+            android:layout_marginLeft="@dimen/content_margin"
+            android:layout_marginRight="@dimen/content_margin"
+            android:background="@drawable/selector_rectangle_fill"
+            android:text="@string/fragment_captcha_login"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_caption" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/transparent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_margin="@dimen/content_margin"
+            android:src="@drawable/icon_sms_code" />
+
+        <EditText
+            android:id="@+id/et_captcha_register"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:hint="@string/fragment_captcha_hint_login"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_body" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/transparent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_margin="@dimen/content_margin"
+            android:src="@drawable/icon_password" />
+
+        <EditText
+            android:id="@+id/et_password_register"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/item_height"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:hint="@string/fragment_password_hint_login"
+            android:inputType="textPassword"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_body" />
+
+        <ImageView
+            android:id="@+id/iv_clear_register"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_margin="@dimen/content_margin"
+            android:src="@drawable/icon_clear" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_register_register"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_height"
+        android:layout_marginTop="@dimen/content_margin"
+        android:background="@drawable/selector_rectangle_fill"
+        android:text="@string/fragment_register_login"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_body" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/content_padding">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fragment_agreement_login"
+            android:textColor="@color/assistant"
+            android:textSize="@dimen/text_size_caption" />
+    </LinearLayout>
+</LinearLayout>
