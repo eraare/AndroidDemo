@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <com.guohua.mlight.view.widget.TabView
+        android:id="@+id/tv_main_bar"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:iconValue="@drawable/icon_home_normal"
+        app:isSelected="true"
+        app:selectIcon="@drawable/icon_home_checked"
+        app:selectTitleColor="@color/main"
+        app:titleColor="@color/greyd"
+        app:titleValue="@string/app_name" />
+
+    <com.guohua.mlight.view.widget.TabView
+        android:id="@+id/tv_scene_bar"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:iconValue="@drawable/icon_scene_normal"
+        app:isSelected="false"
+        app:selectIcon="@drawable/icon_scene_checked"
+        app:selectTitleColor="@color/main"
+        app:titleColor="@color/greyd"
+        app:titleValue="@string/scene_mode" />
+
+    <com.guohua.mlight.view.widget.TabView
+        android:id="@+id/tv_center_bar"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:iconValue="@drawable/icon_center_normal"
+        app:isSelected="false"
+        app:selectIcon="@drawable/icon_center_checked"
+        app:selectTitleColor="@color/main"
+        app:titleColor="@color/greyd"
+        app:titleValue="@string/action_settings" />
+</LinearLayout>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_switch_main"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:src="@drawable/icon_light_on" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/iv_switch_main"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/horizontal_padding_main"
+        android:paddingRight="@dimen/horizontal_padding_main">
+
+        <SeekBar
+            android:id="@+id/sb_lightness_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:max="255"
+            android:thumb="@drawable/icon_lightness_thumb_en" />
+
+        <SeekBar
+            android:id="@+id/sb_color_temperature_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:max="255"
+            android:thumb="@drawable/icon_color_thumb_en" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/iv_switch_main"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_timer_on_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/main"
+            android:padding="@dimen/timer_on_padding_main"
+            android:text="@string/open_light_timer"
+            android:textColor="@color/white" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/horizontal_padding_main"
+            android:paddingRight="@dimen/horizontal_padding_main">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="center"
+                android:background="@color/main" />
+
+            <TextView
+                android:id="@+id/tv_timer_off_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:padding="@dimen/delay_padding_main"
+                android:text="@string/close_light_timer"
+                android:textColor="@color/main" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.guohua.mlight.view.widget.TimerView
+                android:id="@+id/tv_timer_five_main"
+                android:layout_width="@dimen/timer_view_width_main"
+                android:layout_height="@dimen/timer_view_width_main"
+                android:layout_margin="@dimen/timer_view_margin_main"
+                app:selected="false"
+                app:unit="@string/light_timer_unit"
+                app:value="5" />
+
+            <com.guohua.mlight.view.widget.TimerView
+                android:id="@+id/tv_timer_fifteen_main"
+                android:layout_width="@dimen/timer_view_width_main"
+                android:layout_height="@dimen/timer_view_width_main"
+                android:layout_margin="@dimen/timer_view_margin_main"
+                app:selected="false"
+                app:unit="@string/light_timer_unit"
+                app:value="15" />
+
+            <com.guohua.mlight.view.widget.TimerView
+                android:id="@+id/tv_timer_thirty_main"
+                android:layout_width="@dimen/timer_view_width_main"
+                android:layout_height="@dimen/timer_view_width_main"
+                android:layout_margin="@dimen/timer_view_margin_main"
+                app:selected="false"
+                app:unit="@string/light_timer_unit"
+                app:value="30" />
+
+            <com.guohua.mlight.view.widget.TimerView
+                android:id="@+id/tv_timer_sixty_main"
+                android:layout_width="@dimen/timer_view_width_main"
+                android:layout_height="@dimen/timer_view_width_main"
+                android:layout_margin="@dimen/timer_view_margin_main"
+                app:selected="false"
+                app:unit="@string/light_timer_unit"
+                app:value="60" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

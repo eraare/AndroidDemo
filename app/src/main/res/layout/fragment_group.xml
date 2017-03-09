@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.fragment.GroupFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:background="@color/main"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/content_padding"
+        android:paddingTop="@dimen/content_padding">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_light_group"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="2"
+                android:adjustViewBounds="true" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_words_group"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="@dimen/horizontal_padding"
+            android:paddingRight="@dimen/horizontal_padding"
+            android:singleLine="true"
+            android:text="梦想很轻，却因此拥有飞向蓝天的力量。"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/content_padding">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/sfl_refresh_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.guohua.mlight.view.widget.swipemenulistview.SwipeMenuListView
+                android:id="@+id/lv_devices_group"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_empty_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/vertical_margin"
+                android:src="@drawable/icon_no_data" />
+
+            <TextView
+                android:id="@+id/tv_empty_tip_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/group_empty_info" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>
