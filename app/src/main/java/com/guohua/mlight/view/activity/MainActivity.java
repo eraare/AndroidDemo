@@ -54,8 +54,6 @@ import com.guohua.mlight.view.fragment.SceneFragment;
 import com.guohua.mlight.view.fragment.TimerFragment;
 import com.guohua.mlight.view.widget.TitleView;
 
-import java.util.ArrayList;
-
 import butterknife.BindArray;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -158,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         mFragmentAdapter.addFragment(SceneFragment.newInstance());
         mFragmentAdapter.addFragment(CenterFragment.newInstance());
         mPagerView.setAdapter(mFragmentAdapter);
+        mPagerView.setOffscreenPageLimit(2);
         mPagerView.addOnPageChangeListener(mOnPageChangeListener);
         mPagerView.setCurrentItem(lastSelectedPosition, true);
     }
@@ -385,27 +384,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private ArrayList<String> selectedScanDeviceList = new ArrayList<String>();
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == BLEConstant.REQUEST_DEVICE_SCAN) {
-
-//                deviceName = data.getStringExtra(BluetoothConstant.EXTRA_DEVICE_NAME);
-//                deviceAddress = data.getStringExtra(BluetoothConstant.EXTRA_DEVICE_ADDRESS);
-//                DialogFragment.getInstance().onResult(new Device(deviceName, deviceAddress, true));
-
-                selectedScanDeviceList = data.getStringArrayListExtra(BLEConstant.EXTRA_DEVICE_LIST);
-                ArrayList<Device> resultDevList = new ArrayList<>();
-                String addrAndName;
-                for (int i = 0; i < selectedScanDeviceList.size(); i++) {
-                    addrAndName = selectedScanDeviceList.get(i);
-                    int splitPos = addrAndName.indexOf(";");
-                    resultDevList.add(new Device(addrAndName.substring(splitPos + 1), addrAndName.substring(0, splitPos), true));
-                }
-                DialogFragment.getInstance().onResult(resultDevList);
+                deviceName = data.getStringExtra(BLEConstant.EXTRA_DEVICE_NAME);
+                deviceAddress = data.getStringExtra(BLEConstant.EXTRA_DEVICE_ADDRESS);
+                DialogFragment.getInstance().onResult(new Device(deviceName, deviceAddress, true));
             }
         }
     }

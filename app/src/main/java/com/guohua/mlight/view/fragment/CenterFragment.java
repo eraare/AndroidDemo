@@ -44,6 +44,7 @@ import com.guohua.mlight.view.activity.LoginActivity;
 import com.guohua.mlight.view.activity.MainActivity;
 import com.guohua.mlight.view.activity.MeActivity;
 import com.guohua.mlight.view.activity.SceneModeActivity;
+import com.guohua.mlight.view.activity.SelfieActivity;
 import com.guohua.mlight.view.activity.ShakeActivity;
 import com.guohua.mlight.view.activity.TemperatureActivity;
 import com.guohua.mlight.view.activity.VisualizerActivity;
@@ -168,6 +169,7 @@ public class CenterFragment extends Fragment {
         mOptionAdapter.addItem(new OptionBean(5, getString(R.string.settings_temperature), R.drawable.icon_temperature_center));
         mOptionAdapter.addItem(new OptionBean(6, getString(R.string.personal_phone_func), R.drawable.icon_phone));
         mOptionAdapter.addItem(new OptionBean(7, getString(R.string.personal_about_app), R.drawable.icon_app_center));
+        mOptionAdapter.addItem(new OptionBean(9, getString(R.string.personal_selfie), R.drawable.icon_settings));
 //        mOptionAdapter.addItem(new OptionBean(7, getString(R.string.personal_about_us), R.drawable.icon_about_us));
 //        mOptionAdapter.addItem(new OptionBean(8, getString(R.string.personal_feedback), R.drawable.icon_feedback_center));
     }
@@ -224,6 +226,11 @@ public class CenterFragment extends Fragment {
                 break;
                 case 8: {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.OFFICIAL_WEBSITE));
+                    startActivity(intent);
+                }
+                break;
+                case 9: {
+                    Intent intent = new Intent(mContext, SelfieActivity.class);
                     startActivity(intent);
                 }
                 break;

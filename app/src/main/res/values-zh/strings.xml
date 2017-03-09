@@ -9,6 +9,17 @@
     <!--AppContext.java-->
     <string name="app_crash_tip">I am sorry.</string>
     <string name="activity_back">返回</string>
+    <!--MainActivity.java 和 HomeFragment.java 以及对应layout中用到的文字-->
+    <string-array name="activity_titles_main">
+        <item>首页</item>
+        <item>情境</item>
+        <item>我的</item>
+    </string-array>
+    <string-array name="fragment_alias_main">
+        <item>魔小灯</item>
+        <item>情境模式</item>
+        <item>个人中心</item>
+    </string-array>
     <!--SplashActivity1.java 和 SplashFragment.java 以及对应layout中用到的文字-->
     <string name="fragment_content_splash">智家行千里，神灯永相伴</string>
     <string name="fragment_describe_first_introduce">路漫漫其修远兮，吾将上下而求索。</string>
@@ -167,6 +178,7 @@
     <string name="personal_about_app">程序版本</string>
     <string name="personal_about_us">关于我们</string>
     <string name="personal_phone_func">来电提醒</string>
+    <string name="personal_selfie">自拍</string>
 
     <string name="connect_null_title">您的设备叫什么名字？</string>
     <string name="connect_null_info">请点击 + 选择您的设备。</string>

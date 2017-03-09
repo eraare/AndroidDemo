@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.guohua.mlight.view.activity.SelfieActivity">
+
+    <com.guohua.mlight.view.widget.CameraSurfaceView
+        android:id="@+id/csv_preview_selfie"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/iv_flash_selfie"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="left|top"
+        android:layout_margin="16dp"
+        android:src="@drawable/icon_flash_off" />
+
+    <ImageView
+        android:id="@+id/iv_set_selfie"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="right|top"
+        android:layout_margin="16dp"
+        android:src="@drawable/icon_settings" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@android:color/transparent"
+        android:padding="16dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_camera_selfie"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_take_picture"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1px" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_album_selfie"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical|left"
+            android:src="@drawable/icon_view_picture" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_switch_selfie"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical|right"
+            android:src="@drawable/icon_switch_camera" />
+    </FrameLayout>
+
+</FrameLayout>

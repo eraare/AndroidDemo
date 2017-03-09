@@ -174,18 +174,35 @@ public class TemperatureActivity extends AppCompatActivity {
             Iterator<String> iterator = keys.iterator();
             while (iterator.hasNext()) {
                 String address = iterator.next();
+                String name = getNameByAddress(address);
                 Line line = mLines.get(address);
                 int color = line.getColor();
                 String r = int2HexString(Color.red(color));
                 String g = int2HexString(Color.green(color));
                 String b = int2HexString(Color.blue(color));
 
-                String s = "<p><font color=\"#" + r + g + b + "\"><b>" + address + "</b></font></p>";
+                String s = "<font color=\"#" + r + g + b + "\"><b>" + name + "</b></font>&nbsp&nbsp";
                 sb.append(s);
             }
             System.out.println(sb.toString());
             Spanned spanned = Html.fromHtml(sb.toString());
             mShow.setText(spanned);
+        }
+
+        /**
+         * 根据地址获取名字
+         *
+         * @param address
+         * @return
+         */
+        private String getNameByAddress(String address) {
+            List<Device> devices = AppContext.getInstance().devices;
+            for (Device device : devices) {
+                if (TextUtils.equals(device.getDeviceAddress(), address)) {
+                    return device.getDeviceName();
+                }
+            }
+            return "Unknown Name";
         }
 
         private String int2HexString(int dec) {

@@ -74,10 +74,10 @@ public class SplashFragment extends BaseFragment {
         /*获取本地缓存的用户信息*/
         BmobUser currentUser = BmobUser.getCurrentUser();
         if (currentUser == null) {
-            /*去登陆*/
+            // 去登陆
             startActivity(new Intent(mContext, LoginActivity.class));
         } else {
-            /*可以使用*/
+            // 可以使用
             startActivity(new Intent(mContext, MainActivity.class));
         }
         /*退出当前页面*/

@@ -178,6 +178,8 @@
     <string name="personal_about_app">About App</string>
     <string name="personal_about_us">About Us</string>
     <string name="personal_phone_func">Call Reminder</string>
+    <string name="personal_selfie">Selfie</string>
+
 
     <string name="connect_null_title">What is the name of your device?</string>
     <string name="connect_null_info">Please click + select your device.</string>
