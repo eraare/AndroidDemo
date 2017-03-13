@@ -10,11 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -22,6 +19,7 @@ import android.widget.Toast;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.AppContext;
+import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.util.CodeUtils;
 import com.guohua.mlight.common.util.SceneModeSaveDiyGradientRamp;
@@ -39,17 +37,16 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+
 /**
  * @author Leo
  * @detail 主Fragment包括以下功能：开关调光调色延时关
  * @time 2015-10-29
  */
-public class HomeFragment extends Fragment {
-    private MainActivity mContext = null;
-    private ThreadPool pool = null;//线程池 向蓝牙设备发送控制数据等
-
+public class HomeFragment extends BaseFragment {
     public static final String TAG = HomeFragment.class.getSimpleName();
-    public static String TITLE = "";
     /**
      * 单例模式
      */
@@ -69,29 +66,42 @@ public class HomeFragment extends Fragment {
     /**
      * 布局中的控件
      */
-    private View rootView;//主布局
-    public ImageView switcher;//开关
-    private SeekBar lightness;//亮度调节
-    private SeekBar colorTemp;//色温
-    private TextView timerOn;//定时开灯
-    private TextView timerOff;//定时关灯
-    private TimerView timerFive;// 5分钟
-    private TimerView timerFifteen;// 15分钟
-    private TimerView timerThirty;//30分钟
-    private TimerView timerSixty;//60分钟
+    @BindView(R.id.iv_switch_main)
+    ImageView switcher;//开关
+    @BindView(R.id.sb_lightness_main)
+    SeekBar lightness;//亮度调节
+    @BindView(R.id.sb_color_temperature_main)
+    SeekBar colorTemp;//色温
+    @BindView(R.id.tv_timer_on_main)
+    TextView timerOn;//定时开灯
+    @BindView(R.id.tv_timer_off_main)
+    TextView timerOff;//定时关灯
+    @BindView(R.id.tv_timer_five_main)
+    TimerView timerFive;// 5分钟
+    @BindView(R.id.tv_timer_fifteen_main)
+    TimerView timerFifteen;// 15分钟
+    @BindView(R.id.tv_timer_thirty_main)
+    TimerView timerThirty;//30分钟
+    @BindView(R.id.tv_timer_sixty_main)
+    TimerView timerSixty;//60分钟
 
-    public static volatile boolean isLighting;//灯的状态
+    public volatile static boolean isLighting;//灯的状态
     private int currentBrightness;//当前亮度
     private int currentColor;//当前颜色值
     private int currentTemp;//当前色温
 
+    private ThreadPool pool = ThreadPool.getInstance();
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        init();
-        return rootView;
+    protected int getLayoutId() {
+        return R.layout.fragment_main;
+    }
+
+    @Override
+    protected void init(View view, Bundle savedInstanceState) {
+        super.init(view, savedInstanceState);
+        setupView();
+        initData();
     }
 
     /**
@@ -110,23 +120,12 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    /**
-     * 初始化数据和控件
-     */
-    private void init() {
-        mContext = (MainActivity) getActivity();
-        pool = ThreadPool.getInstance();
-        findViewsByIds();
-        initData();
-    }
-
     private String ISLIGHTINGTAG = "MainFragmentisLighting";
 
     /**
      * 初始化数据
      */
     private void initData() {
-        TITLE = getString(R.string.app_name);
         currentBrightness = 255;
         currentTemp = 255;
         currentColor = Color.WHITE;
@@ -241,23 +240,7 @@ public class HomeFragment extends Fragment {
     /**
      * 得到所有控件 并绑定相应的事件
      */
-    private void findViewsByIds() {
-        switcher = (ImageView) rootView.findViewById(R.id.iv_switch_main);
-        lightness = (SeekBar) rootView.findViewById(R.id.sb_lightness_main);
-        colorTemp = (SeekBar) rootView.findViewById(R.id.sb_color_temperature_main);
-        timerOn = (TextView) rootView.findViewById(R.id.tv_timer_on_main);
-        timerOff = (TextView) rootView.findViewById(R.id.tv_timer_off_main);
-        timerFive = (TimerView) rootView.findViewById(R.id.tv_timer_five_main);
-        timerFifteen = (TimerView) rootView.findViewById(R.id.tv_timer_fifteen_main);
-        timerThirty = (TimerView) rootView.findViewById(R.id.tv_timer_thirty_main);
-        timerSixty = (TimerView) rootView.findViewById(R.id.tv_timer_sixty_main);
-        // 绑定监听器
-        switcher.setOnClickListener(mOnClickListener);
-        timerOn.setOnClickListener(mOnClickListener);
-        timerFive.setOnClickListener(mOnClickListener);
-        timerFifteen.setOnClickListener(mOnClickListener);
-        timerThirty.setOnClickListener(mOnClickListener);
-        timerSixty.setOnClickListener(mOnClickListener);
+    private void setupView() {
         // 绑定滑动监听器
         lightness.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
         colorTemp.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
@@ -271,65 +254,64 @@ public class HomeFragment extends Fragment {
     /**
      * 相关的单击事件监听器
      */
-    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int id = v.getId();
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-            switch (id) {
-                case R.id.iv_switch_main: {
-                    switchLight();
-                }
-                break;
-                case R.id.tv_timer_on_main: {
-                    if (sp.getBoolean(Constants.EXIST_TIMER_OPEN, false)) {//存在定时开任务,则关闭定时开
-                        deleteLightTimer(true);
-                    } else {
-                        mContext.showDialogFragment(TimerFragment.TAG);
-                    }
-                }
-                break;
-                case R.id.tv_timer_five_main: {
-                    timerFive.changeState();
-                    if (timerFive.isSelected()) {
-                        openCloseLightTimer(TIMER_DELAY_1);
-                    } else {
-                        deleteLightTimer(false);
-                    }
-                }
-                break;
-                case R.id.tv_timer_fifteen_main: {
-                    timerFifteen.changeState();
-                    if (timerFifteen.isSelected()) {
-                        openCloseLightTimer(TIMER_DELAY_2);
-                    } else {
-                        deleteLightTimer(false);
-                    }
-                }
-                break;
-                case R.id.tv_timer_thirty_main: {
-                    timerThirty.changeState();
-                    if (timerThirty.isSelected()) {
-                        openCloseLightTimer(TIMER_DELAY_3);
-                    } else {
-                        deleteLightTimer(false);
-                    }
-                }
-                break;
-                case R.id.tv_timer_sixty_main: {
-                    timerSixty.changeState();
-                    if (timerSixty.isSelected()) {
-                        openCloseLightTimer(TIMER_DELAY_4);
-                    } else {
-                        deleteLightTimer(false);
-                    }
-                }
-                break;
-                default:
-                    break;
+    @OnClick({R.id.iv_switch_main, R.id.tv_timer_on_main, R.id.tv_timer_off_main, R.id.tv_timer_five_main,
+            R.id.tv_timer_fifteen_main, R.id.tv_timer_thirty_main, R.id.tv_timer_sixty_main})
+    public void onClick(View v) {
+        int id = v.getId();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        switch (id) {
+            case R.id.iv_switch_main: {
+                switchLight();
             }
+            break;
+            case R.id.tv_timer_on_main: {
+                if (sp.getBoolean(Constants.EXIST_TIMER_OPEN, false)) {//存在定时开任务,则关闭定时开
+                    deleteLightTimer(true);
+                } else {
+                    ((MainActivity) mContext).showDialogFragment(TimerFragment.TAG);
+                }
+            }
+            break;
+            case R.id.tv_timer_five_main: {
+                timerFive.changeState();
+                if (timerFive.isSelected()) {
+                    openCloseLightTimer(TIMER_DELAY_1);
+                } else {
+                    deleteLightTimer(false);
+                }
+            }
+            break;
+            case R.id.tv_timer_fifteen_main: {
+                timerFifteen.changeState();
+                if (timerFifteen.isSelected()) {
+                    openCloseLightTimer(TIMER_DELAY_2);
+                } else {
+                    deleteLightTimer(false);
+                }
+            }
+            break;
+            case R.id.tv_timer_thirty_main: {
+                timerThirty.changeState();
+                if (timerThirty.isSelected()) {
+                    openCloseLightTimer(TIMER_DELAY_3);
+                } else {
+                    deleteLightTimer(false);
+                }
+            }
+            break;
+            case R.id.tv_timer_sixty_main: {
+                timerSixty.changeState();
+                if (timerSixty.isSelected()) {
+                    openCloseLightTimer(TIMER_DELAY_4);
+                } else {
+                    deleteLightTimer(false);
+                }
+            }
+            break;
+            default:
+                break;
         }
-    };
+    }
 
     private void openCloseLightTimer(int timeDelay) {
         timerFive.selected(false);
@@ -365,11 +347,10 @@ public class HomeFragment extends Fragment {
     private void deleteLightTimer(boolean isOnOff) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         if (isOnOff) {//删除开灯定时器
-            ToastUtill.showToast(mContext, getString(R.string.cancel_open_light_timer) + "   "
-                    + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(sp.getLong(Constants.KEY_TIMER_OPEN, 0))), Constants.TOASTLENGTH).show();
+            mContext.toast(getString(R.string.cancel_open_light_timer) + "   "
+                    + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(sp.getLong(Constants.KEY_TIMER_OPEN, 0))));
 
             pool.addTask(new SendRunnable(CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_DELAY_OPEN, null)));
-
             objectOpenTime = 0;
             currentOpenTime = 0;
             sp.edit().putLong(Constants.KEY_TIMER_OPEN, 0).apply();
@@ -590,14 +571,14 @@ public class HomeFragment extends Fragment {
             data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SWITCH, new Object[]{CodeUtils.SWITCH_CLOSE});
 
             //关闭小夜灯
-            SceneFragment.mSceneAdapter.setState(false, 1);
+//            SceneFragment.mSceneAdapter.setState(false, 1);
 
             //关闭日出日落模式
             if (SceneSunGradientRampService.isRunning) {
                 Intent intent = new Intent(mContext, SceneSunGradientRampService.class);
                 mContext.stopService(intent);
                 SceneSunGradientRampService.isRunning = false;
-                SceneFragment.mSceneAdapter.setState(false, 2);
+//                SceneFragment.mSceneAdapter.setState(false, 2);
             }
 
             //关闭十面埋伏模式
@@ -611,11 +592,6 @@ public class HomeFragment extends Fragment {
                 SceneModeActivity.isSceneModeMusicOn = false;
                 SceneModeActivity.isSceneRgbModeOn = false;
                 SceneModeActivity.isSceneDiyModeOn = false;
-                //关闭红绿蓝水波纹
-                SceneFragment.mSceneAdapter.setState(false, 4);
-
-                //关闭炫彩渐变
-                SceneFragment.mSceneAdapter.setState(false, 5);
             }
 
         } else {
@@ -628,7 +604,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void run() {
                 for (int i = 0; i < 5; i++) {
-//                  pool.addTask(new SendRunnable(data));
                     AppContext.getInstance().sendAll(data);
                     try {
                         Thread.sleep(Constants.HANDLERDELAY / 3);
@@ -638,17 +613,6 @@ public class HomeFragment extends Fragment {
                 }
             }
         }).start();
-
-/*
-        for(int i = 0; i < 5; i++){
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    pool.addTask(new SendRunnable(data));
-                }
-            }, Constants.HANDLERDELAY*i);
-        }
-*/
     }
 
     private int brightnessRed = Color.red(Color.WHITE);
@@ -708,14 +672,9 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        PreferenceManager.getDefaultSharedPreferences(mContext).edit().putBoolean(ISLIGHTINGTAG, HomeFragment.isLighting).commit();
-        System.out.println("MainActivity onDestroy MainFragmentisLighting: " +
-                PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean(ISLIGHTINGTAG, HomeFragment.isLighting));
-
+    protected void suicide() {
+        super.suicide();
+        PreferenceManager.getDefaultSharedPreferences(mContext).edit().putBoolean(ISLIGHTINGTAG, HomeFragment.isLighting).apply();
         mContext.unregisterReceiver(mBroadcastReceiver);
-
-        super.onDestroy();
-
     }
 }

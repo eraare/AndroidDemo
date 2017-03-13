@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.guohua.mlight.R;
+import com.guohua.mlight.common.base.BaseActivity;
+import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.util.ShareUtils;
 import com.guohua.mlight.model.bean.OptionBean;
@@ -39,7 +41,7 @@ import cn.bmob.v3.BmobUser;
  *         #time 2016-08-25
  *         #detail 情景模式视图
  */
-public class CenterFragment extends Fragment {
+public class CenterFragment extends BaseFragment {
     public static final String TAG = CenterFragment.class.getSimpleName();
     // 单例模式获取此Fragment
     private static CenterFragment sceneFragment = null;
@@ -57,7 +59,6 @@ public class CenterFragment extends Fragment {
 
     public static final int CENTER_REQUEST_CODE = 1;
     /*绑定视图控件*/
-    private Unbinder mUnbinder;
     @BindView(R.id.ll_me_center)
     RelativeLayout mMeView; /*个人设置中心*/
     @BindView(R.id.iv_head_center)
@@ -69,24 +70,16 @@ public class CenterFragment extends Fragment {
     @BindView(R.id.rv_options_center)
     RecyclerView mOptionsView; /*操作项*/
 
-    private MainActivity mContext;
     private OptionAdapter mOptionAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_center, container, false);
-        mUnbinder = ButterKnife.bind(this, rootView);
-        init();//一些初始化
-        return rootView;
+    protected int getLayoutId() {
+        return R.layout.fragment_center;
     }
 
-    /**
-     * 初始化数据
-     */
-    private void init() {
-        mContext = (MainActivity) getActivity();
+    @Override
+    protected void init(View view, Bundle savedInstanceState) {
+        super.init(view, savedInstanceState);
         /*1 初始化选项*/
         initOptionsView();
         /*2 初始化个人信息*/

@@ -29,8 +29,6 @@ import com.guohua.mlight.model.bean.Device;
 import com.guohua.mlight.communication.BLEConstant;
 import com.guohua.mlight.view.fragment.DialogFragment;
 import com.guohua.mlight.view.fragment.HomeFragment;
-import com.guohua.mlight.view.fragment.MainFragment1;
-import com.guohua.mlight.view.fragment.SceneFragment;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.service.GradientRampService;
@@ -53,21 +51,6 @@ import butterknife.Unbinder;
  */
 public class PalletActivity extends AppCompatActivity {
     public static final String TAG = PalletActivity.class.getSimpleName();
-    /**
-     * 音例模式
-     */
-    private volatile static PalletActivity palletActivity = null;
-
-    public static PalletActivity getInstance() {
-        if (palletActivity == null) {
-            synchronized (MainFragment1.class) {
-                if (palletActivity == null) {
-                    palletActivity = new PalletActivity();
-                }
-            }
-        }
-        return palletActivity;
-    }
 
     private ThreadPool pool = null;
     /*绑定控件*/
@@ -247,14 +230,14 @@ public class PalletActivity extends AppCompatActivity {
             switcher.setImageResource(R.drawable.light_off);
 
             //关闭小夜灯
-            SceneFragment.mSceneAdapter.setState(false, 1);
+//            SceneFragment.mSceneAdapter.setState(false, 1);
 
             //关闭日出日落模式
             if (SceneSunGradientRampService.isRunning) {
                 Intent intent = new Intent(this, SceneSunGradientRampService.class);
                 this.stopService(intent);
                 SceneSunGradientRampService.isRunning = false;
-                SceneFragment.mSceneAdapter.setState(false, 2);
+//                SceneFragment.mSceneAdapter.setState(false, 2);
             }
 
             //关闭十面埋伏模式
@@ -269,10 +252,10 @@ public class PalletActivity extends AppCompatActivity {
                 SceneModeActivity.isSceneRgbModeOn = false;
                 SceneModeActivity.isSceneDiyModeOn = false;
                 //关闭红绿蓝水波纹
-                SceneFragment.mSceneAdapter.setState(false, 4);
+//                SceneFragment.mSceneAdapter.setState(false, 4);
 
                 //关闭炫彩渐变
-                SceneFragment.mSceneAdapter.setState(false, 5);
+//                SceneFragment.mSceneAdapter.setState(false, 5);
             }
         }
         //多发几次，保证开关

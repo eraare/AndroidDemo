@@ -1,67 +1,64 @@
 package com.guohua.mlight.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import com.guohua.mlight.R;
+import com.guohua.mlight.common.base.BaseActivity;
+import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
-import butterknife.Unbinder;
 
-public class HelpActivity extends AppCompatActivity {
+public class HelpActivity extends BaseActivity {
     /*绑定控件*/
     @BindView(R.id.lv_qa_help)
-    ListView qa;
-
-    private Unbinder unbinder;
+    ListView mQaView;
+    private QaAdapter mQaAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_help);
-        unbinder = ButterKnife.bind(this);
-        init();
+    protected int getContentViewId() {
+        return R.layout.activity_help;
     }
 
-    private void init() {
-        ArrayList<HashMap<String, String>> mData = new ArrayList<>();
-        HashMap<String, String> qa1 = new HashMap<>();
-        qa1.put("question", "Q:无法连接魔小灯设备？");
-        qa1.put("answer", "A:点“+”扫描设备，扫到设备后点击连接即可。");
-        mData.add(qa1);
-        HashMap<String, String> qa2 = new HashMap<>();
-        qa2.put("question", "Q:扫描不到魔小灯设备？");
-        qa2.put("answer", "A:设备是否打开？用系统蓝牙设置进行扫描。扫到设备，直接配对，返回程序点“+“，找到配对的设备，点击连接即可；若扫不到，请重启魔小灯设备。");
-        mData.add(qa2);
-        HashMap<String, String> qa3 = new HashMap<>();
-        qa3.put("question", "Q:连接后无法控制？");
-        qa3.put("answer", "A:设备是否离线？退出程序，清理后台。重启魔小灯APP，点击“+”，扫描设备，点击连接即可。");
-        mData.add(qa3);
-        HashMap<String, String> qa4 = new HashMap<>();
-        qa4.put("question", "Q:手机锁屏后，程序无法正常工作，如音乐律动停止？");
-        qa4.put("answer", "A:若为华为手机，可打开设置-受保护的后台应用，把魔小灯APP加入白名单即可；其他手机可查看后台程序，长按魔小灯程序即可锁定。");
-        mData.add(qa4);
-        HashMap<String, String> qa5 = new HashMap<>();
-        qa5.put("question", "Q:哪里购买魔小灯？");
-        qa5.put("answer", "A:点我即可");
-        mData.add(qa5);
+    @Override
+    protected BaseFragment getFirstFragment() {
+        return null;
+    }
 
-        SimpleAdapter mSimpleAdapter = new SimpleAdapter(this, mData, R.layout.item_qa_help,
-                new String[]{"question", "answer"}, new int[]{R.id.tv_question_qa, R.id.tv_answer_qa});
+    @Override
+    protected int getFragmentContainerId() {
+        return 0;
+    }
 
-        qa.setAdapter(mSimpleAdapter);
+    @Override
+    protected void init(Bundle savedInstanceState) {
+        super.init(savedInstanceState);
+        initListView();
+    }
+
+    private void initListView() {
+        mQaAdapter = new QaAdapter(this);
+        mQaView.setAdapter(mQaAdapter);
+        loadQaInfo();
+    }
+
+    private void loadQaInfo() {
+        mQaAdapter.addQa(new QaInfo("问题", "答案"));
     }
 
     @OnItemClick(R.id.lv_qa_help)
@@ -73,11 +70,71 @@ public class HelpActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (unbinder != null) {
-            unbinder.unbind();
+    /*QA Bean*/
+    private static class QaInfo {
+        String question; /*问题*/
+        String answer; /*答案*/
+
+        public QaInfo(String question, String answer) {
+            this.question = question;
+            this.answer = answer;
+        }
+    }
+
+    /*QA Adapter*/
+    class QaAdapter extends BaseAdapter {
+        private List<QaInfo> mDatas;
+        private LayoutInflater mInflater;
+
+        public QaAdapter(Context context) {
+            mInflater = LayoutInflater.from(context);
+            mDatas = new ArrayList<>();
+        }
+
+        @Override
+        public int getCount() {
+            return mDatas.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return mDatas.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            final ViewHolder holder;
+            if (view == null) {
+                view = mInflater.inflate(R.layout.item_qa_help, null);
+                holder = new ViewHolder(view);
+                view.setTag(holder);
+            } else {
+                holder = (ViewHolder) view.getTag();
+            }
+            QaInfo qaInfo = mDatas.get(i);
+            holder.question.setText(qaInfo.question);
+            holder.answer.setText(qaInfo.answer);
+            return view;
+        }
+
+        class ViewHolder {
+            @BindView(R.id.tv_question_qa)
+            TextView question;
+            @BindView(R.id.tv_answer_qa)
+            TextView answer;
+
+            public ViewHolder(View itemView) {
+                ButterKnife.bind(this, itemView);
+            }
+        }
+
+        public void addQa(QaInfo qaInfo) {
+            mDatas.add(qaInfo);
         }
     }
 }

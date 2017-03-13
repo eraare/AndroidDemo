@@ -26,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guohua.mlight.R;
+import com.guohua.mlight.common.base.BaseActivity;
+import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.service.ShakeService;
 import com.guohua.mlight.common.util.ToolUtils;
@@ -41,7 +43,8 @@ import butterknife.Unbinder;
  * @detail 摇一摇界面设计实现 可以切换摇一摇模式 开关或者随机变色
  * @time 2015-11-11
  */
-public class ShakeActivity extends AppCompatActivity {
+public class ShakeActivity extends BaseActivity {
+    public static final String ACTION_SHAKE_A_SHAKE = "shake_a_shake";
     /*Section: 绑定控件*/
     @BindView(R.id.sb_threshold_shake)
     SeekBar threshold;
@@ -57,19 +60,34 @@ public class ShakeActivity extends AppCompatActivity {
     TextView color;
     @BindView(R.id.s_background_shake)
     Switch background;
-    private Unbinder mUnbinder;
+
     private boolean isSwitch = true;//状态变量
     private int currentValue;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shake);
-        mUnbinder = ButterKnife.bind(this);
-        init();
+    protected int getContentViewId() {
+        return R.layout.activity_shake;
     }
 
-    public static final String ACTION_SHAKE_A_SHAKE = "shake_a_shake";
+    @Override
+    protected BaseFragment getFirstFragment() {
+        return null;
+    }
+
+    @Override
+    protected int getFragmentContainerId() {
+        return 0;
+    }
+
+    @Override
+    protected void init(Bundle savedInstanceState) {
+        super.init(savedInstanceState);
+        initValue();
+        initViews();
+
+        Intent service = new Intent(this, ShakeService.class);
+        bindService(service, mServiceConnection, BIND_AUTO_CREATE);
+    }
 
     @Override
     protected void onResume() {
@@ -78,19 +96,6 @@ public class ShakeActivity extends AppCompatActivity {
         mFilter.addAction(ACTION_SHAKE_A_SHAKE);
         mFilter.setPriority(Integer.MAX_VALUE);
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, mFilter);
-    }
-
-    /**
-     * 初始化数据和控件
-     */
-    private void init() {
-        initValue();
-        initViews();
-        /**
-         * 绑定服务
-         */
-        Intent service = new Intent(this, ShakeService.class);
-        bindService(service, mServiceConnection, BIND_AUTO_CREATE);
     }
 
     /**
@@ -258,15 +263,12 @@ public class ShakeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void suicide() {
+        super.suicide();
         if (methods != null) {
             methods = null;
         }
         unbindService(mServiceConnection);//解绑服务
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
-        }
     }
 
     public void back(View v) {

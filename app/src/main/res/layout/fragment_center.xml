@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:text="点此设置昵称"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_title" />
+                android:textSize="@dimen/text_size_subhead" />
 
             <TextView
                 android:id="@+id/tv_phone_center"

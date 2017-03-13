@@ -1,8 +1,8 @@
-package com.guohua.mlight.model.ai.impl;
+package com.guohua.mlight.model.strategy.impl;
 
 import android.graphics.Color;
 
-import com.guohua.mlight.model.ai.IColorStrategy;
+import com.guohua.mlight.model.strategy.IColorStrategy;
 
 /**
  * Created by Leo on 2015/11/17.

@@ -1,4 +1,4 @@
-package com.guohua.mlight.model.ai;
+package com.guohua.mlight.model.strategy;
 
 /**
  * @author Leo

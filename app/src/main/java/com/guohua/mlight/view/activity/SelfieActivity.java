@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.guohua.mlight.R;
+import com.guohua.mlight.common.base.BaseActivity;
+import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.util.CameraUtils;
 import com.guohua.mlight.communication.BLEConstant;
 import com.guohua.mlight.view.widget.CameraSurfaceView;
@@ -25,8 +27,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class SelfieActivity extends AppCompatActivity {
-    private Unbinder mUnbinder;
+public class SelfieActivity extends BaseActivity {
     @BindView(R.id.iv_flash_selfie)
     ImageView mFlashView;
     @BindView(R.id.iv_set_selfie)
@@ -43,10 +44,18 @@ public class SelfieActivity extends AppCompatActivity {
     private String currentPicturePath;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_selfie);
-        mUnbinder = ButterKnife.bind(this);
+    protected int getContentViewId() {
+        return R.layout.activity_selfie;
+    }
+
+    @Override
+    protected BaseFragment getFirstFragment() {
+        return null;
+    }
+
+    @Override
+    protected int getFragmentContainerId() {
+        return 0;
     }
 
     @OnClick({R.id.iv_flash_selfie, R.id.iv_set_selfie, R.id.civ_album_selfie, R.id.civ_camera_selfie, R.id.civ_switch_selfie})
@@ -129,14 +138,6 @@ public class SelfieActivity extends AppCompatActivity {
         filter.addAction(BLEConstant.ACTION_RECEIVED_SELFIE);
         filter.setPriority(Integer.MAX_VALUE);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBroadcastReceiver, filter);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
-        }
     }
 
     /**

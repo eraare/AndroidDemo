@@ -14,6 +14,7 @@ public final class BLEConstant {
     public static final String ACTION_RECEIVED_VERSION = "action.RECEIVED_VERSION";
     public static final String ACTION_RECEIVED_TEMPERATURE = "action.RECEIVED_TEMPERATURE";
     public static final String ACTION_RECEIVED_VOLTAGE = "action.RECEIVED_VOLTAGE";
+    public static final String ACTION_RECEIVED_SELFIE = "action.RECEIVED_SELFIE";
 
     public static final String ACTION_BLE_CONNECTED = "action.BLE_CONNECTED";
     public static final String ACTION_BLE_DISCONNECTED = "action_BLE_DISCONNECTED";

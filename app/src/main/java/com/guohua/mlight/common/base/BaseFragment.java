@@ -55,7 +55,8 @@ public abstract class BaseFragment extends Fragment {
      * @param view
      * @param savedInstanceState
      */
-    protected abstract void init(View view, Bundle savedInstanceState);
+    protected void init(View view, Bundle savedInstanceState) {
+    }
 
     /**
      * 获取布局Id

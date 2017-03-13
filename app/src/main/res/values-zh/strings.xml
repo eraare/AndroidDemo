@@ -69,19 +69,31 @@
     <string name="hour">时</string>
     <string name="minute">分</string>
 
-    <!--SceneFragment.java中用到的文字-->
-    <string name="colorpallet">七彩调色盘</string>
+    <!--SceneFragment.java和fragment_scene.xml中用到的文字-->
+    <string name="scene_color_pallet">调色盘</string>
+    <string name="scene_colorful_gradient">炫彩渐变</string>
+    <string name="scene_warm_light">小夜灯</string>
+    <string name="scene_set_password">设置密码</string>
+    <string name="scene_change_name">更改灯名</string>
+    <string name="scene_preset_color">预置灯色</string>
+    <string name="scene_music_rythm">音乐律动</string>
+    <string name="scene_shake_shake">摇一摇</string>
+    <string name="scene_temperature">温度监测</string>
+    <string name="scene_selfie">自拍</string>
+
+    <string name="colorpallet">调色盘</string>
     <string name="colorpallet_description">随心所欲，调制您的颜料，漾出一片色空</string>
-    <string name="warmnight">温馨小夜灯</string>
+    <string name="warmnight">小夜灯</string>
     <string name="warmnight_description">一键调出温馨色调，暖暖的进入梦乡</string>
     <string name="sunmode">太阳升又落</string>
     <string name="sunmode_description">模拟太阳东升西落的光线变化</string>
-    <string name="defaultmode">十面埋伏</string>
+    <string name="defaultmode">炫彩渐变</string>
     <string name="defaultmode_description">给你的生活绣上十面百色花</string>
     <string name="rgbwave">三色渐渐变</string>
     <string name="rgbwave_description">红绿蓝三原色同时渐变</string>
     <string name="diyshine">炫彩渐渐变</string>
     <string name="diyshine_description">赤橙黄绿青蓝紫，谁持彩练当空舞</string>
+
 
     <!--GroupFragment.java 和 fragment_group.xml中用到的文字-->
     <string name="group_device_detele">删除</string>

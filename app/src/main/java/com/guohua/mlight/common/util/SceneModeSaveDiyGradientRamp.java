@@ -26,14 +26,14 @@ public class SceneModeSaveDiyGradientRamp {
         String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SAVE_DIY_NUM, new Object[]{diyModeNum});
         ThreadPool.getInstance().addTask(new SendRunnable(data));*/
         refreshDelay.sendEmptyMessageDelayed(0, Constants.HANDLERDELAY);
-        SceneFragment.mSceneAdapter.setState(true, 3);
+//        SceneFragment.mSceneAdapter.setState(true, 3);
     }
 
     public static void destroy() {
         isRunning = false;
         String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_MUSIC_OFF, null);
         ThreadPool.getInstance().addTask(new SendRunnable(data));
-        SceneFragment.mSceneAdapter.setState(false, 3);
+//        SceneFragment.mSceneAdapter.setState(false, 3);
     }
 
     public static Handler refreshDelay = new Handler() {

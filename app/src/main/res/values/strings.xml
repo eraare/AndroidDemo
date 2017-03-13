@@ -75,7 +75,18 @@
     <string name="hour">hour</string>
     <string name="minute">minute</string>
 
-    <!--SceneFragment.java中用到的文字-->
+    <!--SceneFragment.java和fragment_scene.xml中用到的文字-->
+    <string name="scene_color_pallet">调色盘</string>
+    <string name="scene_colorful_gradient">炫彩渐变</string>
+    <string name="scene_warm_light">小夜灯</string>
+    <string name="scene_set_password">设置密码</string>
+    <string name="scene_change_name">更改灯名</string>
+    <string name="scene_preset_color">预置灯色</string>
+    <string name="scene_music_rythm">音乐律动</string>
+    <string name="scene_shake_shake">摇一摇</string>
+    <string name="scene_temperature">温度监测</string>
+    <string name="scene_selfie">自拍</string>
+
     <string name="colorpallet">Color Palette</string>
     <string name="colorpallet_description">Customize the color using a palette</string>
     <string name="warmnight">Warm Night</string>

@@ -25,7 +25,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -37,15 +36,14 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.guohua.ios.dialog.AlertDialog;
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.AppContext;
+import com.guohua.mlight.common.base.BaseActivity;
+import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.util.CodeUtils;
 import com.guohua.mlight.common.util.ToolUtils;
 import com.guohua.mlight.communication.BLEConstant;
 import com.guohua.mlight.communication.BLERecord;
-import com.guohua.mlight.guard.WatcherKingService;
-import com.guohua.mlight.guard.WatcherQueenService;
 import com.guohua.mlight.model.bean.Device;
-import com.guohua.mlight.upgrade.UpgradeManager;
 import com.guohua.mlight.view.adapter.FragmentAdapter;
 import com.guohua.mlight.view.fragment.CenterFragment;
 import com.guohua.mlight.view.fragment.DialogFragment;
@@ -56,8 +54,6 @@ import com.guohua.mlight.view.widget.TitleView;
 
 import butterknife.BindArray;
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * @author Leo
@@ -65,19 +61,16 @@ import butterknife.Unbinder;
  * @time 2015-10-29
  */
 @SuppressLint("NewApi")
-public class MainActivity extends AppCompatActivity {
-    private static final String TAG = MainActivity.class.getSimpleName();
+public class MainActivity extends BaseActivity {
+    private String deviceName; //设备名称
+    private String deviceAddress; //设备MAC地址
+    private String password; //设备的控制密码
 
-    private String deviceName;//设备名称
-    private String deviceAddress;
-    private String password;//设备的控制密码
-
+    /*扫描用到的辅助变量*/
     private BluetoothAdapter mBluetoothAdapter;
     private boolean mScanning = false;// 循环标志位
     private static final long SCAN_PERIOD = 10000;// 扫描10s
-
     private Handler mHandler;//用于两个类之前的消息传递
-    private UpgradeManager upgradeManager;
 
     /*绑定控件*/
     @BindView(R.id.tv_title_main)
@@ -86,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationBar mBarView;
     @BindView(R.id.vp_pager_main)
     ViewPager mPagerView;
-    private Unbinder mUnbinder;
     /*绑定数组*/
     @BindArray(R.array.activity_titles_main)
     String[] mTitles; // 显示在底部标签栏的标题
@@ -112,17 +104,30 @@ public class MainActivity extends AppCompatActivity {
     private FragmentAdapter mFragmentAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mUnbinder = ButterKnife.bind(this);
-        init();//初始化数据和控件
+    protected int getContentViewId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected BaseFragment getFirstFragment() {
+        return null;
+    }
+
+    @Override
+    protected int getFragmentContainerId() {
+        return 0;
+    }
+
+    @Override
+    protected void init(Bundle savedInstanceState) {
+        super.init(savedInstanceState);
+        initial();
     }
 
     /**
      * 初始化操作
      */
-    private void init() {
+    private void initial() {
         /*1 初始化底部导航条*/
         initBottomNavigationBar();
         /*2 初始化ViewPager*/
@@ -347,28 +352,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 启动守护进程
-     */
-    private void startGuard() {
-        Intent kingService = new Intent(this, WatcherKingService.class);
-        startService(kingService);
-
-        Intent queenService = new Intent(this, WatcherQueenService.class);
-        startService(queenService);
-    }
-
-    /**
-     * 关闭守护进程
-     */
-    private void stopGuard() {
-        Intent kingService = new Intent(this, WatcherKingService.class);
-        stopService(kingService);
-
-        Intent queenService = new Intent(this, WatcherQueenService.class);
-        stopService(queenService);
-    }
-
-    /**
      * 安全启动Activity
      *
      * @param intent
@@ -394,13 +377,6 @@ public class MainActivity extends AppCompatActivity {
                 DialogFragment.getInstance().onResult(new Device(deviceName, deviceAddress, true));
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver);
-        AppContext.getInstance().exitApplication();
     }
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
@@ -456,28 +432,9 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(mBroadcastReceiver, mIntentFilter);
     }
 
-    /*Section: Debug Log System.out.println*/
-    private boolean isDebug = true; //调试模式
-
-    /**
-     * 以Log.d的方式输出调试信息
-     *
-     * @param message
-     */
-    private void dl(String message) {
-        if (isDebug) {
-            Log.d(TAG, message);
-        }
-    }
-
-    /**
-     * 以System.out.println()的方式输出调试信息
-     *
-     * @param message
-     */
-    private void dp(String message) {
-        if (isDebug) {
-            System.out.println(TAG + ": " + message);
-        }
+    @Override
+    protected void suicide() {
+        super.suicide();
+        AppContext.getInstance().exitApplication();
     }
 }

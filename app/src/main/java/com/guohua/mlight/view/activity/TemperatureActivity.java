@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.R;
+import com.guohua.mlight.common.base.BaseActivity;
+import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.model.bean.Device;
 import com.guohua.mlight.communication.BLEConstant;
 
@@ -49,11 +51,26 @@ import lecho.lib.hellocharts.view.LineChartView;
  * @see "温度监测图标显示"
  * @since 2016-11-1
  */
-public class TemperatureActivity extends AppCompatActivity {
+public class TemperatureActivity extends BaseActivity {
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_temperature);
+    protected int getContentViewId() {
+        return R.layout.activity_temperature;
+    }
+
+    @Override
+    protected BaseFragment getFirstFragment() {
+        return null;
+    }
+
+    @Override
+    protected int getFragmentContainerId() {
+        return 0;
+    }
+
+    @Override
+    protected void init(Bundle savedInstanceState) {
+        super.init(savedInstanceState);
         // 加载图表Fragment
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.fl_container_temperature,

@@ -11,13 +11,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.R;
+import com.guohua.mlight.common.base.AppContext;
+import com.guohua.mlight.common.config.Constants;
+import com.guohua.mlight.common.util.CodeUtils;
 import com.guohua.mlight.model.bean.Device;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
-import com.guohua.mlight.common.util.CodeUtils;
-import com.guohua.mlight.common.config.Constants;
 
 /**
  * @author Leo
@@ -45,7 +45,6 @@ public class SettingsDialog {
                         saveThePassword(context, deviceAddress, newString);
                         CodeUtils.setPassword(newString);
                         ThreadPool.getInstance().addTask(new SendRunnable(deviceAddress, data));
-                        System.out.println(" SettingsDialog changePassword deviceAddress: " + deviceAddress + "; data:  " + data);
                         Toast.makeText(context, R.string.settings_warning, Toast.LENGTH_LONG).show();
                     }
                 }).setNegativeButton(R.string.settings_negative, null).show();

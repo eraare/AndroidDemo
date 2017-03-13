@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
@@ -15,14 +14,15 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.guohua.mlight.R;
+import com.guohua.mlight.common.base.BaseActivity;
+import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
-import com.guohua.mlight.model.ai.IObserver;
+import com.guohua.mlight.model.observer.IObserver;
 import com.guohua.mlight.service.VisualizerService;
 import com.guohua.mlight.common.util.ToolUtils;
 import com.guohua.mlight.view.widget.VisualizerView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 
 /**
@@ -30,7 +30,7 @@ import butterknife.OnCheckedChanged;
  * @detail 音乐律动时频谱的显示
  * @time 2015-11-17
  */
-public class VisualizerActivity extends AppCompatActivity implements IObserver {
+public class VisualizerActivity extends BaseActivity implements IObserver {
     /*Section: 绑定控件*/
     @BindView(R.id.vv_show_visualizer)
     VisualizerView mVisualizerView;
@@ -40,22 +40,27 @@ public class VisualizerActivity extends AppCompatActivity implements IObserver {
     SeekBar personal;
     @BindView(R.id.s_background_visualizer)
     Switch background;
-    //private Unbinder unbinder;
     /*Section: 属性*/
     private int value;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_visualizer);
-        ButterKnife.bind(this);
-        init();
+    protected int getContentViewId() {
+        return R.layout.activity_visualizer;
     }
 
-    /**
-     * 初始化控件及数据
-     */
-    private void init() {
+    @Override
+    protected BaseFragment getFirstFragment() {
+        return null;
+    }
+
+    @Override
+    protected int getFragmentContainerId() {
+        return 0;
+    }
+
+    @Override
+    protected void init(Bundle savedInstanceState) {
+        super.init(savedInstanceState);
         initValues();
         initViews();
         Intent service = new Intent(this, VisualizerService.class);
@@ -172,12 +177,9 @@ public class VisualizerActivity extends AppCompatActivity implements IObserver {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void suicide() {
+        super.suicide();
         unbindService(mServiceConnection);
-        /*if (unbinder != null) {
-            unbinder.unbind();
-        }*/
     }
 
     public void back(View v) {
