@@ -41,7 +41,8 @@ public final class Constants {
     /**
      * 网址
      */
-    public static final String OFFICIAL_WEBSITE = "http://www.guohua-oet.com";
+    public static final String OFFICIAL_WEBSITE = "http://www.guohua-net.cn";
+    public static final String FEEDBACK_WEBSITE = "http://www.guohua-net.cn/message.html";
     public static final String UPGRADE_ADDRESS = "http://www.guohua-net.com/magiclamp/mlight-upgrade.xml";
 //    public static final String SPLASH_ADDRESS = "http://www.guohua-net.com/magiclamp/splash.xml";
 
@@ -206,8 +207,8 @@ public final class Constants {
 
     //来电提醒模式
     public static int REMINDERLIGHTSHINEMODE[][] = {{124, 111, 0, 0, 10, 0, 0, 121},
-                                                     {122, 0, 111, 0, 0, 10, 0, 121},
-                                                     {121, 0, 0, 111, 0, 0, 10, 121}};
+            {122, 0, 111, 0, 0, 10, 0, 121},
+            {121, 0, 0, 111, 0, 0, 10, 121}};
 
     //来电提醒模式的Scene id标识值
     public static int CALLREMINDERMODEID = -2;

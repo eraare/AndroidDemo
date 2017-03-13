@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/greya"
     android:orientation="vertical"
-    tools:context=".view.activity.AboutActivity">
+    tools:context=".view.activity.AppActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/personal_about_app"
+            android:text="@string/center_about_app"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white" />
     </RelativeLayout>

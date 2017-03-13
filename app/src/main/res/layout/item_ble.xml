@@ -28,13 +28,5 @@
             android:text="device address" />
 
     </LinearLayout>
-    <CheckBox
-        android:id="@+id/cb_select_scandev"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:padding="@dimen/icon_padding"
-        android:layout_weight="1"
-        />
 </LinearLayout>
 

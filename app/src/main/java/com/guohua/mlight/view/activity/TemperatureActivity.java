@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spanned;
@@ -74,7 +75,7 @@ public class TemperatureActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BLEConstant.ACTION_RECEIVED_TEMPERATURE);
         intentFilter.setPriority(Integer.MAX_VALUE);
-        registerReceiver(mBroadcastReceiver, intentFilter);
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBroadcastReceiver, intentFilter);
     }
 
     /**
@@ -108,7 +109,7 @@ public class TemperatureActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         // 取消广播接收器
-        unregisterReceiver(mBroadcastReceiver);
+        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(mBroadcastReceiver);
     }
 
     /*Section: 视图Fragment*/
@@ -174,18 +175,35 @@ public class TemperatureActivity extends AppCompatActivity {
             Iterator<String> iterator = keys.iterator();
             while (iterator.hasNext()) {
                 String address = iterator.next();
+                String name = getNameByAddress(address);
                 Line line = mLines.get(address);
                 int color = line.getColor();
                 String r = int2HexString(Color.red(color));
                 String g = int2HexString(Color.green(color));
                 String b = int2HexString(Color.blue(color));
 
-                String s = "<p><font color=\"#" + r + g + b + "\"><b>" + address + "</b></font></p>";
+                String s = "<font color=\"#" + r + g + b + "\"><b>" + name + "</b></font>&nbsp&nbsp";
                 sb.append(s);
             }
             System.out.println(sb.toString());
             Spanned spanned = Html.fromHtml(sb.toString());
             mShow.setText(spanned);
+        }
+
+        /**
+         * 根据地址获取名字
+         *
+         * @param address
+         * @return
+         */
+        private String getNameByAddress(String address) {
+            List<Device> devices = AppContext.getInstance().devices;
+            for (Device device : devices) {
+                if (TextUtils.equals(device.getDeviceAddress(), address)) {
+                    return device.getDeviceName();
+                }
+            }
+            return "Unknown Name";
         }
 
         private String int2HexString(int dec) {

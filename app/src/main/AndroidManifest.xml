@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <!-- Bmob用到的权限 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -23,6 +25,8 @@
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <!-- 加入persistent提高程序的系统优先级让程序不被轻易杀死 -->
     <application
@@ -61,42 +65,33 @@
         <activity
             android:name=".view.activity.MeActivity"
             android:screenOrientation="portrait" />
-        <!--
-            <activity
-            android:name=".library.ScanBluetoothDevice"
-            android:screenOrientation="portrait" />
-        -->
-        <!-- 主Activity -->
         <activity
             android:name=".view.activity.MainActivity"
-            android:configChanges="keyboard"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <!-- 设置界面 -->
-        <!--
-            <activity
-            android:name="com.guohua.mlight.view.activity.SettingsActivity"
-            android:screenOrientation="portrait" />
-        -->
-        <!-- 扫描蓝牙设备 -->
-        <!-- 音乐律动和摇一摇功能 -->
         <activity
             android:name=".view.activity.ShakeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.VisualizerActivity"
             android:screenOrientation="portrait" />
-        <!--
-            <activity
-            android:name="com.guohua.mlight.view.activity.SelfieActivity"
-            android:screenOrientation="portrait" />
-        -->
         <activity
-            android:name=".view.activity.AboutActivity"
+            android:name=".view.activity.SelfieActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
+        <activity
+            android:name=".view.activity.AppActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.HelpActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.UsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.TemperatureActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen" />
         <!-- 以下是BLE通信 -->
         <activity
             android:name=".communication.BLEActivity"
@@ -106,92 +101,27 @@
         <service android:name=".service.ShakeService" />
 
         <!-- 日出日落模式服务 -->
-        <service
-            android:name=".service.SceneSunGradientRampService"
-            android:enabled="true"
-            android:exported="true">
+        <service android:name=".service.SceneSunGradientRampService">
             <intent-filter>
                 <action android:name="com.guohua.glight.service.SceneSunGradientRampService" />
             </intent-filter>
         </service>
 
         <!-- 渐变模式服务 -->
-        <service
-            android:name=".service.GradientRampService"
-            android:enabled="true"
-            android:exported="true">
+        <service android:name=".service.GradientRampService">
             <intent-filter>
                 <action android:name="com.guohua.glight.service.GradientRampService" />
             </intent-filter>
         </service>
 
         <!-- 情景模式服务 -->
-        <service
-            android:name=".service.DriveModeService"
-            android:enabled="true"
-            android:exported="true">
+        <service android:name=".service.DriveModeService">
             <intent-filter>
                 <action android:name="com.guohua.glight.service.DriveModeService" />
             </intent-filter>
         </service>
 
-        <!-- 下载服务和连接服务 -->
-        <!-- 双进程守护防止程序被杀死 -->
-        <!-- <service -->
-        <!-- android:name="com.guohua.mlight.guard.WatcherKingService" -->
-        <!-- android:enabled="true" -->
-        <!-- android:exported="true" -->
-        <!-- android:process=":KingService"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="com.guohua.glight.service.WatcherKingService" /> -->
-        <!-- </intent-filter> -->
-        <!-- </service> -->
-        <!-- <service -->
-        <!-- android:name="com.guohua.mlight.guard.WatcherQueenService" -->
-        <!-- android:enabled="true" -->
-        <!-- android:exported="true" -->
-        <!-- android:process=":QueenService"> -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="com.guohua.glight.service.WatcherQueenService" /> -->
-        <!-- </intent-filter> -->
-        <!-- </service> -->
-        <!-- 蓝牙通信服务 -->
-        <!--
-        <service
-            android:name="com.guohua.mlight.library.BluetoothSPPService"
-            android:enabled="true"
-            android:process=":remote"
-            android:exported="true">&lt;!&ndash;android:process=":remote"&ndash;&gt;
-            <intent-filter>
-                <action android:name="com.guohua.glight.service.BluetoothSPPService" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </service>
-        -->
-        <!-- 蓝牙BLE通信服务 -->
-        <!--
-        <service android:name="com.guohua.mlight.communication.BLEService"
-            android:enabled="true"
-            android:process=":remote"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.guohua.glight.service.BLEService" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </service>
-        -->
         <service android:name=".communication.BLEService" />
-
-        <!-- 接收通知的NotificationService -->
-        <!--
-        <service
-            android:name=".service.NotificationService"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-            <intent-filter>
-                <action android:name="android.service.notification.NotificationListenerService" />
-            </intent-filter>
-        </service>
-        -->
 
         <receiver android:name=".receiver.TelephonyReceiver">
             <intent-filter android:priority="2147483647">
@@ -199,11 +129,7 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".view.activity.TemperatureActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.FullScreen" />
-        <activity android:name=".view.activity.TesterActivity"></activity>
+        <activity android:name=".view.activity.TesterActivity" />
     </application>
 
 </manifest>

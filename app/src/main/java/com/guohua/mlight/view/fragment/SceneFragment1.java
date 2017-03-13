@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,29 +33,29 @@ import com.guohua.mlight.view.widget.RecyclerViewDivider;
  *         #time 2016-08-25
  *         #detail 情景模式视图
  */
-public class SceneFragment extends Fragment {
-    public static final String TAG = SceneFragment.class.getSimpleName();
+public class SceneFragment1 extends Fragment {
+    public static final String TAG = SceneFragment1.class.getSimpleName();
     public static String TITLE = "";
     // 单例模式获取此Fragment
-    private static SceneFragment sceneFragment = null;
+    private static SceneFragment1 sceneFragment = null;
 
     /**
      * 单例模式保证自始至终只有一个实例
      *
      * @return
      */
-    public static SceneFragment newInstance() {
+    public static SceneFragment1 newInstance() {
         if (sceneFragment == null) {
-            synchronized (SceneFragment.class) {
+            synchronized (SceneFragment1.class) {
                 if (sceneFragment == null) {
-                    sceneFragment = new SceneFragment();
+                    sceneFragment = new SceneFragment1();
                 }
             }
         }
         return sceneFragment;
     }
 
-    public SceneFragment() {
+    public SceneFragment1() {
         // Required empty public constructor
     }
 
@@ -115,17 +115,17 @@ public class SceneFragment extends Fragment {
                     break;
                     case 1: {
                         if (mSceneAdapter.changeState(tag)) {
-                            SceneFragment.mSceneAdapter.setState(true, 1);
+                            SceneFragment1.mSceneAdapter.setState(true, 1);
                             // 暖黄色
                             String data = CodeUtils.transARGB2Protocol(Constants.COLORMOONMODE);
 
                             //多发几次，保证发送成功
-                            for (int i = 0; i < 10; i++) {
+                            for(int i = 0; i < 10; i++){
                                 ThreadPool.getInstance().addTask(new SendRunnable(data));
                             }
 
                         } else {
-                            SceneFragment.mSceneAdapter.setState(false, 1);
+                            SceneFragment1.mSceneAdapter.setState(false, 1);
                         }
                     }
                     break;
@@ -152,7 +152,7 @@ public class SceneFragment extends Fragment {
                     case 4: {
                         if (mSceneAdapter.changeState(tag)) {
                             //如果开启了Diy模式，还需先关闭Diy
-                            if (SceneModeActivity.isSceneDiyModeOn) {
+                            if(SceneModeActivity.isSceneDiyModeOn){
                                 Intent service = new Intent(mContext, GradientRampService.class);
                                 mContext.stopService(service);
                                 SceneModeActivity.isSceneDiyModeOn = false;
@@ -175,7 +175,7 @@ public class SceneFragment extends Fragment {
                     case 5: {
                         if (mSceneAdapter.changeState(tag)) {
                             //如果开启了RGB模式，还需先关闭RGB WAVE
-                            if (SceneModeActivity.isSceneRgbModeOn) {
+                            if(SceneModeActivity.isSceneRgbModeOn){
                                 Intent service = new Intent(mContext, GradientRampService.class);
                                 mContext.stopService(service);
                                 SceneModeActivity.isSceneRgbModeOn = false;
@@ -207,9 +207,8 @@ public class SceneFragment extends Fragment {
 
     private void findViewsByIds() {
         mSceneView = (RecyclerView) rootView.findViewById(R.id.rv_scene_scene);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 3);
-        mSceneView.setLayoutManager(gridLayoutManager);
+        mSceneView.setLayoutManager(new LinearLayoutManager(mContext));
         mSceneView.setItemAnimator(new DefaultItemAnimator());
-//        mSceneView.addItemDecoration(new RecyclerViewDivider(mContext, OrientationHelper.VERTICAL));
+        mSceneView.addItemDecoration(new RecyclerViewDivider(mContext, OrientationHelper.VERTICAL));
     }
 }

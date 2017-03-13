@@ -1,16 +1,12 @@
 package com.guohua.mlight.common.base;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
@@ -37,31 +33,23 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*1 处理全屏或其他窗口*/
-        //steepStatusBar();
-        //setStatusBarTransparent();
         setContentView(getContentViewId());
-        //StatusBarCompat.setStatusBarColor(this, getResources().getColor(R.color.main), true);
-        /*2 添加Activity到Application*/
-        //AppContext.getInstance().addActivity(this);
-        /*3 绑定控件*/
+        /*1 绑定控件*/
         mUnbinder = ButterKnife.bind(this);
-        /*4 处理传递的Intent数据*/
-        if (null != getIntent()) {
-            handleIntent(getIntent());
-        }
-        /*5 Activity的相关初始化*/
+        /*2 处理传递的Intent数据*/
+        handleIntent(getIntent());
+        /*3 Activity的相关初始化*/
         init(savedInstanceState);
-        /*6 配置第一个Fragment*/
+        /*4 配置第一个Fragment*/
         setupFirstFragment();
-        /*7 一些特殊需要在onCreate完成后进行*/
+        /*5 一些特殊需要在onCreate完成后进行*/
         initAfterCreate();
     }
 
     /**
      * onCreate()后onStart()前进行的只有一次的初始化
      */
-    public void initAfterCreate() {
+    protected void initAfterCreate() {
     }
 
     /**
@@ -72,42 +60,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             BaseFragment firstFragment = getFirstFragment();
             if (null != firstFragment) {
                 addFragment(firstFragment);
-                /*String tag = firstFragment.getClass().getSimpleName();
-                FragmentManager manager = getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                transaction.replace(getFragmentContainerId(), firstFragment, tag);
-                transaction.commit();*/
             }
-        }
-    }
-
-    /**
-     * 设置沉浸式状态栏
-     */
-    private void steepStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // 透明状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 透明导航栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
-    }
-
-    /**
-     * 将状态栏透明化
-     */
-    public void setStatusBarTransparent() {
-        //5.0及以上
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            View decorView = getWindow().getDecorView();
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            decorView.setSystemUiVisibility(option);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-            //4.4到5.0
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            WindowManager.LayoutParams localLayoutParams = getWindow().getAttributes();
-            localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
         }
     }
 
@@ -130,7 +83,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * onCreate()阶段的一些初始化
      */
-    protected abstract void init(Bundle savedInstanceState);
+    protected void init(Bundle savedInstanceState) {
+    }
 
     /**
      * 添加fragment到activity

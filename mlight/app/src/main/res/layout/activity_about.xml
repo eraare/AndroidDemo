@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/greya"
     android:orientation="vertical"
-    tools:context="com.guohua.mlight.view.activity.AboutActivity">
+    tools:context="com.guohua.mlight.view.activity.AppActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

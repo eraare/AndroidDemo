@@ -82,13 +82,13 @@ public class TitleView extends RelativeLayout {
                     leftTitleValue = ta.getString(i);
                     break;
                 case R.styleable.TitleView_leftIcon:
-                    leftIconValue = ta.getResourceId(i, R.drawable.icon_back);
+                    leftIconValue = ta.getResourceId(i, R.drawable.icon_add);
                     break;
                 case R.styleable.TitleView_rightTitle:
                     rightTitleValue = ta.getString(i);
                     break;
                 case R.styleable.TitleView_rightIcon:
-                    rightIconValue = ta.getResourceId(i, R.drawable.icon_back);
+                    rightIconValue = ta.getResourceId(i, R.drawable.icon_add);
                     break;
                 default:
                     break;
@@ -126,7 +126,7 @@ public class TitleView extends RelativeLayout {
                 case R.id.ll_left_title: {
                     if (mOnLeftClickListener != null) {
                         mOnLeftClickListener.onLeftClick(v);
-                    }else {
+                    } else {
 
                     }
                 }

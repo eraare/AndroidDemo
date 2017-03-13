@@ -20,18 +20,18 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.R;
+import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.config.Constants;
-import com.guohua.mlight.view.activity.MainActivity;
-import com.guohua.mlight.view.activity.SceneModeActivity;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.util.SceneModeSaveDiyGradientRamp;
+import com.guohua.mlight.common.util.ToastUtill;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.service.GradientRampService;
 import com.guohua.mlight.service.SceneSunGradientRampService;
-import com.guohua.mlight.common.util.CodeUtils;
-import com.guohua.mlight.common.util.SceneModeSaveDiyGradientRamp;
-import com.guohua.mlight.common.util.ToastUtill;
+import com.guohua.mlight.view.activity.MainActivity;
+import com.guohua.mlight.view.activity.SceneModeActivity;
 import com.guohua.mlight.view.widget.TimerView;
 
 import java.text.SimpleDateFormat;
@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
      * 布局中的控件
      */
     private View rootView;//主布局
-    public  ImageView switcher;//开关
+    public ImageView switcher;//开关
     private SeekBar lightness;//亮度调节
     private SeekBar colorTemp;//色温
     private TextView timerOn;//定时开灯
@@ -101,10 +101,10 @@ public class HomeFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         // TODO Auto-generated method stub
         super.onHiddenChanged(hidden);
-        if(isLighting){
+        if (isLighting) {
             System.out.println("Mainfagment R.drawable.icon_light_on");
             switcher.setImageResource(R.drawable.icon_light_on);
-        }else{
+        } else {
             System.out.println("Mainfagment R.drawable.icon_light_off");
             switcher.setImageResource(R.drawable.icon_light_off);
         }
@@ -133,9 +133,9 @@ public class HomeFragment extends Fragment {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         isLighting = sp.getBoolean(ISLIGHTINGTAG, true);
         System.out.println("HomeFragment initData MainFragmentisLighting: " + isLighting);
-        if(isLighting){
+        if (isLighting) {
             switcher.setImageResource(R.drawable.icon_light_on);
-        }else{
+        } else {
             switcher.setImageResource(R.drawable.icon_light_off);
         }
         lightness.setProgress(currentBrightness);
@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment {
         initTimer();
     }
 
-    public void initTimer(){
+    public void initTimer() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         objectOpenTime = sp.getLong(Constants.KEY_TIMER_OPEN, 0);
         long now = System.currentTimeMillis();
@@ -155,13 +155,13 @@ public class HomeFragment extends Fragment {
             timerOn.setText(getString(R.string.cancel_open_light_timer) + "   " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(objectOpenTime)));
 
             Toast.makeText(mContext, getString(R.string.unfinised_open_light_timer), Toast.LENGTH_SHORT).show();
-            currentOpenTime = (int) ((objectOpenTime - now)/ (1000 * 60))+1;
+            currentOpenTime = (int) ((objectOpenTime - now) / (1000 * 60)) + 1;
 
-            System.out.println(String.format("%d",objectOpenTime) + "; 111timer; " + String.format("%d",objectCloseTime) + "; timer; " +  String.format("%d",now) +
-                    "; timer; " +  currentOpenTime + "; timer; " +  currentCloseTime);
+            System.out.println(String.format("%d", objectOpenTime) + "; 111timer; " + String.format("%d", objectCloseTime) + "; timer; " + String.format("%d", now) +
+                    "; timer; " + currentOpenTime + "; timer; " + currentCloseTime);
             startTimer(WHAT_TIMER_OPEN);
-        }else{
-            if(objectOpenTime != 0){//说明有定时任务，但是已经超过时间了，那么把当前状态设置为定时后的状态
+        } else {
+            if (objectOpenTime != 0) {//说明有定时任务，但是已经超过时间了，那么把当前状态设置为定时后的状态
                 Toast.makeText(mContext, getString(R.string.finised_open_light_timer), Toast.LENGTH_SHORT).show();
 
                 //开灯
@@ -171,8 +171,8 @@ public class HomeFragment extends Fragment {
                 switcher.setImageResource(R.drawable.icon_light_on);
             }
             //没有定时任务，设置值为初始
-            System.out.println(String.format("%d",objectOpenTime) + "; 222timer; " + String.format("%d",objectCloseTime) + "; timer; " +  String.format("%d",now) +
-                    "; timer; " +  currentOpenTime + "; timer; " +  currentCloseTime);
+            System.out.println(String.format("%d", objectOpenTime) + "; 222timer; " + String.format("%d", objectCloseTime) + "; timer; " + String.format("%d", now) +
+                    "; timer; " + currentOpenTime + "; timer; " + currentCloseTime);
             objectOpenTime = 0;
             currentOpenTime = 0;
             sp.edit().putLong(Constants.KEY_TIMER_OPEN, 0).apply();
@@ -185,7 +185,7 @@ public class HomeFragment extends Fragment {
         if (now - objectCloseTime < 0) {//还没到定时任务时间
 
             Toast.makeText(mContext, getString(R.string.unfinised_close_light_timer), Toast.LENGTH_SHORT).show();
-            switch (sp.getInt(Constants.KEY_TIMER_MODE, 0)){
+            switch (sp.getInt(Constants.KEY_TIMER_MODE, 0)) {
                 case TIMER_DELAY_1:
                     timerFive.selected(true);
                     break;
@@ -200,17 +200,17 @@ public class HomeFragment extends Fragment {
                     break;
             }
 
-            currentCloseTime = (int) ((objectCloseTime - now)/ (1000 * 60))+1;
+            currentCloseTime = (int) ((objectCloseTime - now) / (1000 * 60)) + 1;
 
             timerOff.setText(getString(R.string.close_light_timer) + "   " +
                     new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(objectCloseTime)));
 
 
-            System.out.println(String.format("%d",objectOpenTime) + "; 33322222timer; " + String.format("%d",objectCloseTime) + "; timer; " +  String.format("%d",now) +
-                    "; timer; " +  currentOpenTime + "; timer; " +  currentCloseTime);
+            System.out.println(String.format("%d", objectOpenTime) + "; 33322222timer; " + String.format("%d", objectCloseTime) + "; timer; " + String.format("%d", now) +
+                    "; timer; " + currentOpenTime + "; timer; " + currentCloseTime);
             startTimer(currentCloseTime);
-        }else{
-            if(objectCloseTime != 0){//说明有定时任务，但是已经超过时间了，那么把当前状态设置为定时后的状态
+        } else {
+            if (objectCloseTime != 0) {//说明有定时任务，但是已经超过时间了，那么把当前状态设置为定时后的状态
                 Toast.makeText(mContext, getString(R.string.finised_close_light_timer), Toast.LENGTH_SHORT).show();
 
                 //关灯
@@ -233,8 +233,8 @@ public class HomeFragment extends Fragment {
             timerOff.setText(getString(R.string.close_light_timer));
         }
 
-        System.out.println(String.format("%d",objectOpenTime) + "; 333timer; " + String.format("%d",objectCloseTime) + "; timer; " +  String.format("%d",now) +
-                "; timer; " +  currentOpenTime + "; timer; " +  currentCloseTime);
+        System.out.println(String.format("%d", objectOpenTime) + "; 333timer; " + String.format("%d", objectCloseTime) + "; timer; " + String.format("%d", now) +
+                "; timer; " + currentOpenTime + "; timer; " + currentCloseTime);
     }
 
 
@@ -262,7 +262,7 @@ public class HomeFragment extends Fragment {
         lightness.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
         colorTemp.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
 
-        if(getResources().getConfiguration().locale.getCountry().equals("CN")){
+        if (getResources().getConfiguration().locale.getCountry().equals("CN")) {
             lightness.setThumb(getResources().getDrawable(R.drawable.icon_lightness_thumb));
             colorTemp.setThumb(getResources().getDrawable(R.drawable.icon_color_thumb));
         }
@@ -282,9 +282,9 @@ public class HomeFragment extends Fragment {
                 }
                 break;
                 case R.id.tv_timer_on_main: {
-                    if(sp.getBoolean(Constants.EXIST_TIMER_OPEN, false)){//存在定时开任务,则关闭定时开
+                    if (sp.getBoolean(Constants.EXIST_TIMER_OPEN, false)) {//存在定时开任务,则关闭定时开
                         deleteLightTimer(true);
-                    }else{
+                    } else {
                         mContext.showDialogFragment(TimerFragment.TAG);
                     }
                 }
@@ -331,26 +331,26 @@ public class HomeFragment extends Fragment {
         }
     };
 
-    private void openCloseLightTimer(int timeDelay){
+    private void openCloseLightTimer(int timeDelay) {
         timerFive.selected(false);
         timerFifteen.selected(false);
         timerThirty.selected(false);
         timerSixty.selected(false);
 
-        switch (timeDelay){
-            case TIMER_DELAY_1:{
+        switch (timeDelay) {
+            case TIMER_DELAY_1: {
                 timerFive.selected(true);
             }
             break;
-            case TIMER_DELAY_2:{
+            case TIMER_DELAY_2: {
                 timerFifteen.selected(true);
             }
             break;
-            case TIMER_DELAY_3:{
+            case TIMER_DELAY_3: {
                 timerThirty.selected(true);
             }
             break;
-            case TIMER_DELAY_4:{
+            case TIMER_DELAY_4: {
                 timerSixty.selected(true);
             }
             break;
@@ -362,9 +362,9 @@ public class HomeFragment extends Fragment {
         saveCloseTimer(timeDelay);
     }
 
-    private void deleteLightTimer(boolean isOnOff){
+    private void deleteLightTimer(boolean isOnOff) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        if(isOnOff){//删除开灯定时器
+        if (isOnOff) {//删除开灯定时器
             ToastUtill.showToast(mContext, getString(R.string.cancel_open_light_timer) + "   "
                     + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(sp.getLong(Constants.KEY_TIMER_OPEN, 0))), Constants.TOASTLENGTH).show();
 
@@ -375,7 +375,7 @@ public class HomeFragment extends Fragment {
             sp.edit().putLong(Constants.KEY_TIMER_OPEN, 0).apply();
             sp.edit().putBoolean(Constants.EXIST_TIMER_OPEN, false).apply();
             timerOn.setText(R.string.open_light_timer);
-        }else{//删除关灯定时器
+        } else {//删除关灯定时器
             sp.edit().putLong(Constants.KEY_TIMER_CLOSE, 0).apply();
             sp.edit().putInt(Constants.KEY_TIMER_MODE, 0).apply();
             timerOff.setText(getString(R.string.close_light_timer));
@@ -388,13 +388,13 @@ public class HomeFragment extends Fragment {
     public static int currentOpenTime = 0;//当前开剩余时间
     private int currentCloseTime = 0;//当前关剩余时间
     private final int WHAT_TIMER_OPEN = -1;
-//    private final int WHAT_TIMER_CLOSE = 1;
+    //    private final int WHAT_TIMER_CLOSE = 1;
     private final int TIMER_DELAY_1 = 5;
     private final int TIMER_DELAY_2 = 15;
     private final int TIMER_DELAY_3 = 30;
     private final int TIMER_DELAY_4 = 60;
 
-    private void saveCloseTimer(long timer){
+    private void saveCloseTimer(long timer) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = sp.edit();
         objectCloseTime = timer * 60 * 1000 + System.currentTimeMillis();
@@ -413,7 +413,7 @@ public class HomeFragment extends Fragment {
             currentOpenTime--;
             System.out.println(currentOpenTime + " timer icon_light xxx11111111111xxxx " + what);
 
-            if(currentOpenTime <= 0){//TimerFragment 没设置时间的话， 是 < 0 的
+            if (currentOpenTime <= 0) {//TimerFragment 没设置时间的话， 是 < 0 的
                 System.out.println(currentOpenTime + "timer icon_light xxx22222222222xxxx " + what);
                 if (timerOpen != null) {
                     timerOpen.cancel();
@@ -464,7 +464,7 @@ public class HomeFragment extends Fragment {
                 timerThirty.selected(false);
                 timerSixty.selected(false);
                 //String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SWITCH, new Object[]{CodeUtils.SWITCH_CLOSE});
-               // pool.addTask(new SendRunnable(data));
+                // pool.addTask(new SendRunnable(data));
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putLong(Constants.KEY_TIMER_CLOSE, 0).apply();
@@ -483,20 +483,20 @@ public class HomeFragment extends Fragment {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-            if(whatTimer == WHAT_TIMER_OPEN){
-                timerOpenHandler.sendEmptyMessage(whatTimer);
-            }else{
-                timerCloseHandler.sendEmptyMessage(whatTimer);
-            }
+                if (whatTimer == WHAT_TIMER_OPEN) {
+                    timerOpenHandler.sendEmptyMessage(whatTimer);
+                } else {
+                    timerCloseHandler.sendEmptyMessage(whatTimer);
+                }
             }
         };
-        if(whatTimer == WHAT_TIMER_OPEN){
+        if (whatTimer == WHAT_TIMER_OPEN) {
             System.out.println(objectOpenTime + " WHAT_TIMER_OPEN " + currentOpenTime);
 
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-            if(sp.getBoolean(Constants.EXIST_TIMER_OPEN, false)){
+            if (sp.getBoolean(Constants.EXIST_TIMER_OPEN, false)) {
                 timerOn.setText(getString(R.string.cancel_open_light_timer) + "   " + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(sp.getLong(Constants.KEY_TIMER_OPEN, 0))));
-            }else{
+            } else {
                 timerOn.setText(getString(R.string.open_light_timer));
             }
 
@@ -506,7 +506,7 @@ public class HomeFragment extends Fragment {
             }
             timerOpen = new Timer();
             timerOpen.schedule(timerTask, 1000 * 60, 60 * 1000);
-        }else{
+        } else {
             System.out.println(objectCloseTime + " WHAT_TIMER_CLOSE " + currentCloseTime);
             if (timerClose != null) {
                 timerClose.cancel();
@@ -528,7 +528,7 @@ public class HomeFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if(TextUtils.equals(action, Constants.ACTION_OPENLIGHT_TIMER)) {
+            if (TextUtils.equals(action, Constants.ACTION_OPENLIGHT_TIMER)) {
                 System.out.println("TimerFragment mBroadcastReceiver recieve: " + Constants.ACTION_OPENLIGHT_TIMER);
                 ToastUtill.showToast(mContext,
                         getString(R.string.open_light_timer) + "   " + intent.getStringExtra(Constants.ACTION_OPENLIGHT_TIMER),
@@ -545,14 +545,13 @@ public class HomeFragment extends Fragment {
     private SeekBar.OnSeekBarChangeListener mOnSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            /*int id = seekBar.getId();
+            int id = seekBar.getId();
             if (id == R.id.sb_lightness_main) {
-                currentBrightness = progress;
-                changeColorBrightness(progress);
+                currentBrightness = seekBar.getProgress();
+                changeColorBrightness(seekBar.getProgress());
             } else if (id == R.id.sb_color_temperature_main) {
-                //currentBrightness = progress;
-                changeColorTemperature(progress);
-            }*/
+                changeColorTemperature(seekBar.getProgress());
+            }
         }
 
         @Override
@@ -594,7 +593,7 @@ public class HomeFragment extends Fragment {
             SceneFragment.mSceneAdapter.setState(false, 1);
 
             //关闭日出日落模式
-            if(SceneSunGradientRampService.isRunning){
+            if (SceneSunGradientRampService.isRunning) {
                 Intent intent = new Intent(mContext, SceneSunGradientRampService.class);
                 mContext.stopService(intent);
                 SceneSunGradientRampService.isRunning = false;
@@ -602,11 +601,11 @@ public class HomeFragment extends Fragment {
             }
 
             //关闭十面埋伏模式
-            if(SceneModeSaveDiyGradientRamp.isRunning){
+            if (SceneModeSaveDiyGradientRamp.isRunning) {
                 SceneModeSaveDiyGradientRamp.destroy();
             }
 
-            if(SceneModeActivity.isSceneModeMusicOn){
+            if (SceneModeActivity.isSceneModeMusicOn) {
                 Intent intent = new Intent(mContext, GradientRampService.class);
                 mContext.stopService(intent);
                 SceneModeActivity.isSceneModeMusicOn = false;
@@ -625,14 +624,14 @@ public class HomeFragment extends Fragment {
             switcher.setImageResource(R.drawable.icon_light_on);
         }
         //多发几次，保证开关
-        new Thread(new Runnable(){
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                for(int i = 0; i < 5; i++){
+                for (int i = 0; i < 5; i++) {
 //                  pool.addTask(new SendRunnable(data));
                     AppContext.getInstance().sendAll(data);
                     try {
-                        Thread.sleep(Constants.HANDLERDELAY/3);
+                        Thread.sleep(Constants.HANDLERDELAY / 3);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -668,7 +667,7 @@ public class HomeFragment extends Fragment {
                     new Object[]{progress, progress, progress, progress});
         } else {*/
         int alpha = 255;
-        currentColor = Color.argb(alpha, temperatureRed,temperatureGreen,temperatureBlue);
+        currentColor = Color.argb(alpha, temperatureRed, temperatureGreen, temperatureBlue);
         int brightnessRed = Color.red(currentColor) * progress / 255;
         int brightnessGreen = Color.green(currentColor) * progress / 255;
         int brightnessBlue = Color.blue(currentColor) * progress / 255;
@@ -693,8 +692,8 @@ public class HomeFragment extends Fragment {
                     new Object[]{progress, progress, progress, progress});
         } else {*/
         int alpha = 255;
-        currentColor = Color.argb(alpha, brightnessRed,brightnessGreen,brightnessBlue);
-        temperatureRed = Color.red(currentColor) ;
+        currentColor = Color.argb(alpha, brightnessRed, brightnessGreen, brightnessBlue);
+        temperatureRed = Color.red(currentColor);
         temperatureGreen = Color.green(currentColor) * progress / 255;
         temperatureBlue = Color.blue(currentColor) * progress / 255;
         data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_CONTROL, new Object[]{alpha, temperatureRed, temperatureGreen, temperatureBlue});

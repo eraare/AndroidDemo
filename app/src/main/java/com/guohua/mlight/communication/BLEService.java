@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -154,7 +155,7 @@ public class BLEService extends Service {
         } else if (rcv.startsWith("pres")) {
             intent.setAction(BLEConstant.ACTION_RECEIVED_SELFIE);
         }
-        sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 
     /**

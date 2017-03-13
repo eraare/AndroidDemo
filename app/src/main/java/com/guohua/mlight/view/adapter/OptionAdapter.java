@@ -14,6 +14,9 @@ import com.guohua.mlight.model.bean.OptionBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * @author Leo
  *         #time 2016-08-26
@@ -24,7 +27,6 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ItemViewHo
     private LayoutInflater mInflater; // 布局器
 
     public OptionAdapter(Context context) {
-        // 初始化
         mInflater = LayoutInflater.from(context);
         mDatas = new ArrayList<>();
     }
@@ -54,13 +56,14 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ItemViewHo
      * 自定义的ViewHolder用于优化缓存每一项
      */
     static class ItemViewHolder extends RecyclerView.ViewHolder {
-        public ImageView icon;
-        public TextView title;
+        @BindView(R.id.tv_title_option)
+        TextView title;
+        @BindView(R.id.iv_icon_option)
+        ImageView icon;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.tv_title_option);
-            icon = (ImageView) itemView.findViewById(R.id.iv_icon_option);
+            ButterKnife.bind(this, itemView);
         }
     }
 
@@ -83,36 +86,6 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ItemViewHo
      */
     public void addItem(OptionBean optionBean) {
         this.mDatas.add(optionBean);
-        notifyDataSetChanged();
-    }
-
-    /**
-     * 添加数据项接口
-     *
-     * @param optionBean
-     */
-    public void addItem(int position, OptionBean optionBean) {
-        this.mDatas.add(position, optionBean);
-        notifyItemInserted(position);
-    }
-
-    /**
-     * 根据索引删除某项数据
-     *
-     * @param position
-     */
-    public void removeItem(int position) {
-        this.mDatas.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    /**
-     * 根据内容删除某项数据
-     *
-     * @param itemBean
-     */
-    public void removeItem(Object itemBean) {
-        this.mDatas.remove(itemBean);
         notifyDataSetChanged();
     }
 

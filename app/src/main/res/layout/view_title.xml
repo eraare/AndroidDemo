@@ -42,8 +42,7 @@
         android:gravity="center"
         android:text="This is Title"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_subhead"
-        android:textStyle="bold" />
+        android:textSize="@dimen/text_size_title" />
 
     <LinearLayout
         android:id="@+id/ll_right_title"

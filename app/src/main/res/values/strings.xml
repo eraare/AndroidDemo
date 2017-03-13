@@ -3,7 +3,7 @@
     <string name="action_settings">System Settings</string>
     <string name="error_info">Message from Mars</string>
     <string name="default_text">Little Prince</string>
-    <string name="default_tobecontinued">mlight to be continued... Thank you~</string>
+    <string name="default_tobecontinued">mlight to be continued... Thank you</string>
     <string name="splash_words">Really know you, Enjoy the new life.</string>
 
     <!--AppContext.java-->
@@ -12,12 +12,12 @@
     <!--MainActivity.java 和 HomeFragment.java 以及对应layout中用到的文字-->
     <string-array name="activity_titles_main">
         <item>首页</item>
-        <item>情境</item>
+        <item>情景</item>
         <item>我的</item>
     </string-array>
     <string-array name="fragment_alias_main">
         <item>魔小灯</item>
-        <item>情境模式</item>
+        <item>情景模式</item>
         <item>个人中心</item>
     </string-array>
     <!--SplashActivity1.java 和 SplashFragment.java 以及对应layout中用到的文字-->
@@ -173,11 +173,18 @@
     <string name="notification_content_GradientRamp_Sun">Sun Mode</string>
     <string name="notification_content_GradientRamp_Rgb">RGB Wave</string>
 
-    <!--PersonalFragment.java 和 fragment_personal.xml中用到的文字-->
-    <string name="personal_feedback">Feedback</string>
-    <string name="personal_about_app">About App</string>
-    <string name="personal_about_us">About Us</string>
-    <string name="personal_phone_func">Call Reminder</string>
+    <!--CenterFragment.java 和 fragment_center.xml中用到的文字-->
+    <string name="center_phone_func">Telephony</string>
+    <string name="center_problem">QA</string>
+    <string name="center_feedback">Feedback</string>
+    <string name="center_about_app">Application</string>
+    <string name="center_about_us">About</string>
+    <string name="center_share">Share</string>
+    <string name="center_share_title">Share to your friends</string>
+    <string name="center_share_text">原来魔小灯（http://sj.qq.com/myapp/detail.htm?apkName=com.guohua.mlight）这么好玩，你也来试试！</string>
+
+    <string name="personal_selfie">Selfie</string>
+
 
     <string name="connect_null_title">What is the name of your device?</string>
     <string name="connect_null_info">Please click + select your device.</string>
@@ -283,7 +290,7 @@
     <string name="settings_color_tip">Set the current color as power on color of Magic Lamp.</string>
     <string name="settings_warning">If the lamp is restarted, Please restart APP.</string>
     <string name="settings_color_message">Do you want to set the current color as startup color?</string>
-    <!--AboutActivity.java 和 activity_about.xml中用到的文字-->
+    <!--AppActivity.java 和 activity_app.xml中用到的文字-->
     <string name="about_upgrade">Check for Updates</string>
     <string name="about_latest">No Updates</string>
     <string name="about_describe">Scan QR code to share Magic Lamp with your friends.</string>
@@ -327,6 +334,5 @@
     <string name="dialog_state_tip">Please connect the device</string>
 
     <string name="prompt_recordvideo_permission">Please allow "Record Video" permission, to start the "Music rhythm" function!</string>
-
 </resources>
 

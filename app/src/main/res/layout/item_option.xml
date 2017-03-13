@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.guohua.mlight.view.widget.SquareLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:background="@color/white"
+    android:paddingBottom="@dimen/content_padding"
+    android:paddingLeft="@dimen/horizontal_padding"
+    android:paddingRight="@dimen/horizontal_padding"
+    android:paddingTop="@dimen/content_padding">
 
     <ImageView
         android:id="@+id/iv_icon_option"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/icon_center_checked" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/icon_about_center" />
 
     <TextView
         android:id="@+id/tv_title_option"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/action_settings" />
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/content_margin"
+        android:layout_toEndOf="@id/iv_icon_option"
+        android:text="@string/action_settings"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_body" />
 
-</com.guohua.mlight.view.widget.SquareLinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/icon_forward_center" />
+
+</RelativeLayout>

@@ -73,10 +73,10 @@
     <dimen name="fragment_scene_item_height">120dp</dimen>
     <dimen name="fragment_scene_icon_size">110dp</dimen>
 
-    <dimen name="logo_size">80dp</dimen>
+    <dimen name="logo_size">75dp</dimen>
     <dimen name="item_height">45dp</dimen>
     <dimen name="bottom_navigation_bar_height">56dp</dimen>
-    <dimen name="top_navigation_bar_height">44dp</dimen>
+    <dimen name="top_navigation_bar_height">49dp</dimen>
     <!--LoginFragment.java 和 fragment_login.xml中用到的尺寸-->
     <dimen name="verification_button_height_login">30dp</dimen>
 

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="@dimen/fragment_scene_item_height"
     android:gravity="center"
     android:orientation="horizontal"
     android:padding="5dp">
 
     <ImageView
         android:id="@+id/iv_picture_scene_scene"
-        android:layout_width="125dp"
-        android:layout_height="125dp"
+        android:layout_width="@dimen/fragment_scene_icon_size"
+        android:layout_height="@dimen/fragment_scene_icon_size"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:src="@drawable/icon_center_normal" />
@@ -31,7 +31,7 @@
             android:id="@+id/tv_title_scene_scene"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/tv_detail_scene_scene"
+            android:layout_above="@+id/tv_detail_scene_scene"
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="睡眠模式"
@@ -39,6 +39,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_state_scene_scene"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

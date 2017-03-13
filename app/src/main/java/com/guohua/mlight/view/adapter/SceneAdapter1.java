@@ -14,19 +14,16 @@ import com.guohua.mlight.model.bean.SceneBean;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * @author Leo
  *         #time 2016-08-25
  *         #detail 情景模式中的情景适配器
  */
-public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.SceneViewHolder> {
+public class SceneAdapter1 extends RecyclerView.Adapter<SceneAdapter1.SceneViewHolder> {
     private LayoutInflater mLayoutInflater;
     private List<SceneBean> mDatas;
 
-    public SceneAdapter(Context context) {
+    public SceneAdapter1(Context context) {
         mLayoutInflater = LayoutInflater.from(context);
         mDatas = new ArrayList<>();
     }
@@ -50,7 +47,14 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.SceneViewHol
         final SceneBean mScene = mDatas.get(position);
         holder.itemView.setTag(mScene.tag);
         holder.title.setText(mScene.title);
+        holder.detail.setText(mScene.detail);
         holder.picture.setImageResource(mScene.picture);
+        if (mScene.isRunning) {
+            holder.state.setVisibility(View.VISIBLE);
+            holder.state.setText(R.string.scene_state_on);
+        } else {
+            holder.state.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -59,14 +63,17 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.SceneViewHol
     }
 
     static class SceneViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_title_scene_scene)
-        TextView title;
-        @BindView(R.id.iv_picture_scene_scene)
-        ImageView picture;
+        public TextView title;
+        public TextView detail;
+        public ImageView picture;
+        public TextView state;
 
         public SceneViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            title = (TextView) itemView.findViewById(R.id.tv_title_scene_scene);
+            detail = (TextView) itemView.findViewById(R.id.tv_detail_scene_scene);
+            picture = (ImageView) itemView.findViewById(R.id.iv_picture_scene_scene);
+            state = (TextView) itemView.findViewById(R.id.tv_state_scene_scene);
         }
     }
 

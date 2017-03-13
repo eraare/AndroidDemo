@@ -9,6 +9,17 @@
     <!--AppContext.java-->
     <string name="app_crash_tip">I am sorry.</string>
     <string name="activity_back">返回</string>
+    <!--MainActivity.java 和 HomeFragment.java 以及对应layout中用到的文字-->
+    <string-array name="activity_titles_main">
+        <item>首页</item>
+        <item>情景</item>
+        <item>我的</item>
+    </string-array>
+    <string-array name="fragment_alias_main">
+        <item>魔小灯</item>
+        <item>情景模式</item>
+        <item>个人中心</item>
+    </string-array>
     <!--SplashActivity1.java 和 SplashFragment.java 以及对应layout中用到的文字-->
     <string name="fragment_content_splash">智家行千里，神灯永相伴</string>
     <string name="fragment_describe_first_introduce">路漫漫其修远兮，吾将上下而求索。</string>
@@ -162,11 +173,17 @@
     <!--DriveModeService.java-->
     <string name="notification_content_drivemode">情景模式</string>
 
-    <!--PersonalFragment.java 和 fragment_personal.xml中用到的文字-->
-    <string name="personal_feedback">您的建议</string>
-    <string name="personal_about_app">程序版本</string>
-    <string name="personal_about_us">关于我们</string>
-    <string name="personal_phone_func">来电提醒</string>
+    <!--CenterFragment.java 和 fragment_center.xml中用到的文字-->
+    <string name="center_phone_func">来电提醒</string>
+    <string name="center_problem">常见问题</string>
+    <string name="center_feedback">意见反馈</string>
+    <string name="center_about_app">程序版本</string>
+    <string name="center_about_us">关于我们</string>
+    <string name="center_share">分享给好友</string>
+    <string name="center_share_title">分享给好友</string>
+    <string name="center_share_text">原来魔小灯（http://sj.qq.com/myapp/detail.htm?apkName=com.guohua.mlight）这么好玩，你也来试试！</string>
+
+    <string name="personal_selfie">自拍</string>
 
     <string name="connect_null_title">您的设备叫什么名字？</string>
     <string name="connect_null_info">请点击 + 选择您的设备。</string>
@@ -272,7 +289,7 @@
     <string name="settings_color_tip">已设当前颜色为开灯启动色</string>
     <string name="settings_warning">若灯重启，请重启APP</string>
     <string name="settings_color_message">确定要设置当前颜色为开机启动色？</string>
-    <!--AboutActivity.java 和 activity_about.xml中用到的文字-->
+    <!--AppActivity.java 和 activity_app.xml中用到的文字-->
     <string name="about_upgrade">检查更新</string>
     <string name="about_latest">已是最近版本</string>
     <string name="about_describe">扫描二维码，让您的好友一起体验魔小灯</string>
