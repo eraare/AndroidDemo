@@ -12,7 +12,7 @@
         android:id="@+id/tv_title_main"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_navigation_bar_height"
-        android:elevation="2dp"
+        android:elevation="5dp"
         app:leftTitle="设备管理"
         app:titleText="@string/app_name" />
 
@@ -30,7 +30,7 @@
         app:bnbActiveColor="@color/main"
         app:bnbBackgroundColor="@color/white"
         app:bnbBackgroundStyle="background_style_default"
-        app:bnbInactiveColor="@color/assistant"
+        app:bnbInactiveColor="@color/font_color"
         app:bnbMode="mode_default" />
 
 </LinearLayout>
