@@ -32,7 +32,7 @@
     <dimen name="bar_pointer_radius">6dp</dimen>
     <dimen name="bar_pointer_halo_radius">14dp</dimen>
 
-    <dimen name="icon_size">32dp</dimen>
+    <dimen name="icon_size">28dp</dimen>
     <dimen name="icon_padding">6dp</dimen>
     <dimen name="little_icon_size">20dp</dimen>
     <dimen name="horizontal_padding">16dp</dimen>
@@ -87,6 +87,7 @@
     <dimen name="text_size_body">14sp</dimen>
     <!--副标题+regular-->
     <dimen name="text_size_subhead">16sp</dimen>
+    <dimen name="text_size_subtitle">18sp</dimen>
     <!--标题2+Bold-->
     <dimen name="text_size_title">20sp</dimen>
     <!--标题1+regular-->

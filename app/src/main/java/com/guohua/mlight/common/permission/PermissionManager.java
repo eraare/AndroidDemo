@@ -13,6 +13,7 @@ import java.util.Map;
 
 /**
  * 权限管理
+ *
  * @author
  * @class PermissionManager
  * @date 2016-3-25 下午3:54:14
@@ -53,7 +54,9 @@ public class PermissionManager {
         this.mObject = object;
     }
 
-    /**请求权限
+    /**
+     * 请求权限
+     *
      * @return PermissionManager
      */
     public PermissionManager request() {
@@ -69,7 +72,7 @@ public class PermissionManager {
         if (deniedPermissions.size() > 0) {
             // 第一次点击deny才调用，mIsPositive是为了防止点确认解释框后调request()递归调onShowRationale
             if (rationales.size() > 0 && mIsPositive == false) {
-                if (mListener != null ) {
+                if (mListener != null) {
                     mListener.onShowRationale(rationales.toArray(new String[rationales.size()]));
                 }
                 return;
@@ -88,7 +91,9 @@ public class PermissionManager {
         }
     }
 
-    /**根据requestCode处理响应的权限
+    /**
+     * 根据requestCode处理响应的权限
+     *
      * @param permissions
      * @param results
      */
@@ -138,6 +143,7 @@ public class PermissionManager {
 
     /**
      * 当用户拒绝某权限时并点击就不再提醒的按钮时，下次应用再请求该权限时，需要给出合适的响应（比如给个展示对话框）
+     *
      * @param permission
      */
     private boolean shouldShowRequestPermissionRationale(String permission) {

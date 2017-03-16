@@ -62,8 +62,9 @@ public class AppActivity extends BaseActivity {
     }
 
     @Override
-    protected void init(Bundle savedInstanceState) {
-        super.init(savedInstanceState);
+    protected void init(Intent intent, Bundle savedInstanceState) {
+        super.init(intent, savedInstanceState);
+        setToolbarTitle(getString(R.string.center_about_app));
         upgradeManager = new UpgradeManager(this, mHandler);
         initViews();
     }

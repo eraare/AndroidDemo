@@ -23,7 +23,8 @@ import com.guohua.mlight.communication.BLEService;
 import com.guohua.mlight.model.bean.Device;
 import com.guohua.mlight.view.fragment.HomeFragment;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Leo
@@ -219,7 +220,7 @@ public class AppContext extends Application {
         }
     }
 
-    public ArrayList<Device> devices = new ArrayList<>();
+    public List<Device> devices = new CopyOnWriteArrayList<>();
 
     public void addDevice(Device device) {
         for (Device temp : devices) {

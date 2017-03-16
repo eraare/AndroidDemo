@@ -3,49 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/greya"
+    android:background="@color/assistant"
     android:orientation="vertical"
     tools:context=".view.activity.VisualizerActivity">
 
-    <RelativeLayout
+    <include
+        layout="@layout/include_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/main"
-        android:paddingLeft="@dimen/horizontal_padding">
-
-        <ImageView
-            android:layout_width="@dimen/icon_size"
-            android:layout_height="@dimen/icon_size"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:adjustViewBounds="true"
-            android:onClick="back"
-            android:padding="@dimen/icon_padding"
-            android:src="@drawable/icon_back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/settings_music"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/white" />
-    </RelativeLayout>
+        android:layout_height="?attr/actionBarSize" />
 
     <com.guohua.mlight.view.widget.VisualizerView
         android:id="@+id/vv_show_visualizer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8" />
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/vertical_padding">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -59,7 +38,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center_vertical"
                 android:text="@string/visualizer_strong"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_caption" />
 
             <TextView
                 android:id="@+id/tv_show_visualizer"
@@ -67,14 +47,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/visualizer_feel"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_body" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
                 android:text="@string/visualizer_weak"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_caption" />
         </FrameLayout>
 
         <SeekBar
@@ -88,6 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="后台运行" />
+            android:text="后台运行"
+            android:textSize="@dimen/text_size_body" />
     </LinearLayout>
 </LinearLayout>

@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/assistant"
+    android:orientation="vertical">
 
+    <include
+        layout="@layout/include_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/horizontal_padding"
+        android:paddingRight="@dimen/horizontal_padding">
+
+        <TextView
+            android:id="@+id/tv_title_us"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/vertical_margin"
+            android:layout_marginTop="@dimen/vertical_margin"
+            android:gravity="center"
+            android:text="深圳市国华光电科技有限公司"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_subhead" />
+
+        <TextView
+            android:id="@+id/tv_contact_us"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/vertical_margin"
+            android:layout_marginTop="@dimen/vertical_margin"
+            android:autoLink="all"
+            android:gravity="center"
+            android:text="公司地址: 深圳市龙华新区观澜街道观光路1301-1号7楼703-1\n办公电话: (+86) 0755-29415855"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_caption" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title_us"
+            android:autoLink="all"
+            android:lineSpacingMultiplier="1.2"
+            android:text="深圳市国华网络科技有限公司（简称“国华网络”）是一家集研发、生产、销售和服务于一体的，专业致力于智能控制技术和移动互联网融合的高新技术企业。公司研发人员占到总人数的80%，均是相关领域的专家，都具有深厚的技术功底和极强的创新能力。国华网络志存高远，立足当下，致力于为人们提供便利的生活方式。目前已经自主研发出了绘彩智能灯、智能家居控制盒、智能排插，以及可穿戴设备智能手表。未来，公司将继续深耕智能家居和智能穿戴领域，为用户提供超出期望的整体解决方案。"
+            android:textColor="@color/font_color"
+            android:textSize="@dimen/text_size_body" />
+    </RelativeLayout>
 </LinearLayout>

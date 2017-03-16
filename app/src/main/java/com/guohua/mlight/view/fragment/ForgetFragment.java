@@ -17,7 +17,6 @@ import com.guohua.mlight.presenter.ILoginPresenter;
 import com.guohua.mlight.presenter.impl.LoginPresenter;
 import com.guohua.mlight.view.ILoginView;
 import com.guohua.mlight.view.widget.CountDownTimerView;
-import com.guohua.mlight.view.widget.TitleView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -53,8 +52,6 @@ public class ForgetFragment extends BaseFragment implements ILoginView {
     }
 
     /*绑定视图控件*/
-    @BindView(R.id.tv_title_forget)
-    TitleView mTitleView;
     @BindView(R.id.et_phone_forget)
     EditText mPhoneView;
     @BindView(R.id.et_captcha_forget)
@@ -72,8 +69,7 @@ public class ForgetFragment extends BaseFragment implements ILoginView {
 
     @Override
     protected void init(View view, Bundle savedInstanceState) {
-        /*0 用于退出*/
-        mTitleView.setOnLeftClickListener(mOnLeftClickListener);
+        mContext.setToolbarTitle(R.string.fragment_forget_login);
         /*1 初始化Presenter*/
         mLoginPresenter = new LoginPresenter(this);
         /*2 初始化验证码倒计时*/
@@ -152,14 +148,6 @@ public class ForgetFragment extends BaseFragment implements ILoginView {
         String md5Password = ToolUtil.encryptByMD5(password);
         mLoginPresenter.reset(captcha, md5Password);
     }
-
-    /*返回键*/
-    private TitleView.OnLeftClickListener mOnLeftClickListener = new TitleView.OnLeftClickListener() {
-        @Override
-        public void onLeftClick(View v) {
-            removeFragment();
-        }
-    };
 
     @Override
     protected int getLayoutId() {

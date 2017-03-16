@@ -46,8 +46,9 @@ public class HelpActivity extends BaseActivity {
     }
 
     @Override
-    protected void init(Bundle savedInstanceState) {
-        super.init(savedInstanceState);
+    protected void init(Intent intent, Bundle savedInstanceState) {
+        super.init(intent, savedInstanceState);
+        setToolbarTitle(getString(R.string.center_problem));
         initListView();
     }
 
@@ -58,7 +59,12 @@ public class HelpActivity extends BaseActivity {
     }
 
     private void loadQaInfo() {
-        mQaAdapter.addQa(new QaInfo("问题", "答案"));
+        mQaAdapter.addQa(new QaInfo("1、一直连不上怎么办？", "答：您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。"));
+        mQaAdapter.addQa(new QaInfo("2、一直连不上怎么办？", "答：您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。"));
+        mQaAdapter.addQa(new QaInfo("3、一直连不上怎么办？", "答：您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。"));
+        mQaAdapter.addQa(new QaInfo("4、一直连不上怎么办？", "答：您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。"));
+        mQaAdapter.addQa(new QaInfo("5、一直连不上怎么办？", "答：您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。"));
+        mQaAdapter.addQa(new QaInfo("6、一直连不上怎么办？", "答：您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。"));
     }
 
     @OnItemClick(R.id.lv_qa_help)

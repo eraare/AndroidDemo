@@ -46,11 +46,12 @@ import com.guohua.mlight.communication.BLERecord;
 import com.guohua.mlight.model.bean.Device;
 import com.guohua.mlight.view.adapter.FragmentAdapter;
 import com.guohua.mlight.view.fragment.CenterFragment;
+import com.guohua.mlight.view.fragment.DeviceFragment;
 import com.guohua.mlight.view.fragment.DialogFragment;
-import com.guohua.mlight.view.fragment.HomeFragment;
 import com.guohua.mlight.view.fragment.SceneFragment;
 import com.guohua.mlight.view.fragment.TimerFragment;
 import com.guohua.mlight.view.widget.TitleView;
+import com.r00kie.lwble.BLEActivity;
 
 import butterknife.BindArray;
 import butterknife.BindView;
@@ -73,8 +74,6 @@ public class MainActivity extends BaseActivity {
     private Handler mHandler;//用于两个类之前的消息传递
 
     /*绑定控件*/
-    @BindView(R.id.tv_title_main)
-    TitleView mTitleView;
     @BindView(R.id.bnb_bar_main)
     BottomNavigationBar mBarView;
     @BindView(R.id.vp_pager_main)
@@ -119,8 +118,9 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void init(Bundle savedInstanceState) {
-        super.init(savedInstanceState);
+    protected void init(Intent intent, Bundle savedInstanceState) {
+        super.init(intent, savedInstanceState);
+        setShowBack(false);
         initial();
     }
 
@@ -133,8 +133,10 @@ public class MainActivity extends BaseActivity {
         /*2 初始化ViewPager*/
         initViewPager();
         /*3 初始化顶部导航栏标题*/
-        mTitleView.setTitle(mAlias[lastSelectedPosition]);
-        mTitleView.setOnLeftClickListener(mOnLeftClickListener);
+        setToolbarTitle(mAlias[lastSelectedPosition]);
+        showOrHideForward(lastSelectedPosition);
+        /* 添加右边前进键单机事件*/
+        setOnForwardClickListener(mOnClickListener);
         /*4 初始化其他*/
         initValues();
         registerTheReceiver();
@@ -144,6 +146,14 @@ public class MainActivity extends BaseActivity {
         mHandler = new android.os.Handler();
         scanLeDevice(true);
     }
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+//            showDialogFragment(DialogFragment.TAG);
+            startActivity(new Intent(MainActivity.this, BLEActivity.class));
+        }
+    };
 
     private TitleView.OnLeftClickListener mOnLeftClickListener = new TitleView.OnLeftClickListener() {
         @Override
@@ -157,7 +167,7 @@ public class MainActivity extends BaseActivity {
      */
     private void initViewPager() {
         mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager());
-        mFragmentAdapter.addFragment(HomeFragment.newInstance());
+        mFragmentAdapter.addFragment(DeviceFragment.getInstance());
         mFragmentAdapter.addFragment(SceneFragment.newInstance());
         mFragmentAdapter.addFragment(CenterFragment.newInstance());
         mPagerView.setAdapter(mFragmentAdapter);
@@ -175,9 +185,19 @@ public class MainActivity extends BaseActivity {
             /*切换底部导航栏*/
             mBarView.selectTab(position, false);
             /*设置顶部导航栏标题*/
-            mTitleView.setTitle(mAlias[position]);
+            setToolbarTitle(mAlias[position]);
+            /*显示隐藏Forward按钮*/
+            showOrHideForward(position);
         }
     };
+
+    private void showOrHideForward(int position) {
+        if (position == 0) {
+            setForwardVisibility(View.VISIBLE);
+        } else {
+            setForwardVisibility(View.GONE);
+        }
+    }
 
     /**
      * 初始化底部导航栏
@@ -204,7 +224,9 @@ public class MainActivity extends BaseActivity {
             /*切换ViewPager的显示页面*/
             mPagerView.setCurrentItem(position, true);
             /*切换顶部导航栏的标题*/
-            mTitleView.setTitle(mAlias[position]);
+            setToolbarTitle(mAlias[position]);
+            /*显示隐藏Forward按钮*/
+            showOrHideForward(position);
         }
     };
 

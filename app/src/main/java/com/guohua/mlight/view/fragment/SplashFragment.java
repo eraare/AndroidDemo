@@ -1,12 +1,13 @@
 package com.guohua.mlight.view.fragment;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseFragment;
+import com.guohua.mlight.common.util.BLEUtils;
 import com.guohua.mlight.view.activity.LoginActivity;
 import com.guohua.mlight.view.activity.MainActivity;
 
@@ -47,12 +48,6 @@ public class SplashFragment extends BaseFragment {
     private Handler mHandler = new Handler();
 
     @Override
-    protected void init(View view, Bundle savedInstanceState) {
-        // 开启自动跳转
-        mHandler.postDelayed(mRunnable, DELAY);
-    }
-
-    @Override
     protected int getLayoutId() {
         return R.layout.fragment_splash;
     }
@@ -82,5 +77,32 @@ public class SplashFragment extends BaseFragment {
         }
         /*退出当前页面*/
         removeFragment();
+    }
+
+    /*请求打开蓝牙*/
+    private static final int REQUEST_BLUETOOTH = 1;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!BLEUtils.isBluetoothEnabled()) {
+            /*如果蓝牙未打开就打开蓝牙*/
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(intent, REQUEST_BLUETOOTH);
+        } else {
+            /*如果蓝牙已打开则进行延时展示*/
+            mHandler.postDelayed(mRunnable, DELAY);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_BLUETOOTH) {
+            if (resultCode != Activity.RESULT_OK) {
+                mContext.toast(R.string.fragment_denied_tip_splash);
+            }
+            startTheActivity();
+        }
     }
 }

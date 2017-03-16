@@ -2,17 +2,13 @@ package com.guohua.mlight.view.fragment;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.TextView;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseFragment;
-import com.guohua.mlight.model.bean.ItemInfo;
-import com.guohua.mlight.view.adapter.ItemAdapter;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
 import cn.bmob.v3.BmobUser;
 
 
@@ -48,10 +44,10 @@ public class MeFragment extends BaseFragment {
     }
 
     /*绑定视图*/
-    @BindView(R.id.lv_item_me)
-    ListView mItemView;
-    /*选项的适配器*/
-    private ItemAdapter mItemAdapter;
+    @BindView(R.id.tv_nickname_me)
+    TextView mNickNameView;
+    @BindView(R.id.tv_phone_me)
+    TextView mPhoneNumberView;
 
     @Override
     protected void init(View view, Bundle savedInstanceState) {
@@ -63,33 +59,20 @@ public class MeFragment extends BaseFragment {
      * 初始化各选项
      */
     private void initItems() {
-        mItemAdapter = new ItemAdapter(mContext);
         /*添加选项*/
         BmobUser currentUser = BmobUser.getCurrentUser();
-        mItemAdapter.addItem(new ItemInfo("用户名", currentUser.getUsername()));
-        mItemAdapter.addItem(new ItemInfo("手机号", currentUser.getMobilePhoneNumber()));
-        mItemAdapter.addItem(new ItemInfo("邮箱", currentUser.getEmail()));
-        mItemAdapter.addItem(new ItemInfo("密码", "更改密码"));
-        mItemView.setAdapter(mItemAdapter);
+        mNickNameView.setText(currentUser.getUsername());
+        mPhoneNumberView.setText(currentUser.getMobilePhoneNumber());
     }
 
-    @OnItemClick(R.id.lv_item_me)
-    public void onItemClickListener(AdapterView<?> parent, View view, int position, long id) {
-        switch (position) {
-            case 3: {
-
-            }
-            break;
-            default:
-                break;
-        }
-    }
-
-    @OnClick(R.id.btn_logoff_me)
+    @OnClick({R.id.btn_logoff_me, R.id.fl_change_password_me})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.fl_change_password_me: {
+                addFragment(DeviceFragment.getInstance());
+            }
+            break;
             case R.id.btn_logoff_me: {
-                /*退出账户*/
                 BmobUser.logOut();
                 removeFragment();
             }

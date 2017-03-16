@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/assistant"
     android:orientation="vertical"
     tools:context="com.guohua.mlight.view.activity.MeActivity">
 
-    <com.guohua.mlight.view.widget.TitleView
-        android:id="@+id/tnb_title_me"
+    <include
+        layout="@layout/include_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/top_navigation_bar_height"
-        app:leftTitle="@string/activity_back"
-        app:titleText="@string/fragment_me_setting" />
+        android:layout_height="?attr/actionBarSize" />
 
     <FrameLayout
         android:id="@+id/fl_container_me"

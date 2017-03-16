@@ -9,13 +9,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.R;
-import com.guohua.mlight.model.bean.Device;
+import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.communication.BluetoothUtil;
+import com.guohua.mlight.model.bean.Device;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Leo
@@ -23,14 +24,14 @@ import java.util.Iterator;
  * @describe 组设备适配器
  */
 public class GroupAdapter extends BaseAdapter {
-    private ArrayList<Device> datas;
+    private List<Device> datas;
     private LayoutInflater mInflater;
     private Context mContext;
 
     public GroupAdapter(Context context) {
         this.mContext = context;
         mInflater = LayoutInflater.from(context);
-        datas = new ArrayList<>();
+        datas = new CopyOnWriteArrayList<>();
     }
 
     @Override
@@ -128,11 +129,11 @@ public class GroupAdapter extends BaseAdapter {
         public ImageView deviceOperator;
     }
 
-    public void setDatas(ArrayList<Device> datas) {
+    public void setDatas(List<Device> datas) {
         this.datas = datas;
     }
 
-    public ArrayList<Device> getDatas() {
+    public List<Device> getDatas() {
         return this.datas;
     }
 

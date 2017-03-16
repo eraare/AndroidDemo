@@ -3,19 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/assistant"
     android:orientation="vertical"
     tools:context="com.guohua.mlight.view.fragment.LoginFragment">
-
-    <com.guohua.mlight.view.widget.TitleView
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/top_navigation_bar_height"
-        app:titleText="@string/fragment_login_login" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/vertical_margin"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/horizontal_padding">
 
         <EditText
             android:id="@+id/et_phone_login"
@@ -28,9 +24,9 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_body" />
 
-        <View
+        <android.support.v4.widget.Space
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/content_margin"
             android:background="@android:color/transparent" />
 
         <EditText
@@ -55,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:text="@string/fragment_forget_login"
-                android:textColor="@color/main"
+                android:textColor="@color/font_color"
                 android:textSize="@dimen/text_size_body" />
 
             <TextView
@@ -64,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:text="@string/fragment_register_login"
-                android:textColor="@color/main"
+                android:textColor="@color/font_color"
                 android:textSize="@dimen/text_size_body" />
         </FrameLayout>
 
@@ -82,14 +78,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="@dimen/content_padding">
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/fragment_agreement_login"
-            android:textColor="@color/assistant"
+            android:textColor="@color/font_color"
             android:textSize="@dimen/text_size_caption" />
     </LinearLayout>
 </LinearLayout>

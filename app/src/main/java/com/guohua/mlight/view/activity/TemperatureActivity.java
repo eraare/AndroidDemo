@@ -69,8 +69,8 @@ public class TemperatureActivity extends BaseActivity {
     }
 
     @Override
-    protected void init(Bundle savedInstanceState) {
-        super.init(savedInstanceState);
+    protected void init(Intent intent, Bundle savedInstanceState) {
+        super.init(intent, savedInstanceState);
         // 加载图表Fragment
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.fl_container_temperature,
@@ -304,7 +304,7 @@ public class TemperatureActivity extends BaseActivity {
             // 初始化点线
             List<Line> lines = new ArrayList<>();
             // 根据已有设备建立曲线
-            ArrayList<Device> devices = AppContext.getInstance().devices;
+            List<Device> devices = AppContext.getInstance().devices;
             // 判空
             if (devices == null) {
                 return lines;

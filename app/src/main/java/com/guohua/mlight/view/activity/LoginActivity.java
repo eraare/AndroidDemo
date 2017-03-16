@@ -1,5 +1,6 @@
 package com.guohua.mlight.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.guohua.mlight.R;
@@ -15,11 +16,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    protected void init(Bundle savedInstanceState) {
-
-    }
-
-    @Override
     protected BaseFragment getFirstFragment() {
         return LoginFragment.getInstance();
     }
@@ -27,5 +23,11 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected int getFragmentContainerId() {
         return R.id.fl_container_login;
+    }
+
+    @Override
+    protected void init(Intent intent, Bundle savedInstanceState) {
+        super.init(intent, savedInstanceState);
+        setToolbarTitle(getString(R.string.fragment_login_login));
     }
 }

@@ -61,6 +61,7 @@ public class LoginFragment extends BaseFragment implements ILoginView {
 
     @Override
     protected void init(View view, Bundle savedInstanceState) {
+        mContext.setToolbarTitle(R.string.fragment_login_login);
         mLoginPresenter = new LoginPresenter(this);
     }
 

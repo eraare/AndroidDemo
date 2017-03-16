@@ -1,22 +1,21 @@
 package com.guohua.mlight.view.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.guohua.ios.dialog.ActionSheetDialog;
 import com.guohua.mlight.R;
-import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.util.ShareUtils;
@@ -24,16 +23,13 @@ import com.guohua.mlight.model.bean.OptionBean;
 import com.guohua.mlight.view.activity.AppActivity;
 import com.guohua.mlight.view.activity.HelpActivity;
 import com.guohua.mlight.view.activity.LoginActivity;
-import com.guohua.mlight.view.activity.MainActivity;
 import com.guohua.mlight.view.activity.MeActivity;
 import com.guohua.mlight.view.activity.UsActivity;
 import com.guohua.mlight.view.adapter.OptionAdapter;
 import com.guohua.mlight.view.widget.RecyclerViewDivider;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import cn.bmob.v3.BmobUser;
 
 /**
@@ -124,12 +120,12 @@ public class CenterFragment extends BaseFragment {
      * 设置选项
      */
     private void initOptions() {
-        mOptionAdapter.addItem(new OptionBean(0, getString(R.string.center_phone_func), R.drawable.icon_about_center));
-        mOptionAdapter.addItem(new OptionBean(1, getString(R.string.center_problem), R.drawable.icon_about_center));
-        mOptionAdapter.addItem(new OptionBean(2, getString(R.string.center_feedback), R.drawable.icon_about_center));
-        mOptionAdapter.addItem(new OptionBean(3, getString(R.string.center_about_app), R.drawable.icon_about_center));
-        mOptionAdapter.addItem(new OptionBean(4, getString(R.string.center_about_us), R.drawable.icon_about_center));
-        mOptionAdapter.addItem(new OptionBean(5, getString(R.string.center_share), R.drawable.icon_about_center));
+        mOptionAdapter.addItem(new OptionBean(0, getString(R.string.center_phone_func), R.drawable.icon_telephony_center));
+        mOptionAdapter.addItem(new OptionBean(1, getString(R.string.center_problem), R.drawable.icon_help_center));
+        mOptionAdapter.addItem(new OptionBean(2, getString(R.string.center_feedback), R.drawable.icon_feedback_center));
+        mOptionAdapter.addItem(new OptionBean(3, getString(R.string.center_about_app), R.drawable.icon_app_center));
+        mOptionAdapter.addItem(new OptionBean(4, getString(R.string.center_about_us), R.drawable.icon_us_center));
+        mOptionAdapter.addItem(new OptionBean(5, getString(R.string.center_share), R.drawable.icon_share_center));
     }
 
     /**
@@ -141,7 +137,7 @@ public class CenterFragment extends BaseFragment {
             int id = (int) tag;
             switch (id) {
                 case 0: {
-
+                    showTelephonyDialog();
                 }
                 break;
                 case 1: {
@@ -189,4 +185,43 @@ public class CenterFragment extends BaseFragment {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    /*显示来电提醒对话框*/
+    private void showTelephonyDialog() {
+        new ActionSheetDialog(mContext)
+                .builder()
+                .setTitle(getString(R.string.choose_call_reminder))
+                .addSheetItem(getString(R.string.choose_call_reminder_red), ActionSheetDialog.SheetItemColor.Blue, mOnSheetItemClickListener)
+                .addSheetItem(getString(R.string.choose_call_reminder_green), ActionSheetDialog.SheetItemColor.Blue, mOnSheetItemClickListener)
+                .addSheetItem(getString(R.string.choose_call_reminder_blue), ActionSheetDialog.SheetItemColor.Blue, mOnSheetItemClickListener)
+                /*.addSheetItem(getString(R.string.choose_call_reminder_diy), ActionSheetDialog.SheetItemColor.Red, mOnSheetItemClickListener)*/
+                .show();
+    }
+
+    private ActionSheetDialog.OnSheetItemClickListener mOnSheetItemClickListener = new ActionSheetDialog.OnSheetItemClickListener() {
+        @Override
+        public void onClick(int which) {
+            final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
+            switch (which) {
+                case 1:
+                    sp.edit().putInt(Constants.CALL_REMINDER_SHINEMODE, 0).apply();
+                    mContext.toast(R.string.choose_call_reminder_red);
+                    break;
+                case 2:
+                    sp.edit().putInt(Constants.CALL_REMINDER_SHINEMODE, 1).apply();
+                    mContext.toast(R.string.choose_call_reminder_green);
+                    break;
+                case 3:
+                    sp.edit().putInt(Constants.CALL_REMINDER_SHINEMODE, 2).apply();
+                    mContext.toast(R.string.choose_call_reminder_blue);
+                    break;
+                case 4:
+                    //自定义模式
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
 }

@@ -1,1 +1,1 @@
-include ':app', ':ios_library'
+include ':app', ':ios_library', ':lwble'

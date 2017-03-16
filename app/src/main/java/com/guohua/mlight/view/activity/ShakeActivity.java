@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
@@ -29,14 +28,12 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
-import com.guohua.mlight.service.ShakeService;
 import com.guohua.mlight.common.util.ToolUtils;
+import com.guohua.mlight.service.ShakeService;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * @author Leo
@@ -80,8 +77,9 @@ public class ShakeActivity extends BaseActivity {
     }
 
     @Override
-    protected void init(Bundle savedInstanceState) {
-        super.init(savedInstanceState);
+    protected void init(Intent intent, Bundle savedInstanceState) {
+        super.init(intent, savedInstanceState);
+        setToolbarTitle(getString(R.string.scene_shake_shake));
         initValue();
         initViews();
 

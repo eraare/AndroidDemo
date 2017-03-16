@@ -1,12 +1,12 @@
 package com.guohua.mlight.view.activity;
 
-import android.bluetooth.BluetoothAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
-import com.guohua.mlight.common.util.BLEUtil;
+import com.guohua.mlight.common.util.BLEUtils;
 import com.guohua.mlight.view.fragment.SplashFragment;
 
 import cn.bmob.v3.Bmob;
@@ -27,25 +27,17 @@ import cn.bmob.v3.Bmob;
  * 描  述：欢迎界面的Activity
  */
 public class SplashActivity extends BaseActivity {
+    /*Bmob的Application_id*/
     private static final String APPLICATION_ID = "7d6c82d807e2db420de5c76a0fb0912e";
 
     @Override
-    protected void init(Bundle savedInstanceState) {
+    protected void init(Intent intent, Bundle savedInstanceState) {
         /*1 初始化Bmob*/
         Bmob.initialize(this, APPLICATION_ID);
         /*2 检查蓝牙状态*/
-        if (!BLEUtil.isSupportBluetoothBLE(this)) {
-            toast("您的设备不支持BLE");
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        /*如果蓝牙未打开则打开蓝牙*/
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (!bluetoothAdapter.isEnabled()) {
-            bluetoothAdapter.enable();
+        if (!BLEUtils.isSupportBluetoothBLE(this)) {
+            toast(R.string.activity_bluetooth_tip_splash);
+            finish();
         }
     }
 

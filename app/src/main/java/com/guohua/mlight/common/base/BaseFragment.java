@@ -3,7 +3,9 @@ package com.guohua.mlight.common.base;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,5 +88,17 @@ public abstract class BaseFragment extends Fragment {
 
     public void removeFragment() {
         mContext.removeFragment();
+    }
+
+    /**
+     * 用于展示底部弹出对话框
+     *
+     * @param fragment
+     * @param tag
+     */
+    public void showBottomSheetDialogFragment(BottomSheetDialogFragment fragment, String tag) {
+        FragmentManager fragmentManager = getFragmentManager();
+        fragment.setCancelable(true);
+        fragment.show(fragmentManager, tag);
     }
 }

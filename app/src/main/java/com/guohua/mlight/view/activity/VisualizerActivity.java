@@ -17,9 +17,9 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
+import com.guohua.mlight.common.util.ToolUtils;
 import com.guohua.mlight.model.observer.IObserver;
 import com.guohua.mlight.service.VisualizerService;
-import com.guohua.mlight.common.util.ToolUtils;
 import com.guohua.mlight.view.widget.VisualizerView;
 
 import butterknife.BindView;
@@ -59,8 +59,9 @@ public class VisualizerActivity extends BaseActivity implements IObserver {
     }
 
     @Override
-    protected void init(Bundle savedInstanceState) {
-        super.init(savedInstanceState);
+    protected void init(Intent intent, Bundle savedInstanceState) {
+        super.init(intent, savedInstanceState);
+        setToolbarTitle(getString(R.string.scene_music_rythm));
         initValues();
         initViews();
         Intent service = new Intent(this, VisualizerService.class);

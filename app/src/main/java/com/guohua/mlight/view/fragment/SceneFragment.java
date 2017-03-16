@@ -2,11 +2,14 @@ package com.guohua.mlight.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
+import com.guohua.ios.dialog.AlertDialog;
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
@@ -21,7 +24,6 @@ import com.guohua.mlight.view.activity.ShakeActivity;
 import com.guohua.mlight.view.activity.TemperatureActivity;
 import com.guohua.mlight.view.activity.VisualizerActivity;
 import com.guohua.mlight.view.adapter.SceneAdapter;
-import com.guohua.mlight.view.dialog.SettingsDialog;
 
 import butterknife.BindView;
 
@@ -65,16 +67,16 @@ public class SceneFragment extends BaseFragment {
      * 加载情景模式
      */
     private void loadScenes() {
-        mSceneAdapter.addScene(new SceneBean(0, getString(R.string.scene_color_pallet), getString(R.string.colorpallet_description), R.drawable.icon_music_center));
-        mSceneAdapter.addScene(new SceneBean(1, getString(R.string.scene_colorful_gradient), getString(R.string.warmnight_description), R.drawable.icon_music_center));
-        mSceneAdapter.addScene(new SceneBean(2, getString(R.string.scene_warm_light), getString(R.string.defaultmode_description), R.drawable.icon_music_center));
-        mSceneAdapter.addScene(new SceneBean(3, getString(R.string.scene_set_password), getString(R.string.defaultmode_description), R.drawable.icon_music_center));
-        mSceneAdapter.addScene(new SceneBean(4, getString(R.string.scene_change_name), getString(R.string.defaultmode_description), R.drawable.icon_music_center));
-        mSceneAdapter.addScene(new SceneBean(5, getString(R.string.scene_preset_color), getString(R.string.defaultmode_description), R.drawable.icon_music_center));
-        mSceneAdapter.addScene(new SceneBean(6, getString(R.string.scene_music_rythm), getString(R.string.defaultmode_description), R.drawable.icon_music_center));
-        mSceneAdapter.addScene(new SceneBean(7, getString(R.string.scene_shake_shake), getString(R.string.defaultmode_description), R.drawable.icon_music_center));
-        mSceneAdapter.addScene(new SceneBean(8, getString(R.string.scene_temperature), getString(R.string.defaultmode_description), R.drawable.icon_music_center));
-        mSceneAdapter.addScene(new SceneBean(9, getString(R.string.scene_selfie), getString(R.string.defaultmode_description), R.drawable.icon_music_center));
+        mSceneAdapter.addScene(new SceneBean(0, getString(R.string.scene_color_pallet), getString(R.string.colorpallet_description), R.drawable.icon_music_scene));
+        mSceneAdapter.addScene(new SceneBean(1, getString(R.string.scene_colorful_gradient), getString(R.string.warmnight_description), R.drawable.icon_music_scene));
+        mSceneAdapter.addScene(new SceneBean(2, getString(R.string.scene_warm_light), getString(R.string.defaultmode_description), R.drawable.icon_music_scene));
+        mSceneAdapter.addScene(new SceneBean(3, getString(R.string.scene_set_password), getString(R.string.defaultmode_description), R.drawable.icon_password_scene));
+        mSceneAdapter.addScene(new SceneBean(4, getString(R.string.scene_change_name), getString(R.string.defaultmode_description), R.drawable.icon_rename_scene));
+        mSceneAdapter.addScene(new SceneBean(5, getString(R.string.scene_preset_color), getString(R.string.defaultmode_description), R.drawable.icon_color_scene));
+        mSceneAdapter.addScene(new SceneBean(6, getString(R.string.scene_music_rythm), getString(R.string.defaultmode_description), R.drawable.icon_music_scene));
+        mSceneAdapter.addScene(new SceneBean(7, getString(R.string.scene_shake_shake), getString(R.string.defaultmode_description), R.drawable.icon_shake_scene));
+        mSceneAdapter.addScene(new SceneBean(8, getString(R.string.scene_temperature), getString(R.string.defaultmode_description), R.drawable.icon_temperature_scene));
+        mSceneAdapter.addScene(new SceneBean(9, getString(R.string.scene_selfie), getString(R.string.defaultmode_description), R.drawable.icon_selfie_scene));
 
     }
 
@@ -84,7 +86,7 @@ public class SceneFragment extends BaseFragment {
     private void initSceneView() {
         mSceneView.setHasFixedSize(true);
         mSceneView.setItemAnimator(new DefaultItemAnimator());
-        mSceneView.setLayoutManager(new GridLayoutManager(mContext, 3));
+        mSceneView.setLayoutManager(new GridLayoutManager(mContext, 4));
 //        mSceneView.addItemDecoration(new RecyclerViewDivider(mContext, OrientationHelper.VERTICAL));
         mSceneAdapter = new SceneAdapter(mContext);
         mSceneAdapter.setOnItemClickListener(mOnItemClickListener);
@@ -106,23 +108,28 @@ public class SceneFragment extends BaseFragment {
                 case 1: {
                     String musicOff = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_MUSIC_OFF, null);
                     ThreadPool.getInstance().addMusicOffTask(new SendRunnable(musicOff));
+                    mContext.toast("炫彩渐变模式已开启");
                 }
                 break;
                 case 2: {
                     String data = CodeUtils.transARGB2Protocol(Constants.COLORMOONMODE);
                     ThreadPool.getInstance().addTask(new SendRunnable(data));
+                    mContext.toast("小夜灯模式已开启");
                 }
                 break;
                 case 3: {
-                    SettingsDialog.showChangePassword(mContext, null);
+                    showBottomSheetDialogFragment(PasswordFragment.getInstance(), PasswordFragment.TAG);
+//                    SettingsDialog.showChangePassword(mContext, null);
                 }
                 break;
                 case 4: {
-                    SettingsDialog.showChangeAccount(mContext, -1);
+                    showBottomSheetDialogFragment(RenameFragment.getInstance(), RenameFragment.TAG);
+//                    SettingsDialog.showChangeAccount(mContext, -1);
                 }
                 break;
                 case 5: {
-                    SettingsDialog.showCurrentColor(mContext, null);
+                    //SettingsDialog.showCurrentColor(mContext, null);
+                    showPresetColorDialog();
                 }
                 break;
                 case 6: {
@@ -145,7 +152,34 @@ public class SceneFragment extends BaseFragment {
                     ToastUtill.showToast(mContext, getString(R.string.default_text), Constants.TOASTLENGTH).show();
                     break;
             }
-            mSceneAdapter.notifyDataSetChanged();
         }
     };
+
+    private void showPresetColorDialog() {
+        new AlertDialog(mContext).builder()
+                .setCancelable(true)
+                .setTitle(getString(R.string.settings_color))
+                .setMsg(getString(R.string.settings_color_message))
+                .setPositiveButton(getString(R.string.settings_positive), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_COLOR, null);
+                        ThreadPool.getInstance().addTask(new SendRunnable(data));
+                        //需启动底层的预置灯色模式，与上次发数据保持一定时间间隔
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SAVE_DIY_START, new Object[]{1});
+                                ThreadPool.getInstance().addTask(new SendRunnable(data));
+                            }
+                        }, Constants.HANDLERDELAY);
+                        Toast.makeText(getContext(), R.string.settings_color_tip, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(getString(R.string.settings_negative), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    }
+                }).show();
+    }
 }

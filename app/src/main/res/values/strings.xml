@@ -16,15 +16,14 @@
         <item>我的</item>
     </string-array>
     <string-array name="fragment_alias_main">
-        <item>魔小灯</item>
+        <item>控制中心</item>
         <item>情景模式</item>
         <item>个人中心</item>
     </string-array>
-    <!--SplashActivity1.java 和 SplashFragment.java 以及对应layout中用到的文字-->
-    <string name="fragment_content_splash">智家行千里，神灯永相伴</string>
-    <string name="fragment_describe_first_introduce">路漫漫其修远兮，吾将上下而求索。</string>
-    <string name="fragment_describe_second_introduce">爱情像月亮，也会有阴晴阳缺的。</string>
-    <string name="fragment_describe_third_introduce">非学无以广才，非志无以成学。</string>
+    <!--SplashActivity.java 和 SplashFragment.java 以及对应layout中用到的文字-->
+    <string name="fragment_content_splash">真正懂得你，乐享新生活</string>
+    <string name="activity_bluetooth_tip_splash">您的设备不支持BLE</string>
+    <string name="fragment_denied_tip_splash">打开蓝牙才能正常使用哦</string>
     <!--LoginFragment.java 和 fragment_login.xml中用到的文字-->
     <string name="fragment_username_hint_login">+86</string>
     <string name="fragment_password_hint_login">密码</string>
@@ -311,12 +310,12 @@
     <!--ShakeActivity.java 和 activity_shake.xml中用到的文字-->
     <string name="shake_switch">Lamp Switch</string>
     <string name="shake_color">Random Color</string>
-    <string name="shake_strong">0 Strong</string>
+    <string name="shake_strong">Strong</string>
     <string name="shake_weak">Weak</string>
     <string name="shake_sensitive">Sensitive</string>
     <!--VisualizerActivity.java 和 activity_visualizer.xml中用到的文字-->
-    <string name="visualizer_strong">0 Strong</string>
-    <string name="visualizer_weak">Weak 512</string>
+    <string name="visualizer_strong">Strong</string>
+    <string name="visualizer_weak">Weak</string>
     <string name="visualizer_feel">Feeling</string>
     <!--SelfieActivity.java 和 activity_selfie.xml中用到的文字-->
     <string name="selfie_open">Start Selfie</string>
@@ -345,5 +344,14 @@
     <string name="dialog_state_tip">Please connect the device</string>
 
     <string name="prompt_recordvideo_permission">Please allow "Record Video" permission, to start the "Music rhythm" function!</string>
+
+    <!--PasswordFragment.java 和 fragment_password.xml中用到的文字-->
+    <string name="fragment_tip_password">将设置所有密码（初始密码为0000）</string>
+    <string name="fragment_hint_password">请输入密码（四位数字）</string>
+    <string name="fragment_set_password">设置</string>
+    <!--RenameFragment.java 和 fragment_rename.xml中用到的文字-->
+    <string name="fragment_tip_rename">将更改所有设备名</string>
+    <string name="fragment_hint_rename">更改为</string>
+    <string name="fragment_change_rename">更改</string>
 </resources>
 

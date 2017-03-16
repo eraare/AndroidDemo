@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,24 +21,25 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.R;
+import com.guohua.mlight.common.base.AppContext;
+import com.guohua.mlight.common.base.BaseActivity;
+import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
-import com.guohua.mlight.model.bean.Device;
+import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.util.SceneModeSaveDiyGradientRamp;
 import com.guohua.mlight.communication.BLEConstant;
-import com.guohua.mlight.view.fragment.DialogFragment;
-import com.guohua.mlight.view.fragment.HomeFragment;
+import com.guohua.mlight.model.bean.Device;
 import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.service.GradientRampService;
 import com.guohua.mlight.service.SceneSunGradientRampService;
-import com.guohua.mlight.common.util.CodeUtils;
-import com.guohua.mlight.common.util.SceneModeSaveDiyGradientRamp;
+import com.guohua.mlight.view.fragment.DialogFragment;
+import com.guohua.mlight.view.fragment.HomeFragment;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
@@ -49,9 +49,7 @@ import butterknife.Unbinder;
  * @detail 主Fragment包括以下功能：开关调光调色延时关
  * @time 2015-10-29
  */
-public class PalletActivity extends AppCompatActivity {
-    public static final String TAG = PalletActivity.class.getSimpleName();
-
+public class PalletActivity extends BaseActivity {
     private ThreadPool pool = null;
     /*绑定控件*/
     @BindView(R.id.tv_value_main)
@@ -66,12 +64,6 @@ public class PalletActivity extends AppCompatActivity {
     ImageView changeColor;
     @BindView(R.id.btn_switch_main)
     ImageButton switcher;
-    @BindView(R.id.tv_title_title)
-    TextView tv_title_title;
-    @BindView(R.id.iv_back_title)
-    ImageView add;
-    @BindView(R.id.iv_settings_title)
-    ImageView iv_settings_title;
     @BindView(R.id.btn_red_main)
     Button red;
     @BindView(R.id.btn_orange_main)
@@ -98,18 +90,31 @@ public class PalletActivity extends AppCompatActivity {
     private Unbinder unbinder;
 
     @Override
-    protected void onCreate(Bundle paramBundle) {
-        super.onCreate(paramBundle);
-        // Inflate the layout for this fragment
-        setContentView(R.layout.activity_pallet);
-        unbinder = ButterKnife.bind(this);
-        init();
+    protected int getContentViewId() {
+        return R.layout.activity_pallet;
+    }
+
+    @Override
+    protected BaseFragment getFirstFragment() {
+        return null;
+    }
+
+    @Override
+    protected int getFragmentContainerId() {
+        return 0;
+    }
+
+    @Override
+    protected void init(Intent intent, Bundle savedInstanceState) {
+        super.init(intent, savedInstanceState);
+        setToolbarTitle(R.string.scene_color_pallet);
+        initial();
     }
 
     /**
      * 初始化数据和控件
      */
-    private void init() {
+    private void initial() {
         pool = ThreadPool.getInstance();
         initViews();
         initValues();
@@ -137,7 +142,6 @@ public class PalletActivity extends AppCompatActivity {
 
 
     private void initViews() {
-        tv_title_title.setText(getString(R.string.colorpallet));
         changeColor.setOnTouchListener(mOnTouchListener);
         changeBrightness.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
         changeBrightness.setEnabled(HomeFragment.isLighting);
@@ -148,8 +152,8 @@ public class PalletActivity extends AppCompatActivity {
     /**
      * 按钮的单击事件
      */
-    @OnClick({R.id.btn_switch_main, R.id.iv_back_title, R.id.iv_settings_title, R.id.btn_red_main,
-            R.id.btn_orange_main, R.id.btn_yellow_main, R.id.btn_green_main, R.id.btn_cyan_main,
+    @OnClick({R.id.btn_switch_main, R.id.btn_red_main, R.id.btn_orange_main,
+            R.id.btn_yellow_main, R.id.btn_green_main, R.id.btn_cyan_main,
             R.id.btn_blue_main, R.id.btn_purple_main, R.id.btn_white_main})
     public void onClick(View v) {
         int id = v.getId();
@@ -157,15 +161,6 @@ public class PalletActivity extends AppCompatActivity {
         switch (id) {
             case R.id.btn_switch_main: {
                 switchLight(HomeFragment.isLighting);
-            }
-            return;
-            case R.id.iv_back_title: {
-                showDeviceDialog();
-            }
-            return;
-            case R.id.iv_settings_title: {
-                //Intent intent = new Intent(PalletActivity.this, SettingsActivity.class);
-                //startActivity(intent);
             }
             return;
             case R.id.btn_red_main:
@@ -524,14 +519,6 @@ public class PalletActivity extends AppCompatActivity {
                 DialogFragment.getInstance().onResult(resultDevList);
             }
 
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (unbinder != null) {
-            unbinder.unbind();
         }
     }
 }

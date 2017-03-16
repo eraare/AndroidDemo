@@ -6,8 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.guohua.mlight.R;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -28,28 +33,61 @@ import butterknife.Unbinder;
  * 描  述：所有Activity的基类 用于处理公共的操作
  */
 public abstract class BaseActivity extends AppCompatActivity {
+    protected Toolbar mToolbar; /*标题导航栏*/
     private Unbinder mUnbinder; // 取消绑定
+    private boolean showBack;
+    private ImageView mForwardView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentViewId());
-        /*1 绑定控件*/
-        mUnbinder = ButterKnife.bind(this);
-        /*2 处理传递的Intent数据*/
-        handleIntent(getIntent());
-        /*3 Activity的相关初始化*/
-        init(savedInstanceState);
-        /*4 配置第一个Fragment*/
-        setupFirstFragment();
-        /*5 一些特殊需要在onCreate完成后进行*/
-        initAfterCreate();
+        mUnbinder = ButterKnife.bind(this); /*使用ButterKnife*/
+        setupToolbar(); /*配置Toolbar*/
+        init(getIntent(), savedInstanceState); /*处理Intent及初始化*/
+        setupFirstFragment(); /*加载第一个Fragment*/
+        initAfterCreate(); /*之后的初始化操作*/
     }
 
     /**
-     * onCreate()后onStart()前进行的只有一次的初始化
+     * 获取布局文件的id
+     *
+     * @return
      */
-    protected void initAfterCreate() {
+    protected abstract int getContentViewId();
+
+    /**
+     * 配置Toolbar
+     */
+    private void setupToolbar() {
+        mToolbar = (Toolbar) findViewById(getToolbarId());
+        mForwardView = (ImageView) findViewById(getForwardId());
+        if (mToolbar != null) {
+            mToolbar.setTitle(getString(R.string.app_name));
+            setSupportActionBar(mToolbar);
+        }
+    }
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            removeFragment();
+        }
+    };
+
+    protected int getToolbarId() {
+        return R.id.t_toolbar_base;
+    }
+
+    protected int getForwardId() {
+        return R.id.iv_forward_base;
+    }
+
+    /**
+     * onCreate()阶段的一些初始化
+     */
+    protected void init(Intent intent, Bundle savedInstanceState) {
+        showBack = true;
     }
 
     /**
@@ -65,25 +103,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * 获取布局文件的id
+     * 获取第一个Fragment
      *
      * @return
      */
-    protected abstract int getContentViewId();
+    protected abstract BaseFragment getFirstFragment();
 
     /**
-     * 处理接收到的Intent
-     *
-     * @param intent
+     * onCreate()后onStart()前进行的只有一次的初始化
      */
-    protected void handleIntent(Intent intent) {
-        // override to handle intent
-    }
-
-    /**
-     * onCreate()阶段的一些初始化
-     */
-    protected void init(Bundle savedInstanceState) {
+    protected void initAfterCreate() {
     }
 
     /**
@@ -104,11 +133,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * 获取第一个Fragment
+     * 获取fragment容器id
      *
      * @return
      */
-    protected abstract BaseFragment getFirstFragment();
+    protected abstract int getFragmentContainerId();
 
     /**
      * 移除会退栈中的fragment
@@ -122,12 +151,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * 获取fragment容器id
-     *
-     * @return
-     */
-    protected abstract int getFragmentContainerId();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mToolbar != null && showBack) {
+            mToolbar.setNavigationIcon(R.drawable.icon_back_white);
+            mToolbar.setNavigationOnClickListener(mOnClickListener);
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -138,7 +169,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (mUnbinder != null) {
             mUnbinder.unbind();
         }
-        //AppContext.getInstance().removeActivity(this);
     }
 
     /**
@@ -157,6 +187,27 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    /*接口*/
+    public void setToolbarTitle(String title) {
+        mToolbar.setTitle(title);
+    }
+
+    public void setToolbarTitle(int id) {
+        mToolbar.setTitle(id);
+    }
+
+    public void setShowBack(boolean showBack) {
+        this.showBack = showBack;
+    }
+
+    public void setForwardVisibility(int visibility) {
+        mForwardView.setVisibility(visibility);
+    }
+
+    public void setOnForwardClickListener(View.OnClickListener onClickListener) {
+        mForwardView.setOnClickListener(onClickListener);
     }
 
     private Toast mToast;

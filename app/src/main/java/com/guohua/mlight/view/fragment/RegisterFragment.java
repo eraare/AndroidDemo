@@ -17,7 +17,6 @@ import com.guohua.mlight.presenter.ILoginPresenter;
 import com.guohua.mlight.presenter.impl.LoginPresenter;
 import com.guohua.mlight.view.ILoginView;
 import com.guohua.mlight.view.widget.CountDownTimerView;
-import com.guohua.mlight.view.widget.TitleView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -53,8 +52,6 @@ public class RegisterFragment extends BaseFragment implements ILoginView {
     }
 
     /*绑定视图*/
-    @BindView(R.id.tv_title_register)
-    TitleView mTitleView;
     @BindView(R.id.et_phone_register)
     EditText mPhoneView;
     @BindView(R.id.et_captcha_register)
@@ -74,21 +71,12 @@ public class RegisterFragment extends BaseFragment implements ILoginView {
 
     @Override
     protected void init(View view, Bundle savedInstanceState) {
-        /*0 用于退出*/
-        mTitleView.setOnLeftClickListener(mOnLeftClickListener);
+        mContext.setToolbarTitle(R.string.fragment_register_login);
         mLoginPresenter = new LoginPresenter(this);
         /*验证码倒计时*/
         mCountDownTimer = new CountDownTimerView(Constants.CAPTCHA_TIMER_DELAY,
                 Constants.CAPTCHA_TIMER_INTERVAL, mRequestView);
     }
-
-    /*返回键*/
-    private TitleView.OnLeftClickListener mOnLeftClickListener = new TitleView.OnLeftClickListener() {
-        @Override
-        public void onLeftClick(View v) {
-            removeFragment();
-        }
-    };
 
     @Override
     protected int getLayoutId() {
