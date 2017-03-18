@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.util.CodeUtils;
-import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 
 import butterknife.BindView;
@@ -74,7 +73,7 @@ public class PasswordFragment extends BottomSheetDialogFragment {
         String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_PASSWORD, new String[]{sp.getString("ALL", CodeUtils.password), password});
         sp.edit().putString("ALL", password).apply();
         CodeUtils.setPassword(password);
-        ThreadPool.getInstance().addTask(new SendRunnable(data));
+//        ThreadPool.getInstance().addTask(new SendRunnable(data));
         Toast.makeText(getContext(), R.string.settings_warning, Toast.LENGTH_LONG).show();
     }
 

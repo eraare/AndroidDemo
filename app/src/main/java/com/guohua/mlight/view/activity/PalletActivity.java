@@ -1,6 +1,5 @@
 package com.guohua.mlight.view.activity;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,9 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,22 +18,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.guohua.mlight.R;
-import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.util.CodeUtils;
-import com.guohua.mlight.common.util.SceneModeSaveDiyGradientRamp;
-import com.guohua.mlight.communication.BLEConstant;
-import com.guohua.mlight.model.bean.Device;
-import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
-import com.guohua.mlight.service.GradientRampService;
-import com.guohua.mlight.service.SceneSunGradientRampService;
-import com.guohua.mlight.view.fragment.DialogFragment;
 import com.guohua.mlight.view.fragment.HomeFragment;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -191,22 +177,9 @@ public class PalletActivity extends BaseActivity {
                 break;
         }
         String data = CodeUtils.transARGB2Protocol(color);
-        pool.addTask(new SendRunnable(data));
         currentColor = color;
         ll_activity_pallet.setBackgroundColor(currentColor);
         switcher.setImageResource(R.drawable.light_on);
-    }
-
-    private void showDeviceDialog() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = fragmentManager.findFragmentByTag(DialogFragment.TAG);
-        if (fragment == null) {
-            fragmentTransaction.add(DialogFragment.getInstance(), DialogFragment.TAG);
-        } else {
-            fragmentTransaction.show(fragment);
-        }
-        fragmentTransaction.commit();
     }
 
     /**
@@ -223,68 +196,6 @@ public class PalletActivity extends BaseActivity {
             data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SWITCH, new Object[]{Constants.CMD_CLOSE_LIGHT});
             HomeFragment.isLighting = false;
             switcher.setImageResource(R.drawable.light_off);
-
-            //关闭小夜灯
-//            SceneFragment.mSceneAdapter.setState(false, 1);
-
-            //关闭日出日落模式
-            if (SceneSunGradientRampService.isRunning) {
-                Intent intent = new Intent(this, SceneSunGradientRampService.class);
-                this.stopService(intent);
-                SceneSunGradientRampService.isRunning = false;
-//                SceneFragment.mSceneAdapter.setState(false, 2);
-            }
-
-            //关闭十面埋伏模式
-            if (SceneModeSaveDiyGradientRamp.isRunning) {
-                SceneModeSaveDiyGradientRamp.destroy();
-            }
-
-            if (SceneModeActivity.isSceneModeMusicOn) {
-                Intent intent = new Intent(this, GradientRampService.class);
-                this.stopService(intent);
-                SceneModeActivity.isSceneModeMusicOn = false;
-                SceneModeActivity.isSceneRgbModeOn = false;
-                SceneModeActivity.isSceneDiyModeOn = false;
-                //关闭红绿蓝水波纹
-//                SceneFragment.mSceneAdapter.setState(false, 4);
-
-                //关闭炫彩渐变
-//                SceneFragment.mSceneAdapter.setState(false, 5);
-            }
-        }
-        //多发几次，保证开关
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 5; i++) {
-//                  pool.addTask(new SendRunnable(data));
-                    AppContext.getInstance().sendAll(data);
-                    try {
-                        Thread.sleep(Constants.HANDLERDELAY / 3);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-/*
-        for(int i = 0; i < 5; i++){
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    pool.addTask(new SendRunnable(data));
-                }
-            }, Constants.HANDLERDELAY*i);
-        }
-*/
-
-        if (HomeFragment.isLighting) {
-            currentColor = Color.argb(255, 255, 255, 255);
-            ll_activity_pallet.setBackgroundColor(Color.WHITE);
-        } else {
-            currentColor = Color.argb(0, 0, 0, 0);
-            ll_activity_pallet.setBackgroundColor(Color.BLACK);
         }
     }
 
@@ -322,7 +233,6 @@ public class PalletActivity extends BaseActivity {
                 changeColorBrightness(progress);
             } else if (id == R.id.sb_timer_main) {
                 String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_DELAY_CLOSE, new Object[]{progress * 60});
-                pool.addTask(new SendRunnable(data));
             }
         }
     };
@@ -351,7 +261,6 @@ public class PalletActivity extends BaseActivity {
             data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_CONTROL, new Object[]{alpha, red, green, blue});
             ll_activity_pallet.setBackgroundColor(Color.rgb(red, green, blue));
         }
-        pool.addOtherTask(new SendRunnable(data));
     }
 
     /**
@@ -370,7 +279,6 @@ public class PalletActivity extends BaseActivity {
 
         currentColor = Color.argb(alpha, red, green, blue);
         String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_CONTROL, new Object[]{alpha, red, green, blue});
-        pool.addTask(new SendRunnable(data));
         valueShow.setText("当前颜色 a:" + alpha + "r:" + red + "g:" + green + "b:" + blue);
         valueShow.setBackgroundColor(currentColor);
         /**
@@ -416,7 +324,6 @@ public class PalletActivity extends BaseActivity {
                     changeTheColor();
                     break;*/
                 case MotionEvent.ACTION_UP:
-                    AppContext.getInstance().currentColor = currentColor;
                     break;
                 /*default:
                     Snackbar.make(v, R.string.default_text, Snackbar.LENGTH_SHORT).show();
@@ -439,7 +346,6 @@ public class PalletActivity extends BaseActivity {
         }
 
         String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_CONTROL, new Object[]{alpha, red, green, blue});
-        pool.addTask(new SendRunnable(data));
         valueShow.setText("当前颜色 a:" + alpha + "r:" + red + "g:" + green + "b:" + blue);
         System.out.println("palletactivity changeTheColor 当前颜色 a:" + alpha + "r:" + red + "g:" + green + "b:" + blue);
         //valueShow.setTextColor(currentColor);
@@ -481,44 +387,8 @@ public class PalletActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (TextUtils.equals(action, Constants.ACTION_RECEIVED_STATUS)) {
-                currentColor = AppContext.getInstance().currentColor;
                 changeTheColor();
             }
         }
     };
-
-    /*对话框回调把扫描的设备添加到DialogFragment里显示*/
-
-    private String deviceName;//设备名称
-    private String deviceAddress;
-    private ArrayList<String> selectedScanDeviceList = new ArrayList<>();
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        //super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == BLEConstant.REQUEST_DEVICE_SCAN) {
-                //                deviceName = data.getStringExtra(BluetoothConstant.EXTRA_DEVICE_NAME);
-//                deviceAddress = data.getStringExtra(BluetoothConstant.EXTRA_DEVICE_ADDRESS);
-//                DialogFragment.getInstance().onResult(new Device(deviceName, deviceAddress, true));
-
-                selectedScanDeviceList = data.getStringArrayListExtra(BLEConstant.EXTRA_DEVICE_LIST);
-                ArrayList<Device> resultDevList = new ArrayList<Device>();
-                String addrAndName = "";
-                System.out.println("mainactivity onActivityResult selectedScanDeviceList------------selectedScanDeviceList.size()-------------- " + selectedScanDeviceList.size());
-                for (int i = 0; i < selectedScanDeviceList.size(); i++) {
-                    addrAndName = selectedScanDeviceList.get(i);
-                    int splitPos = addrAndName.indexOf(";");
-                    resultDevList.add(new Device(addrAndName.substring(splitPos + 1), addrAndName.substring(0, splitPos), true));
-                    System.out.println("addrAndName: " + addrAndName + "; splitPos: " + splitPos +
-                            "; addr: " + addrAndName.substring(0, splitPos) + "        name: " + addrAndName.substring(splitPos + 1));
-                }
-                System.out.println("mainactivity onActivityResult selectedScanDeviceList--------------------------");
-                DialogFragment.getInstance().onResult(resultDevList);
-            }
-
-        }
-    }
 }

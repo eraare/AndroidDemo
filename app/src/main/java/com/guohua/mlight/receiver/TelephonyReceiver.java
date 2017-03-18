@@ -12,8 +12,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.guohua.mlight.common.config.Constants;
-import com.guohua.mlight.net.SendRunnable;
-import com.guohua.mlight.net.SendSceneDatasRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.common.util.CodeUtils;
 
@@ -34,7 +32,7 @@ public class TelephonyReceiver extends BroadcastReceiver {
             doReceive(context, intent);
             System.out.println("hellooolllloooooooooooooooooooooooooooooooooooooooooooooooo");
             String protocol = CodeUtils.transARGB2Protocol(Color.CYAN);
-            ThreadPool.getInstance().addTask(new SendRunnable(protocol));
+//            ThreadPool.getInstance().addTask(new SendRunnable(protocol));
         }
     }
 
@@ -64,7 +62,7 @@ public class TelephonyReceiver extends BroadcastReceiver {
 //                ThreadPool.getInstance().addTask(new SendRunnable(data));
 
                 data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_MUSIC_ON, null);
-                ThreadPool.getInstance().addTask(new SendRunnable(data));
+//                ThreadPool.getInstance().addTask(new SendRunnable(data));
 
                 final int[] sendIntDatas;
                 if(sp.getInt(Constants.CALL_REMINDER_SHINEMODE, 0) == 3){
@@ -86,7 +84,7 @@ public class TelephonyReceiver extends BroadcastReceiver {
                             @Override
                             public void run() {
                                 for(int i = 0; i < 3; i++){
-                                    ThreadPool.getInstance().addTask(new SendSceneDatasRunnable(0, sendIntDatas));
+//                                    ThreadPool.getInstance().addTask(new SendSceneDatasRunnable(0, sendIntDatas));
                                     try {
                                         Thread.sleep(Constants.HANDLERDELAY/3);
                                     } catch (InterruptedException e) {
@@ -112,7 +110,7 @@ public class TelephonyReceiver extends BroadcastReceiver {
                 }
 
                 data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_MUSIC_OFF, null);
-                ThreadPool.getInstance().addTask(new SendRunnable(data));
+//                ThreadPool.getInstance().addTask(new SendRunnable(data));
 //
 //                String protocol = CodeUtils.transARGB2Protocol(Color.BLUE);
 //                ThreadPool.getInstance().addTask(new SendRunnable(protocol));
@@ -125,7 +123,7 @@ public class TelephonyReceiver extends BroadcastReceiver {
                     data = phoneNumber + data;
                 }
                 String protocol = CodeUtils.transARGB2Protocol(Color.GREEN);
-                ThreadPool.getInstance().addTask(new SendRunnable(protocol));
+//                ThreadPool.getInstance().addTask(new SendRunnable(protocol));
                 System.out.println(data + "  testestestetsetsetsetsetset003");
             }
             break;

@@ -37,22 +37,6 @@
     <color name="white">#FFFFFF</color>
 
     <!--custom colors-->
-    <!--green-->
-    <color name="green500">#259b24</color>
-
-    <color name="greenmain">#77BD3D</color>
-    <color name="green100">#a3e9a4</color>
-    <color name="green200">#72d572</color>
-    <color name="green300">#42bd41</color>
-    <color name="green400">#2baf2b</color>
-    <color name="green600">#0a8f08</color>
-    <color name="green700">#0a7e07</color>
-    <color name="green800">#056f00</color>
-    <color name="green900">#0d5302</color>
-    <color name="greena100">#a2f78d</color>
-    <color name="greena200">#5af158</color>
-    <color name="greena400">#14e715</color>
-    <color name="greena700">#12c700</color>
 
     <color name="red500">#e51c23</color>
     <color name="red700">#d01716</color>

@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">LWBLE</string>
-    <string name="ble_not_support">请检查您的设备是否支持蓝牙BLE</string>
-    <string name="ble_title">扫描设备</string>
-    <string name="ble_scan">扫描</string>
-    <string name="ble_scanning">扫描...</string>
-</resources>

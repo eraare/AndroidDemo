@@ -16,7 +16,6 @@ import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.util.CodeUtils;
 import com.guohua.mlight.model.bean.Device;
-import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 
 /**
@@ -44,7 +43,7 @@ public class SettingsDialog {
                         String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_PASSWORD, new String[]{sp.getString(deviceAddress, CodeUtils.password), newString});
                         saveThePassword(context, deviceAddress, newString);
                         CodeUtils.setPassword(newString);
-                        ThreadPool.getInstance().addTask(new SendRunnable(deviceAddress, data));
+//                        ThreadPool.getInstance().addTask(new SendRunnable(deviceAddress, data));
                         Toast.makeText(context, R.string.settings_warning, Toast.LENGTH_LONG).show();
                     }
                 }).setNegativeButton(R.string.settings_negative, null).show();
@@ -90,10 +89,10 @@ public class SettingsDialog {
         Device device = AppContext.getInstance().devices.get(position);
         String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_NAME, new String[]{nameString});
         if (device != null) {
-            ThreadPool.getInstance().addTask(new SendRunnable(device.getDeviceAddress(), data));
+//            ThreadPool.getInstance().addTask(new SendRunnable(device.getDeviceAddress(), data));
             device.setDeviceName(nameString);
         } else {
-            ThreadPool.getInstance().addTask(new SendRunnable(data));
+//            ThreadPool.getInstance().addTask(new SendRunnable(data));
         }
         Toast.makeText(AppContext.getInstance(), R.string.settings_warning, Toast.LENGTH_LONG).show();
     }
@@ -107,14 +106,14 @@ public class SettingsDialog {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_COLOR, null);
-                        ThreadPool.getInstance().addTask(new SendRunnable(deviceAddress, data));
+//                        ThreadPool.getInstance().addTask(new SendRunnable(deviceAddress, data));
 
                         //需启动底层的预置灯色模式，与上次发数据保持一定时间间隔
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SAVE_DIY_START, new Object[]{1});
-                                ThreadPool.getInstance().addTask(new SendRunnable(data));
+//                                ThreadPool.getInstance().addTask(new SendRunnable(data));
                             }
                         }, Constants.HANDLERDELAY);
                         Toast.makeText(context, R.string.settings_color_tip, Toast.LENGTH_SHORT).show();

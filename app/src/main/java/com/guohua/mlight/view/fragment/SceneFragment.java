@@ -14,9 +14,7 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.util.CodeUtils;
-import com.guohua.mlight.common.util.ToastUtill;
 import com.guohua.mlight.model.bean.SceneBean;
-import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.view.activity.PalletActivity;
 import com.guohua.mlight.view.activity.SelfieActivity;
@@ -107,13 +105,12 @@ public class SceneFragment extends BaseFragment {
                 break;
                 case 1: {
                     String musicOff = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_MUSIC_OFF, null);
-                    ThreadPool.getInstance().addMusicOffTask(new SendRunnable(musicOff));
                     mContext.toast("炫彩渐变模式已开启");
                 }
                 break;
                 case 2: {
                     String data = CodeUtils.transARGB2Protocol(Constants.COLORMOONMODE);
-                    ThreadPool.getInstance().addTask(new SendRunnable(data));
+//                    ThreadPool.getInstance().addTask(new SendRunnable(data));
                     mContext.toast("小夜灯模式已开启");
                 }
                 break;
@@ -149,7 +146,6 @@ public class SceneFragment extends BaseFragment {
                 }
                 break;
                 default:
-                    ToastUtill.showToast(mContext, getString(R.string.default_text), Constants.TOASTLENGTH).show();
                     break;
             }
         }
@@ -164,13 +160,13 @@ public class SceneFragment extends BaseFragment {
                     @Override
                     public void onClick(View v) {
                         String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_COLOR, null);
-                        ThreadPool.getInstance().addTask(new SendRunnable(data));
+//                        ThreadPool.getInstance().addTask(new SendRunnable(data));
                         //需启动底层的预置灯色模式，与上次发数据保持一定时间间隔
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SAVE_DIY_START, new Object[]{1});
-                                ThreadPool.getInstance().addTask(new SendRunnable(data));
+//                                ThreadPool.getInstance().addTask(new SendRunnable(data));
                             }
                         }, Constants.HANDLERDELAY);
                         Toast.makeText(getContext(), R.string.settings_color_tip, Toast.LENGTH_SHORT).show();

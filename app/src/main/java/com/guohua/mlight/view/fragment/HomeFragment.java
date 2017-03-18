@@ -22,14 +22,8 @@ import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.util.CodeUtils;
-import com.guohua.mlight.common.util.SceneModeSaveDiyGradientRamp;
-import com.guohua.mlight.common.util.ToastUtill;
-import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
-import com.guohua.mlight.service.GradientRampService;
-import com.guohua.mlight.service.SceneSunGradientRampService;
 import com.guohua.mlight.view.activity.MainActivity;
-import com.guohua.mlight.view.activity.SceneModeActivity;
 import com.guohua.mlight.view.widget.TimerView;
 
 import java.text.SimpleDateFormat;
@@ -268,7 +262,7 @@ public class HomeFragment extends BaseFragment {
                 if (sp.getBoolean(Constants.EXIST_TIMER_OPEN, false)) {//存在定时开任务,则关闭定时开
                     deleteLightTimer(true);
                 } else {
-                    ((MainActivity) mContext).showDialogFragment(TimerFragment.TAG);
+//                    ((MainActivity) mContext).showDialogFragment(TimerFragment.TAG);
                 }
             }
             break;
@@ -338,7 +332,7 @@ public class HomeFragment extends BaseFragment {
             break;
         }
 
-        pool.addTask(new SendRunnable(CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_DELAY_CLOSE, new Object[]{timeDelay * 60})));
+//        pool.addTask(new SendRunnable(CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_DELAY_CLOSE, new Object[]{timeDelay * 60})));
         timerOff.setText(getString(R.string.close_light_timer) + "   " +
                 new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(System.currentTimeMillis() + timeDelay * 60 * 1000)));
         saveCloseTimer(timeDelay);
@@ -350,7 +344,7 @@ public class HomeFragment extends BaseFragment {
             mContext.toast(getString(R.string.cancel_open_light_timer) + "   "
                     + new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(sp.getLong(Constants.KEY_TIMER_OPEN, 0))));
 
-            pool.addTask(new SendRunnable(CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_DELAY_OPEN, null)));
+//            pool.addTask(new SendRunnable(CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_DELAY_OPEN, null)));
             objectOpenTime = 0;
             currentOpenTime = 0;
             sp.edit().putLong(Constants.KEY_TIMER_OPEN, 0).apply();
@@ -360,7 +354,7 @@ public class HomeFragment extends BaseFragment {
             sp.edit().putLong(Constants.KEY_TIMER_CLOSE, 0).apply();
             sp.edit().putInt(Constants.KEY_TIMER_MODE, 0).apply();
             timerOff.setText(getString(R.string.close_light_timer));
-            pool.addTask(new SendRunnable(CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_DELAY_CLOSE, null)));
+//            pool.addTask(new SendRunnable(CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_DELAY_CLOSE, null)));
         }
     }
 
@@ -511,9 +505,6 @@ public class HomeFragment extends BaseFragment {
             String action = intent.getAction();
             if (TextUtils.equals(action, Constants.ACTION_OPENLIGHT_TIMER)) {
                 System.out.println("TimerFragment mBroadcastReceiver recieve: " + Constants.ACTION_OPENLIGHT_TIMER);
-                ToastUtill.showToast(mContext,
-                        getString(R.string.open_light_timer) + "   " + intent.getStringExtra(Constants.ACTION_OPENLIGHT_TIMER),
-                        Constants.TOASTLENGTH);
                 startTimer(WHAT_TIMER_OPEN);
             }
         }
@@ -569,31 +560,6 @@ public class HomeFragment extends BaseFragment {
             isLighting = false;
             switcher.setImageResource(R.drawable.icon_light_off);
             data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SWITCH, new Object[]{CodeUtils.SWITCH_CLOSE});
-
-            //关闭小夜灯
-//            SceneFragment.mSceneAdapter.setState(false, 1);
-
-            //关闭日出日落模式
-            if (SceneSunGradientRampService.isRunning) {
-                Intent intent = new Intent(mContext, SceneSunGradientRampService.class);
-                mContext.stopService(intent);
-                SceneSunGradientRampService.isRunning = false;
-//                SceneFragment.mSceneAdapter.setState(false, 2);
-            }
-
-            //关闭十面埋伏模式
-            if (SceneModeSaveDiyGradientRamp.isRunning) {
-                SceneModeSaveDiyGradientRamp.destroy();
-            }
-
-            if (SceneModeActivity.isSceneModeMusicOn) {
-                Intent intent = new Intent(mContext, GradientRampService.class);
-                mContext.stopService(intent);
-                SceneModeActivity.isSceneModeMusicOn = false;
-                SceneModeActivity.isSceneRgbModeOn = false;
-                SceneModeActivity.isSceneDiyModeOn = false;
-            }
-
         } else {
             data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SWITCH, new Object[]{CodeUtils.SWITCH_OPEN});
             isLighting = true;
@@ -604,7 +570,7 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void run() {
                 for (int i = 0; i < 5; i++) {
-                    AppContext.getInstance().sendAll(data);
+//                    AppContext.getInstance().sendAll(data);
                     try {
                         Thread.sleep(Constants.HANDLERDELAY / 3);
                     } catch (InterruptedException e) {
@@ -638,7 +604,7 @@ public class HomeFragment extends BaseFragment {
         data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_CONTROL, new Object[]{alpha, brightnessRed, brightnessGreen, brightnessBlue});
         System.out.println("brightnessRed: " + brightnessRed + "; brightnessGreen: " + brightnessGreen + "; brightnessBlue: " + brightnessBlue);
 //    }
-        pool.addTask(new SendRunnable(data));
+//        pool.addTask(new SendRunnable(data));
         if (!isLighting) {
             isLighting = true;
             switcher.setImageResource(R.drawable.icon_light_on);
@@ -664,7 +630,7 @@ public class HomeFragment extends BaseFragment {
         System.out.println("temperatureRed: " + temperatureRed + "; temperatureGreen: " + temperatureGreen + "; temperatureBlue: " + temperatureBlue);
 //    }
 
-        pool.addTask(new SendRunnable(data));
+//        pool.addTask(new SendRunnable(data));
         if (!isLighting) {
             isLighting = true;
             switcher.setImageResource(R.drawable.icon_light_on);

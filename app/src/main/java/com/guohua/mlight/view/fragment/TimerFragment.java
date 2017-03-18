@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.model.bean.DatetimeBean;
-import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.common.util.CodeUtils;
 import com.guohua.mlight.common.config.Constants;
@@ -120,7 +119,7 @@ public class TimerFragment extends android.support.v4.app.DialogFragment {
                         System.out.println(String.format("%d", curTime) + "  --------22222--------turn on:" + mdateTime);
 
                         String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_DELAY_OPEN, new Object[]{mdateTime / 1000});
-                        ThreadPool.getInstance().addOtherTask(new SendRunnable(data));
+//                        ThreadPool.getInstance().addOtherTask(new SendRunnable(data));
 
                         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
                         SharedPreferences.Editor editor = sp.edit();

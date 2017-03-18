@@ -24,7 +24,6 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.model.observer.IObserver;
 import com.guohua.mlight.model.observer.ISubject;
-import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.common.util.CodeUtils;
 import com.guohua.mlight.view.activity.MainActivity;
@@ -225,7 +224,7 @@ public class VisualizerService extends Service implements ISubject {
             colorValue = getColorByFft(fft, size, color);
 
             data = CodeUtils.transARGB2Protocol(colorValue);
-            pool.addTask(new SendRunnable(data));
+//            pool.addTask(new SendRunnable(data));
         }
     };
 

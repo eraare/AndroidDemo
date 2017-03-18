@@ -351,4 +351,6 @@
     <string name="fragment_tip_rename">将更改所有设备名</string>
     <string name="fragment_hint_rename">更改为</string>
     <string name="fragment_change_rename">更改</string>
+    <!--DeviceActivity.java 相关的文字-->
+    <string name="activity_title_device">设备管理</string>
 </resources>

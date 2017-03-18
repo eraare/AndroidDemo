@@ -24,7 +24,6 @@ import android.text.TextUtils;
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.util.CodeUtils;
-import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.view.activity.MainActivity;
 import com.guohua.mlight.view.activity.ShakeActivity;
@@ -180,7 +179,7 @@ public class ShakeService extends Service {
             int color = Color.argb(alpha, red, green, blue);
             data = CodeUtils.transARGB2Protocol(color);
         }
-        pool.addTask(new SendRunnable(data));
+//        pool.addTask(new SendRunnable(data));
 
 
         allowShake = false;

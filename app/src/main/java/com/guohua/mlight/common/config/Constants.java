@@ -14,27 +14,18 @@ public final class Constants {
     /**
      * 键值对的键
      */
-    public static final String RED_GRADIENT_DELAY = "red_gradient_delay";
-    public static final String GREEN_GRADIENT_DELAY = "green_gradient_delay";
-    public static final String BLUE_GRADIENT_DELAY = "blue_gradient_delay";
     public static final String KEY_DEVICE_NAME = "device_name";
     public static final String KEY_DEVICE_ADDRESS = "device_address";
     public static final String KEY_SHAKE_MODE = "shake_mode";
     public static final String KEY_COLOR = "key_color";
     public static final String KEY_PERSONAL_FEEL = "personal_feel";
-    public static final String KEY_SPLASH_NAME = "key_splash_name";
     public static final String KEY_THRESHOLD = "key_threshold";
-    public static final String KEY_BLUETOOTH_STATE = "key_bluetooth_state";
     public static final String KEY_STATUS_MESSAGE = "key_status_message";
-    public static final String KEY_DEVICE_SWITCH = "key_device_switch";
-    public static final String KEY_DEVICE_COLOR = "key_device_color";
-    public static final String KEY_TIMER = "key_timer";
     public static final String EXIST_TIMER_OPEN = "exist_timer_open";
     public static final String KEY_TIMER_OPEN = "key_timer_open";
     public static final String KEY_TIMER_CLOSE = "key_timer_close";
     public static final String KEY_TIMER_MODE = "key_timer_mode";
     public static final String KEY_SELFIE_RUN = "key_selfie_run";
-    public static final String KEY_AUTO_CONNECT = "key_auto_connect";
     public static final String KEY_BLUETOOTH_INIT_STATE = "key_bluetooth_init_state";
     public static final String CALL_REMINDER_SHINEMODE = "call_reminder_shinemode";
     public static final String CALL_REMINDER_SHINEMODE_VALUE = "call_reminder_shinemode_value";
@@ -44,8 +35,6 @@ public final class Constants {
     public static final String OFFICIAL_WEBSITE = "http://www.guohua-net.cn";
     public static final String FEEDBACK_WEBSITE = "http://www.guohua-net.cn/message.html";
     public static final String UPGRADE_ADDRESS = "http://www.guohua-net.com/magiclamp/mlight-upgrade.xml";
-//    public static final String SPLASH_ADDRESS = "http://www.guohua-net.com/magiclamp/splash.xml";
-
     /**
      * 密码目录改变颜色
      */

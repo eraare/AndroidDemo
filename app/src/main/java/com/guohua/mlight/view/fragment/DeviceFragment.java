@@ -18,7 +18,6 @@ import android.view.View;
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.base.BaseFragment;
-import com.guohua.mlight.communication.BLEConstant;
 import com.guohua.mlight.model.bean.Device;
 import com.guohua.mlight.view.adapter.DeviceAdapter;
 
@@ -96,10 +95,8 @@ public class DeviceFragment extends BaseFragment {
             final Device device = mDeviceAdapter.getDevice(position);
             if (device.isConnected()) {
 //                device.setConnected(false);
-                AppContext.getInstance().disonnect(device.getDeviceAddress(), false);
             } else {
 //                device.setConnected(true);
-                AppContext.getInstance().connect(device.getDeviceAddress());
             }
         }
     };
@@ -123,7 +120,7 @@ public class DeviceFragment extends BaseFragment {
     public void onResult(Device device) {
         if (mDeviceAdapter.addDevice(device)) {
             /*添加后进行自动连接*/
-            AppContext.getInstance().connect(device.getDeviceAddress());
+//            AppContext.getInstance().connect(device.getDeviceAddress());
         }
     }
 
@@ -163,7 +160,7 @@ public class DeviceFragment extends BaseFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (TextUtils.equals(action, BLEConstant.ACTION_BLE_CONNECTED)) {
+            /*if (TextUtils.equals(action, BLEConstant.ACTION_BLE_CONNECTED)) {
                 if (mProgressDialog != null) {
                     mProgressDialog.dismiss();
                 }
@@ -175,17 +172,17 @@ public class DeviceFragment extends BaseFragment {
                 showProgressDialog("拼命连接中...");
             } else if (TextUtils.equals(action, BLEConstant.ACTION_BLE_DISCONNECTED)) {
                 showProgressDialog("正在断开...");
-            }
+            }*/
             mDeviceAdapter.notifyDataSetChanged();
         }
     };
 
     private void registerTheReceiver() {
         IntentFilter filter = new IntentFilter();
-        filter.addAction(BLEConstant.ACTION_BLE_CONNECTED);
+        /*filter.addAction(BLEConstant.ACTION_BLE_CONNECTED);
         filter.addAction(BLEConstant.ACTION_BLE_DISCONNECTED);
         filter.addAction(BLEConstant.ACTION_BLE_CONNECTING);
-        filter.addAction(BLEConstant.ACTION_BLE_DISCONNECTED);
+        filter.addAction(BLEConstant.ACTION_BLE_DISCONNECTED);*/
         filter.setPriority(Integer.MAX_VALUE);
         LocalBroadcastManager.getInstance(mContext).registerReceiver(mBroadcastReceiver, filter);
     }

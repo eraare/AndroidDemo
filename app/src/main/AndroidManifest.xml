@@ -17,15 +17,11 @@
     <!-- Bmob用到的权限 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- Android6.0 蓝牙扫描才需要 -->
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- Google应用市场特征配置 -->
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.bluetooth_le" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
-    <!-- 加入persistent提高程序的系统优先级让程序不被轻易杀死 -->
     <application
         android:name=".common.base.AppContext"
         android:allowBackup="true"
@@ -34,8 +30,7 @@
         android:persistent="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <!-- 欢迎界面 -->
+        <!--欢迎界面-->
         <activity
             android:name=".view.activity.SplashActivity"
             android:screenOrientation="portrait"
@@ -46,25 +41,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--登陆界面-->
         <activity
             android:name=".view.activity.LoginActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.GradientRampActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.SceneModeActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.PalletActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.MeActivity"
-            android:screenOrientation="portrait" />
+        <!--主界面-->
         <activity
             android:name=".view.activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <!--Scene中的界面-->
         <activity
             android:name=".view.activity.ShakeActivity"
             android:screenOrientation="portrait" />
@@ -76,6 +62,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
         <activity
+            android:name=".view.activity.TemperatureActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.FullScreen" />
+        <activity
+            android:name=".view.activity.PalletActivity"
+            android:screenOrientation="portrait" />
+        <!--Center中的界面-->
+        <activity
+            android:name=".view.activity.MeActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".view.activity.AppActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -84,50 +81,19 @@
         <activity
             android:name=".view.activity.UsActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.TemperatureActivity"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.FullScreen" />
+        <!--设备扫描界面-->
         <activity
             android:name=".view.activity.DeviceActivity"
             android:screenOrientation="portrait" />
-        <!-- 以下是BLE通信 -->
-        <activity
-            android:name=".communication.BLEActivity"
-            android:screenOrientation="portrait" />
-        <!-- 音乐律动服务和摇一摇服务 -->
+        <!--其他Activity-->
         <service android:name=".service.VisualizerService" />
         <service android:name=".service.ShakeService" />
-
-        <!-- 日出日落模式服务 -->
-        <service android:name=".service.SceneSunGradientRampService">
-            <intent-filter>
-                <action android:name="com.guohua.glight.service.SceneSunGradientRampService" />
-            </intent-filter>
-        </service>
-
-        <!-- 渐变模式服务 -->
-        <service android:name=".service.GradientRampService">
-            <intent-filter>
-                <action android:name="com.guohua.glight.service.GradientRampService" />
-            </intent-filter>
-        </service>
-
-        <!-- 情景模式服务 -->
-        <service android:name=".service.DriveModeService">
-            <intent-filter>
-                <action android:name="com.guohua.glight.service.DriveModeService" />
-            </intent-filter>
-        </service>
-        <service android:name=".communication.BLEService" />
 
         <receiver android:name=".receiver.TelephonyReceiver">
             <intent-filter android:priority="2147483647">
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-
-        <activity android:name=".view.activity.TesterActivity" />
     </application>
 
 </manifest>

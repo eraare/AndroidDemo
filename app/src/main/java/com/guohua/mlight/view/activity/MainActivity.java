@@ -1,31 +1,14 @@
 package com.guohua.mlight.view.activity;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.ActivityNotFoundException;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -38,19 +21,10 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
-import com.guohua.mlight.common.config.Constants;
-import com.guohua.mlight.common.util.CodeUtils;
-import com.guohua.mlight.common.util.ToolUtils;
-import com.guohua.mlight.communication.BLEConstant;
-import com.guohua.mlight.communication.BLERecord;
-import com.guohua.mlight.model.bean.Device;
 import com.guohua.mlight.view.adapter.FragmentAdapter;
 import com.guohua.mlight.view.fragment.CenterFragment;
-import com.guohua.mlight.view.fragment.DialogFragment;
 import com.guohua.mlight.view.fragment.HomeFragment;
 import com.guohua.mlight.view.fragment.SceneFragment;
-import com.guohua.mlight.view.fragment.TimerFragment;
-import com.guohua.mlight.view.widget.TitleView;
 
 import butterknife.BindArray;
 import butterknife.BindView;
@@ -62,16 +36,6 @@ import butterknife.BindView;
  */
 @SuppressLint("NewApi")
 public class MainActivity extends BaseActivity {
-    private String deviceName; //设备名称
-    private String deviceAddress; //设备MAC地址
-    private String password; //设备的控制密码
-
-    /*扫描用到的辅助变量*/
-    private BluetoothAdapter mBluetoothAdapter;
-    private boolean mScanning = false;// 循环标志位
-    private static final long SCAN_PERIOD = 10000;// 扫描10s
-    private Handler mHandler;//用于两个类之前的消息传递
-
     /*绑定控件*/
     @BindView(R.id.bnb_bar_main)
     BottomNavigationBar mBarView;
@@ -82,7 +46,6 @@ public class MainActivity extends BaseActivity {
     String[] mTitles; // 显示在底部标签栏的标题
     @BindArray(R.array.fragment_alias_main)
     String[] mAlias; // 显示在顶部导航栏的别名
-
     /*底部标签导航的ICON图像*/
     private int[] mNormalIconIds = {
             R.drawable.icon_home_normal,
@@ -136,28 +99,12 @@ public class MainActivity extends BaseActivity {
         showOrHideForward(lastSelectedPosition);
         /* 添加右边前进键单机事件*/
         setOnForwardClickListener(mOnClickListener);
-        /*4 初始化其他*/
-        initValues();
-        registerTheReceiver();
-        CodeUtils.setPassword(password);
-        // 点击一次设置当前tab 同时会触发切换fragment
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mHandler = new android.os.Handler();
-        scanLeDevice(true);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-//            showDialogFragment(DialogFragment.TAG);
             startActivity(new Intent(MainActivity.this, DeviceActivity.class));
-        }
-    };
-
-    private TitleView.OnLeftClickListener mOnLeftClickListener = new TitleView.OnLeftClickListener() {
-        @Override
-        public void onLeftClick(View v) {
-            showDialogFragment(DialogFragment.TAG);
         }
     };
 
@@ -229,90 +176,6 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-    private Runnable mStopRunnable = new Runnable() {
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-        @Override
-        public void run() {
-            mScanning = false;
-            mBluetoothAdapter.stopLeScan(mLeScanCallback);
-        }
-    };
-
-    /**
-     * 扫描BLE设备
-     *
-     * @param enable
-     */
-    @SuppressLint("NewApi")
-    private void scanLeDevice(final boolean enable) {
-        if (enable) {
-            mHandler.postDelayed(mStopRunnable, SCAN_PERIOD);
-            mScanning = true;
-            mBluetoothAdapter.startLeScan(mLeScanCallback);
-        } else {
-            mScanning = false;
-            mBluetoothAdapter.stopLeScan(mLeScanCallback);
-        }
-    }
-
-    /**
-     * BLE扫描回调函数，设备保存在remoteDevice里面
-     */
-    private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
-
-        @Override
-        public void onLeScan(final BluetoothDevice device, int rssi,
-                             byte[] scanRecord) {
-            // TODO Auto-generated method stub
-            if (!BLERecord.isOurDevice(scanRecord)) {
-                return;
-            }
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    String deviceName = device.getName();
-                    String deviceAddress = device.getAddress();
-                    AppContext.getInstance().addDevice(new Device(deviceName, deviceAddress, true));
-                    if (DialogFragment.getInstance().mGroupAdapter != null) {
-                        DialogFragment.getInstance().mGroupAdapter.notifyDataSetChanged();
-                    }
-                }
-            });
-        }
-    };
-
-    /**
-     * 初始化Preference里的存储值
-     */
-    private void initValues() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        deviceName = sp.getString(Constants.KEY_DEVICE_NAME, getString(R.string.app_name));
-        deviceAddress = sp.getString(Constants.KEY_DEVICE_ADDRESS, "a9:87:65:43:21:00");
-        password = sp.getString(deviceAddress, Constants.DEFAULT_PASSWORD);
-    }
-
-    /**
-     * 显示对话框Fragment
-     *
-     * @param tag
-     */
-    public void showDialogFragment(String tag) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = fragmentManager.findFragmentByTag(tag);
-        if (fragment == null) {
-            if (TextUtils.equals(tag, DialogFragment.TAG)) {
-                fragment = DialogFragment.getInstance();
-            } else if (TextUtils.equals(tag, TimerFragment.TAG)) {
-                fragment = TimerFragment.getInstance();
-            }
-            fragmentTransaction.add(fragment, tag);
-        } else {
-            fragmentTransaction.show(fragment);
-        }
-        fragmentTransaction.commit();
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -341,26 +204,13 @@ public class MainActivity extends BaseActivity {
      * 退出程序关闭所有
      */
     private void exit() {
-        /**
-         * 关闭所有后台服务
-         */
-        Intent intent = new Intent(Constants.ACTION_EXIT);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        //stopGuard();
-        AppContext.getInstance().disonnectAll();
-        AppContext.getInstance().closeBLEService();
-        if (!ToolUtils.readBluetoothState(this)) {
-            BluetoothAdapter.getDefaultAdapter().disable();
-        }
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(Constants.KEY_SELFIE_RUN, false).apply();
-        finish();
+
     }
 
     /**
      * 后台运行，关闭MainActivity 但不关闭后台服务 不关闭蓝牙
      */
     private void background() {
-        //startGuard();
         //moveTaskToBack(false);//此句代码可代替下面所有代码
         PackageManager pm = getPackageManager();
         ResolveInfo homeInfo = pm.resolveActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME), 0);
@@ -386,71 +236,6 @@ public class MainActivity extends BaseActivity {
         } catch (SecurityException e) {
             Log.d("Leo", "MainActivity startActivitySafely() error");
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == BLEConstant.REQUEST_DEVICE_SCAN) {
-                deviceName = data.getStringExtra(BLEConstant.EXTRA_DEVICE_NAME);
-                deviceAddress = data.getStringExtra(BLEConstant.EXTRA_DEVICE_ADDRESS);
-                DialogFragment.getInstance().onResult(new Device(deviceName, deviceAddress, true));
-            }
-        }
-    }
-
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-            if (TextUtils.equals(action, Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
-                //startGuard();
-            } else if (TextUtils.equals(action, BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
-                //showSnackbar(title, R.string.main_state_bond);
-            } else if (TextUtils.equals(action, BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED)) {
-                //showSnackbar(title, R.string.main_state_equipment);
-            } else if (TextUtils.equals(action, BluetoothAdapter.ACTION_STATE_CHANGED)) {
-                //showSnackbar(title, R.string.main_state_bluetooth);
-            } else if (TextUtils.equals(action, BLEConstant.ACTION_BLE_CONNECTED)) {
-                if (DialogFragment.getInstance().mProgressDialog != null) {
-                    DialogFragment.getInstance().mProgressDialog.dismiss();
-                }
-            } else if (TextUtils.equals(action, BLEConstant.ACTION_BLE_DISCONNECTED)) {
-                if (DialogFragment.getInstance().mProgressDialog != null) {
-                    DialogFragment.getInstance().mProgressDialog.dismiss();
-                }
-            }
-            DialogFragment.getInstance().updateAdapter();
-        }
-    };
-
-    private Snackbar snackbar;
-
-    private void showSnackbar(View view, int id) {
-        if (snackbar != null) {
-            snackbar.dismiss();
-        }
-        snackbar = Snackbar.make(view, id, Snackbar.LENGTH_LONG);
-        snackbar.getView().setBackgroundColor(getResources().getColor(R.color.main));
-        snackbar.show();
-    }
-
-    private void registerTheReceiver() {
-        IntentFilter mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-        mIntentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        mIntentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        mIntentFilter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-
-        mIntentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
-        mIntentFilter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
-        mIntentFilter.addAction(BLEConstant.ACTION_BLE_CONNECTED);
-        mIntentFilter.addAction(BLEConstant.ACTION_BLE_DISCONNECTED);
-
-        mIntentFilter.setPriority(Integer.MAX_VALUE);
-        registerReceiver(mBroadcastReceiver, mIntentFilter);
     }
 
     @Override

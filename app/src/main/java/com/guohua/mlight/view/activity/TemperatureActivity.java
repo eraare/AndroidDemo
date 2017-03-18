@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -24,7 +23,6 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.model.bean.Device;
-import com.guohua.mlight.communication.BLEConstant;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,7 +88,7 @@ public class TemperatureActivity extends BaseActivity {
      */
     private void registerTheReceiver() {
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BLEConstant.ACTION_RECEIVED_TEMPERATURE);
+//        intentFilter.addAction(BLEConstant.ACTION_RECEIVED_TEMPERATURE);
         intentFilter.setPriority(Integer.MAX_VALUE);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBroadcastReceiver, intentFilter);
     }
@@ -102,7 +100,7 @@ public class TemperatureActivity extends BaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (TextUtils.equals(action, BLEConstant.ACTION_RECEIVED_TEMPERATURE)) {
+            /*if (TextUtils.equals(action, BLEConstant.ACTION_RECEIVED_TEMPERATURE)) {
                 String deviceAddress = intent.getStringExtra(BLEConstant.EXTRA_DEVICE_ADDRESS);
                 String data = intent.getStringExtra(BLEConstant.EXTRA_RECEIVED_DATA);
                 if (data != null && !TextUtils.equals("", data)) {
@@ -118,7 +116,7 @@ public class TemperatureActivity extends BaseActivity {
                     }
                 }
 
-            }
+            }*/
         }
     };
 

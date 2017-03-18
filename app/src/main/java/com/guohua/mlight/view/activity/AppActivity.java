@@ -19,7 +19,6 @@ import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.util.CodeUtils;
 import com.guohua.mlight.common.util.ToolUtils;
-import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.upgrade.UpgradeManager;
 
@@ -87,7 +86,7 @@ public class AppActivity extends BaseActivity {
         /*请求固件版本*/
         if (mFirmVersion == null) {
             String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_VERSION, null);
-            ThreadPool.getInstance().addTask(new SendRunnable(data));
+//            ThreadPool.getInstance().addTask(new SendRunnable(data));
         }
     }
 

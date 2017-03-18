@@ -8,8 +8,8 @@ android {
         applicationId "com.guohua.mlight"
         minSdkVersion 18
         targetSdkVersion 23
-        versionCode 10
-        versionName "2.0.0"
+        versionCode 30
+        versionName "2.0.1.170318_alpha"
     }
     buildTypes {
         release {
@@ -42,7 +42,6 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     /*滑动框架*/
-    compile "com.daimajia.swipelayout:library:1.2.0@aar"
+    compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     /*蓝牙BLE通信库*/
-    compile project(':lwble')
 }

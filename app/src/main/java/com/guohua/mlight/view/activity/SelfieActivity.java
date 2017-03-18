@@ -7,9 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
-import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,13 +16,10 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.util.CameraUtils;
-import com.guohua.mlight.communication.BLEConstant;
 import com.guohua.mlight.view.widget.CameraSurfaceView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SelfieActivity extends BaseActivity {
@@ -135,7 +130,7 @@ public class SelfieActivity extends BaseActivity {
         super.onResume();
 //        mPreviewView.switchCamera();
         IntentFilter filter = new IntentFilter();
-        filter.addAction(BLEConstant.ACTION_RECEIVED_SELFIE);
+//        filter.addAction(BLEConstant.ACTION_RECEIVED_SELFIE);
         filter.setPriority(Integer.MAX_VALUE);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBroadcastReceiver, filter);
     }
@@ -147,9 +142,9 @@ public class SelfieActivity extends BaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (TextUtils.equals(action, BLEConstant.ACTION_RECEIVED_SELFIE)) {
-                takePicture();
-            }
+//            if (TextUtils.equals(action, BLEConstant.ACTION_RECEIVED_SELFIE)) {
+//                takePicture();
+//            }
         }
     };
 }

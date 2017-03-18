@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.util.CodeUtils;
-import com.guohua.mlight.net.SendRunnable;
 import com.guohua.mlight.net.ThreadPool;
 
 import butterknife.BindView;
@@ -69,7 +68,7 @@ public class RenameFragment extends BottomSheetDialogFragment {
         if (TextUtils.isEmpty(name)) return; /*密码不为空*/
         /*去更改灯名*/
         String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_NAME, new String[]{name});
-        ThreadPool.getInstance().addTask(new SendRunnable(data));
+//        ThreadPool.getInstance().addTask(new SendRunnable(data));
         Toast.makeText(getContext(), R.string.settings_warning, Toast.LENGTH_LONG).show();
     }
 
