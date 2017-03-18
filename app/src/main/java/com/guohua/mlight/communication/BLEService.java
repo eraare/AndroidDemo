@@ -155,7 +155,7 @@ public class BLEService extends Service {
         } else if (rcv.startsWith("pres")) {
             intent.setAction(BLEConstant.ACTION_RECEIVED_SELFIE);
         }
-        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     /**
@@ -170,7 +170,7 @@ public class BLEService extends Service {
         Intent intent = new Intent();
         intent.putExtra(BLEConstant.EXTRA_DEVICE_ADDRESS, address);
         intent.setAction(action);
-        sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     /*Section: BLE连接通信的回调函数*/
@@ -446,6 +446,8 @@ public class BLEService extends Service {
 
     /**
      * 根据地址斷開GATT連接
+     * @param address
+     * @param isRemove
      */
     public void disconnect(String address, boolean isRemove) {
         if (mBluetoothAdapter == null || address == null || TextUtils.equals(address, "")) {

@@ -1,6 +1,8 @@
 package com.guohua.mlight.view.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,13 +36,20 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
         /*加载Item布局文件*/
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.item_device, parent, false);
+        view.setOnClickListener(mOnClickListener); /*单击事件*/
+        view.setOnLongClickListener(mOnLongClickListener); /*长按事件*/
         return new LocalViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final LocalViewHolder holder, final int position) {
+        holder.itemView.setTag(position); /*标志位置*/
         final Device device = mDatas.get(position);
-        holder.deviceName.setText(device.getDeviceName());
+        final String name = device.getDeviceName();
+        final String address = device.getDeviceAddress();
+        final boolean isConnected = device.isConnected();
+        holder.deviceName.setText(name == null ? "Unknown Name" : name);
+        holder.deviceState.setText(isConnected ? "在线" : "离线");
         holder.deviceAddress.setText(device.getDeviceAddress());
     }
 
@@ -56,6 +65,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
         TextView deviceName;
         @BindView(R.id.tv_device_address_device)
         TextView deviceAddress;
+        @BindView(R.id.tv_device_state_device)
+        TextView deviceState;
 
         public LocalViewHolder(View itemView) {
             super(itemView);
@@ -66,8 +77,24 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
     /**
      * 添加设备
      */
-    public void addDevice(Device device) {
-        mDatas.add(device);
+    public boolean addDevice(Device device) {
+        for (Device temp : mDatas) {
+            if (TextUtils.equals(temp.getDeviceAddress(), device.getDeviceAddress())) {
+                return false;
+            }
+        }
+        mDatas.add(0, device);
+        notifyItemInserted(0);
+        return true;
+    }
+
+    public Device getDevice(int position) {
+        return mDatas.get(position);
+    }
+
+    public void removeDevice(int position) {
+        mDatas.remove(position);
+        notifyItemRemoved(position);
     }
 
     /**
@@ -77,5 +104,38 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
      */
     public void setData(List<Device> devices) {
         mDatas = devices;
+        notifyDataSetChanged();
     }
+
+    /*单击事件*/
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Log.d("Hello World", "mOnClickListener");
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemClick(v, (Integer) v.getTag());
+            }
+        }
+    };
+
+    private View.OnLongClickListener mOnLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            /*长按删除设备*/
+            removeDevice((Integer) v.getTag());
+            return true;
+        }
+    };
+
+    /*Section: Item单击事件接口*/
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
 }

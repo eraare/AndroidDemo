@@ -20,7 +20,7 @@
     <!-- Android6.0 蓝牙扫描才需要 -->
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!--Google应用市场特征配置-->
+    <!-- Google应用市场特征配置 -->
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.bluetooth_le" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -46,7 +46,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.activity.LoginActivity"
             android:screenOrientation="portrait" />
@@ -89,6 +88,9 @@
             android:name=".view.activity.TemperatureActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.FullScreen" />
+        <activity
+            android:name=".view.activity.DeviceActivity"
+            android:screenOrientation="portrait" />
         <!-- 以下是BLE通信 -->
         <activity
             android:name=".communication.BLEActivity"
@@ -117,7 +119,6 @@
                 <action android:name="com.guohua.glight.service.DriveModeService" />
             </intent-filter>
         </service>
-
         <service android:name=".communication.BLEService" />
 
         <receiver android:name=".receiver.TelephonyReceiver">

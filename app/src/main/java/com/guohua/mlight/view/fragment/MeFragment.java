@@ -1,5 +1,6 @@
 package com.guohua.mlight.view.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -69,11 +70,12 @@ public class MeFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fl_change_password_me: {
-                addFragment(DeviceFragment.getInstance());
+//                addFragment(DeviceFragment.getInstance());
             }
             break;
             case R.id.btn_logoff_me: {
                 BmobUser.logOut();
+                mContext.setResult(Activity.RESULT_OK);
                 removeFragment();
             }
             break;

@@ -53,7 +53,7 @@ public class CenterFragment extends BaseFragment {
         return sceneFragment;
     }
 
-    public static final int CENTER_REQUEST_CODE = 1;
+    public static final int CENTER_REQUEST_CODE = 520;
     /*绑定视图控件*/
     @BindView(R.id.ll_me_center)
     RelativeLayout mMeView; /*个人设置中心*/
@@ -180,10 +180,10 @@ public class CenterFragment extends BaseFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CENTER_REQUEST_CODE) {
             initUserInfo();
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /*显示来电提醒对话框*/

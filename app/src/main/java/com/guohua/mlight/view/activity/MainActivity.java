@@ -46,12 +46,11 @@ import com.guohua.mlight.communication.BLERecord;
 import com.guohua.mlight.model.bean.Device;
 import com.guohua.mlight.view.adapter.FragmentAdapter;
 import com.guohua.mlight.view.fragment.CenterFragment;
-import com.guohua.mlight.view.fragment.DeviceFragment;
 import com.guohua.mlight.view.fragment.DialogFragment;
+import com.guohua.mlight.view.fragment.HomeFragment;
 import com.guohua.mlight.view.fragment.SceneFragment;
 import com.guohua.mlight.view.fragment.TimerFragment;
 import com.guohua.mlight.view.widget.TitleView;
-import com.r00kie.lwble.BLEActivity;
 
 import butterknife.BindArray;
 import butterknife.BindView;
@@ -151,7 +150,7 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onClick(View v) {
 //            showDialogFragment(DialogFragment.TAG);
-            startActivity(new Intent(MainActivity.this, BLEActivity.class));
+            startActivity(new Intent(MainActivity.this, DeviceActivity.class));
         }
     };
 
@@ -167,7 +166,7 @@ public class MainActivity extends BaseActivity {
      */
     private void initViewPager() {
         mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager());
-        mFragmentAdapter.addFragment(DeviceFragment.getInstance());
+        mFragmentAdapter.addFragment(HomeFragment.newInstance());
         mFragmentAdapter.addFragment(SceneFragment.newInstance());
         mFragmentAdapter.addFragment(CenterFragment.newInstance());
         mPagerView.setAdapter(mFragmentAdapter);

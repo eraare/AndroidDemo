@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.r00kie.lwble">
+
+    <!-- 蓝牙所需要的权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <!-- BLE特征 -->
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
+        <!--蓝牙设备扫描的界面-->
+        <activity
+            android:name=".BLEActivity"
+            android:screenOrientation="portrait" />
+        <!--蓝牙通信服务-->
+        <service android:name=".BLEService" />
+    </application>
+
+</manifest>
