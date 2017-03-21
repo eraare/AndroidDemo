@@ -50,6 +50,9 @@
             android:name=".view.activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.ScanActivity"
+            android:screenOrientation="portrait" />
         <!--Scene中的界面-->
         <activity
             android:name=".view.activity.ShakeActivity"

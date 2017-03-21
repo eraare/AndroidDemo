@@ -65,4 +65,15 @@ public final class BLEUtils {
         }
         return true;
     }
+
+    /**
+     * 蓝牙是否打开可用
+     *
+     * @return
+     */
+    public static boolean isBluetoothEnabled() {
+        // 初始化BluetoothAdapter
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        return mBluetoothAdapter.isEnabled();
+    }
 }

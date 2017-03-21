@@ -1,6 +1,7 @@
 package com.guohua.mlight.view.activity;
 
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothDevice;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -21,10 +22,21 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
+import com.guohua.mlight.lwble.BLEController;
+import com.guohua.mlight.lwble.BLEFilter;
+import com.guohua.mlight.lwble.BLEScanner;
+import com.guohua.mlight.lwble.MessageEvent;
+import com.guohua.mlight.model.bean.LightInfo;
+import com.guohua.mlight.model.impl.LightService;
+import com.guohua.mlight.model.impl.RxLightService;
 import com.guohua.mlight.view.adapter.FragmentAdapter;
 import com.guohua.mlight.view.fragment.CenterFragment;
 import com.guohua.mlight.view.fragment.HomeFragment;
 import com.guohua.mlight.view.fragment.SceneFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindArray;
 import butterknife.BindView;
@@ -64,6 +76,9 @@ public class MainActivity extends BaseActivity {
     /*ViewPager加载Fragment所需要的Adapter*/
     private FragmentAdapter mFragmentAdapter;
 
+    /*刚进来则进行蓝牙设备的扫描*/
+    private boolean isFirstTime = true;
+
     @Override
     protected int getContentViewId() {
         return R.layout.activity_main;
@@ -82,6 +97,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void init(Intent intent, Bundle savedInstanceState) {
         super.init(intent, savedInstanceState);
+        EventBus.getDefault().register(this);
         setShowBack(false);
         initial();
     }
@@ -95,10 +111,14 @@ public class MainActivity extends BaseActivity {
         /*2 初始化ViewPager*/
         initViewPager();
         /*3 初始化顶部导航栏标题*/
-        setToolbarTitle(mAlias[lastSelectedPosition]);
         showOrHideForward(lastSelectedPosition);
+        setToolbarTitle(mAlias[lastSelectedPosition]);
         /* 添加右边前进键单机事件*/
+        setForwardTitle("设备管理");
         setOnForwardClickListener(mOnClickListener);
+        /*配置BLEScanner*/
+        BLEScanner.getInstance().setStateCallback(mStateCallback);
+        BLEScanner.getInstance().setDeviceDiscoveredListener(mDeviceDiscoveredListener);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -177,6 +197,21 @@ public class MainActivity extends BaseActivity {
     };
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (isFirstTime) {
+            isFirstTime = false;
+            BLEScanner.getInstance().startScan();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BLEScanner.getInstance().stopScan();
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             new AlertDialog(this).builder()
@@ -204,7 +239,7 @@ public class MainActivity extends BaseActivity {
      * 退出程序关闭所有
      */
     private void exit() {
-
+        finish();
     }
 
     /**
@@ -241,6 +276,77 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void suicide() {
         super.suicide();
+        EventBus.getDefault().unregister(this);
         AppContext.getInstance().exitApplication();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        switch (event.state) {
+            case BLEController.STATE_DISCONNECTED: {
+                toast("设备已离线：" + event.address);
+                LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
+                if (lightInfo != null) {
+                    lightInfo.connect = false;
+                }
+            }
+            break;
+            case BLEController.STATE_CONNECTED: {
+                toast("设备已在线：" + event.address);
+                LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
+                if (lightInfo != null) {
+                    lightInfo.connect = true;
+                }
+            }
+            break;
+            case BLEController.STATE_SERVICING: {
+                LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
+                if (lightInfo != null) {
+                    LightService.getInstance().validatePassword(lightInfo.address, lightInfo.password);
+                }
+                toast("可以进行玩耍了");
+            }
+            break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 发现设备是添加到列表
+     */
+    private BLEScanner.DeviceDiscoveredListener mDeviceDiscoveredListener = new BLEScanner.DeviceDiscoveredListener() {
+        @Override
+        public void onDiscovered(final BluetoothDevice device, int rssi, byte[] bytes) {
+            if (!BLEFilter.filter(bytes)) return; /*过滤自家设备*/
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String deviceName = device.getName();
+                    String deviceAddress = device.getAddress();
+                    AppContext.getInstance().addLight(new LightInfo(deviceName, deviceAddress));
+                }
+            });
+        }
+    };
+
+    /**
+     * 扫描状态改变回调函数
+     */
+    private BLEScanner.StateCallback mStateCallback = new BLEScanner.StateCallback() {
+        @Override
+        public void onStateChanged(boolean state) {
+            if (state) {
+                showProgressDialog("搜索设备", "请稍后，正在搜索设备...");
+            } else {
+                dismissProgressDialog();
+                if (AppContext.getInstance().lights.size() > 0) {
+                    toast("开始连接设备");
+                    RxLightService.getInstance().connect(getApplicationContext(), true);
+                } else {
+                    toast("未找到相关设备");
+                }
+            }
+        }
+    };
 }

@@ -26,8 +26,6 @@ import com.guohua.mlight.view.activity.MainActivity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.guohua.mlight.view.fragment.HomeFragment.currentOpenTime;
-
 /**
  * @author Leo
  *         #time 2016-09-02
@@ -76,6 +74,8 @@ public class TimerFragment extends android.support.v4.app.DialogFragment {
     private DatePicker mDatePicker;//日期选择器
     private TimePicker mTimerPicker;//时间选择器
     private DatetimeBean mDatetime;//选择的时间
+
+    private int currentOpenTime;
 
     private void init() {
         mContext = (MainActivity) getActivity();

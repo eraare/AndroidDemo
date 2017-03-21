@@ -37,7 +37,10 @@ public class RecyclerViewDivider extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         if (OrientationHelper.HORIZONTAL == orientation) {
             outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
+        } else if (OrientationHelper.VERTICAL == orientation) {
+            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
         } else {
+            outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
             outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
         }
     }

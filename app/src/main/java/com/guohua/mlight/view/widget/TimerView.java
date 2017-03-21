@@ -22,7 +22,7 @@ public class TimerView extends LinearLayout {
 
     private String valueString; // 刻度值
     private String unitString; //单位值
-    private boolean isSelected;//是否选择
+    private boolean checked;//是否选择
 
     // 构造函数统一调到最多参数的那个
     public TimerView(Context context) {
@@ -59,7 +59,7 @@ public class TimerView extends LinearLayout {
                     unitString = ta.getString(i);
                     break;
                 case R.styleable.TimerView_selected:
-                    isSelected = ta.getBoolean(i, false);
+                    checked = ta.getBoolean(i, false);
                     break;
                 default:
                     break;
@@ -80,7 +80,11 @@ public class TimerView extends LinearLayout {
         unit = (TextView) view.findViewById(R.id.tv_unit_timer);
         value.setText(valueString);
         unit.setText(unitString);
-        selected(isSelected);
+        if (checked) {
+            check();
+        } else {
+            uncheck();
+        }
     }
 
     /**
@@ -94,34 +98,28 @@ public class TimerView extends LinearLayout {
     }
 
     /**
-     * 设置当前状态
-     *
-     * @param flag
+     * 选择
      */
-    public void selected(boolean flag) {
-        if (flag) {
-            timer.setBackgroundResource(R.drawable.selector_timer_selected);
-            setTextColor(getResources().getColor(R.color.white));
-        } else {
-            timer.setBackgroundResource(R.drawable.selector_timer_normal);
-            setTextColor(getResources().getColor(R.color.main));
-        }
-        isSelected = flag;
+    public void check() {
+        checked = true;
+        setTextColor(getResources().getColor(R.color.white));
+        timer.setBackgroundResource(R.drawable.selector_timer_selected);
     }
 
-    public void changeState() {
-        if (isSelected) {
-            timer.setBackgroundResource(R.drawable.selector_timer_normal);
-            setTextColor(getResources().getColor(R.color.main));
-            isSelected = false;
-        } else {
-            timer.setBackgroundResource(R.drawable.selector_timer_selected);
-            setTextColor(getResources().getColor(R.color.white));
-            isSelected = true;
-        }
+    /**
+     * 取消
+     */
+    public void uncheck() {
+        checked = false;
+        setTextColor(getResources().getColor(R.color.main));
+        timer.setBackgroundResource(R.drawable.selector_timer_normal);
     }
 
-    public boolean isSelected() {
-        return isSelected;
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public String getValue() {
+        return valueString.trim();
     }
 }

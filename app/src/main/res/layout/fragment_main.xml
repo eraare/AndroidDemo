@@ -5,15 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/assistant">
 
-    <ImageView
-        android:id="@+id/iv_switch_main"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerInParent="true"
-        android:adjustViewBounds="true"
-        android:src="@drawable/icon_light_on" />
-
     <LinearLayout
+        android:id="@+id/ll_top_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/iv_switch_main"
@@ -28,16 +21,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:max="255"
-            android:thumb="@drawable/icon_lightness_thumb_en" />
+            android:max="100"
+            android:thumb="@drawable/icon_lightness_thumb" />
 
         <SeekBar
             android:id="@+id/sb_color_temperature_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:max="255"
-            android:thumb="@drawable/icon_color_thumb_en" />
+            android:max="100"
+            android:thumb="@drawable/icon_color_thumb" />
     </LinearLayout>
 
     <LinearLayout
@@ -55,7 +48,8 @@
             android:background="@color/main"
             android:padding="@dimen/timer_on_padding_main"
             android:text="@string/open_light_timer"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -77,7 +71,8 @@
                 android:background="@color/assistant"
                 android:padding="@dimen/delay_padding_main"
                 android:text="@string/close_light_timer"
-                android:textColor="@color/main" />
+                android:textColor="@color/main"
+                android:textSize="@dimen/text_size_caption" />
         </FrameLayout>
 
         <LinearLayout
@@ -123,5 +118,14 @@
                 app:value="60" />
         </LinearLayout>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_switch_main"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:adjustViewBounds="true"
+        android:src="@drawable/icon_light_on" />
 
 </RelativeLayout>

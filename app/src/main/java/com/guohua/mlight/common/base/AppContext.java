@@ -9,10 +9,12 @@ package com.guohua.mlight.common.base;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.text.TextUtils;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.util.CrashHandler;
 import com.guohua.mlight.model.bean.Device;
+import com.guohua.mlight.model.bean.LightInfo;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -30,7 +32,13 @@ public class AppContext extends Application {
     }
 
     /*缓存设备列表*/
+    public List<LightInfo> lights = new CopyOnWriteArrayList<>();
     public List<Device> devices = new CopyOnWriteArrayList<>();
+    /*所有设备的通用状态*/
+    public boolean isLightOn = true; /*灯是否打开状态*/
+    /*色相 0-360 饱和度 0-1 明度 0-1*/
+    public float[] currentHSV = {0F, 0F, 1F};
+    public int currentAlpha = 255;
 
     @Override
     public void onCreate() {
@@ -54,12 +62,41 @@ public class AppContext extends Application {
          /*   Intent startMain = new Intent(Intent.ACTION_MAIN);
             startMain.addCategory(Intent.CATEGORY_HOME);
             startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(startMain);
-            System.exit(0);*/
-            android.os.Process.killProcess(android.os.Process.myPid());
+            startActivity(startMain);*/
+            /*android.os.Process.killProcess(android.os.Process.myPid());*/
+            System.exit(0);
         } else {// android2.1
             ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
             am.restartPackage(getPackageName());//2.1以下用这个
         }
+    }
+
+    /**
+     * 添加设备
+     */
+    public void addLight(LightInfo light) {
+        for (LightInfo temp : lights) {
+            if (TextUtils.equals(temp.address, light.address)) {
+                return;
+            }
+        }
+        lights.add(light);
+    }
+
+    /**
+     * 查找设备
+     *
+     * @param address
+     * @return
+     */
+    public LightInfo findLight(String address) {
+        int size = lights.size();
+        for (int i = 0; i < size; i++) {
+            LightInfo light = lights.get(i);
+            if (TextUtils.equals(address, light.address)) {
+                return light;
+            }
+        }
+        return null;
     }
 }

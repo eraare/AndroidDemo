@@ -7,7 +7,7 @@ import android.os.Handler;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseFragment;
-import com.guohua.mlight.common.util.BLEUtils;
+import com.guohua.mlight.lwble.BLEUtils;
 import com.guohua.mlight.view.activity.LoginActivity;
 import com.guohua.mlight.view.activity.MainActivity;
 

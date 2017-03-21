@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/vertical_margin"
         android:layout_marginTop="@dimen/vertical_margin"
-        android:background="@drawable/selector_bg_rectangle"
+        android:background="@drawable/selector_rectangle_bg"
         android:orientation="horizontal"
         android:padding="@dimen/horizontal_padding">
 

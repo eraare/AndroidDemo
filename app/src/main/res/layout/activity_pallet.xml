@@ -81,7 +81,7 @@
                 android:layout_width="@dimen/button_color_size"
                 android:layout_height="@dimen/button_color_size"
                 android:layout_gravity="center"
-                android:background="@drawable/selector_circle_bg"
+                android:background="@drawable/selector_round_bg"
                 android:padding="12dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/light_off" />

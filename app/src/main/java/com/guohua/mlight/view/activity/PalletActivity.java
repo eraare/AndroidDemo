@@ -18,6 +18,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.guohua.mlight.R;
+import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
@@ -104,7 +105,7 @@ public class PalletActivity extends BaseActivity {
         pool = ThreadPool.getInstance();
         initViews();
         initValues();
-        if (HomeFragment.isLighting) {
+        if (AppContext.getInstance().isLightOn) {
             switcher.setImageResource(R.drawable.light_on);
             ll_activity_pallet.setBackgroundColor(Color.WHITE);
         } else {
@@ -130,7 +131,7 @@ public class PalletActivity extends BaseActivity {
     private void initViews() {
         changeColor.setOnTouchListener(mOnTouchListener);
         changeBrightness.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
-        changeBrightness.setEnabled(HomeFragment.isLighting);
+        changeBrightness.setEnabled(AppContext.getInstance().isLightOn);
         changeTimer.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
         ll_activity_pallet.setBackgroundResource(R.color.greye);
     }
@@ -146,7 +147,7 @@ public class PalletActivity extends BaseActivity {
         int color = Color.WHITE;
         switch (id) {
             case R.id.btn_switch_main: {
-                switchLight(HomeFragment.isLighting);
+                switchLight(AppContext.getInstance().isLightOn);
             }
             return;
             case R.id.btn_red_main:
@@ -190,11 +191,11 @@ public class PalletActivity extends BaseActivity {
         changeBrightness.setEnabled(!flag);
         if (!flag) {
             data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SWITCH, new Object[]{Constants.CMD_OPEN_LIGHT});
-            HomeFragment.isLighting = true;
+            AppContext.getInstance().isLightOn = true;
             switcher.setImageResource(R.drawable.light_on);
         } else {
             data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SWITCH, new Object[]{Constants.CMD_CLOSE_LIGHT});
-            HomeFragment.isLighting = false;
+            AppContext.getInstance().isLightOn = false;
             switcher.setImageResource(R.drawable.light_off);
         }
     }

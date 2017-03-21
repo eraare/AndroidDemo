@@ -1,5 +1,6 @@
 package com.guohua.mlight.common.base;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guohua.mlight.R;
@@ -36,7 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Toolbar mToolbar; /*标题导航栏*/
     private Unbinder mUnbinder; // 取消绑定
     private boolean showBack;
-    private ImageView mForwardView;
+    private TextView mForwardView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     private void setupToolbar() {
         mToolbar = (Toolbar) findViewById(getToolbarId());
-        mForwardView = (ImageView) findViewById(getForwardId());
+        mForwardView = (TextView) findViewById(getForwardId());
         if (mToolbar != null) {
             mToolbar.setTitle(getString(R.string.app_name));
             setSupportActionBar(mToolbar);
@@ -206,6 +207,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         mForwardView.setVisibility(visibility);
     }
 
+    public void setForwardTitle(String title) {
+        mForwardView.setText(title);
+    }
+
     public void setOnForwardClickListener(View.OnClickListener onClickListener) {
         mForwardView.setOnClickListener(onClickListener);
     }
@@ -236,5 +241,27 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         mToast = Toast.makeText(this, id, Toast.LENGTH_SHORT);
         mToast.show();
+    }
+
+    /*连接对话框*/
+    private ProgressDialog mProgressDialog;
+
+    /**
+     * 显示进度对话框
+     *
+     * @param title
+     * @param message
+     */
+    public void showProgressDialog(String title, String message) {
+        mProgressDialog = ProgressDialog.show(this, title, message, true, false);
+    }
+
+    /**
+     * dismiss进度对话框
+     */
+    public void dismissProgressDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
     }
 }

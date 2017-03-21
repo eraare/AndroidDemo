@@ -71,7 +71,7 @@ public class BLEScanner {
      *
      * @param enable
      */
-    public void scanLeDevice(final boolean enable) {
+    private void scanLeDevice(final boolean enable) {
         if (enable) {
             mHandler.postDelayed(mRunnable, SCAN_PERIOD);
             mScanning = true;
@@ -106,13 +106,12 @@ public class BLEScanner {
     /**
      * 扫描或者停止
      */
-    public boolean scan() {
-        if (this.mScanning) {
-            scanLeDevice(false);
-        } else {
-            scanLeDevice(true);
-        }
-        return this.mScanning;
+    public void startScan() {
+        scanLeDevice(true);
+    }
+
+    public void stopScan() {
+        scanLeDevice(false);
     }
 
     public interface DeviceDiscoveredListener {

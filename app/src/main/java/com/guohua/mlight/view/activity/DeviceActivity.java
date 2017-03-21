@@ -8,7 +8,7 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.lwble.BLEConstant;
-import com.guohua.mlight.model.bean.Device;
+import com.guohua.mlight.model.bean.LightInfo;
 import com.guohua.mlight.view.fragment.DeviceFragment;
 
 public class DeviceActivity extends BaseActivity {
@@ -35,6 +35,7 @@ public class DeviceActivity extends BaseActivity {
         /*配置标题栏*/
         setToolbarTitle(R.string.activity_title_device);
         setForwardVisibility(View.VISIBLE);
+        setForwardTitle("添加设备");
         setOnForwardClickListener(mOnClickListener);
     }
 
@@ -57,7 +58,7 @@ public class DeviceActivity extends BaseActivity {
                 /*接收设备数据并加入到全局缓存切进行连接操作*/
                 String deviceAddress = data.getStringExtra(BLEConstant.EXTRA_DEVICE_ADDRESS);
                 String deviceName = data.getStringExtra(BLEConstant.EXTRA_DEVICE_NAME);
-                DeviceFragment.getInstance().onResult(new Device(deviceName, deviceAddress));
+                DeviceFragment.getInstance().onResult(new LightInfo(deviceName, deviceAddress));
             }
         }
     }

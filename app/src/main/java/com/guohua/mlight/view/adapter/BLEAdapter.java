@@ -1,4 +1,4 @@
-package com.guohua.mlight.lwble;
+package com.guohua.mlight.view.adapter;
 
 import android.bluetooth.BluetoothDevice;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.guohua.mlight.R;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +26,7 @@ public class BLEAdapter extends RecyclerView.Adapter<BLEAdapter.LocalViewHolder>
     private List<BluetoothDevice> mDatas; /*数据源*/
 
     public BLEAdapter() {
-        mDatas = new CopyOnWriteArrayList<>();
+        mDatas = new ArrayList<>();
     }
 
     @Override
@@ -86,8 +86,8 @@ public class BLEAdapter extends RecyclerView.Adapter<BLEAdapter.LocalViewHolder>
 
     public void addDevice(BluetoothDevice device) {
         if (mDatas.contains(device)) return;
-        mDatas.add(0, device);
-        notifyItemInserted(0);
+        mDatas.add(device);
+        notifyItemInserted(mDatas.size() - 1);
     }
 
     public BluetoothDevice getDevice(int position) {

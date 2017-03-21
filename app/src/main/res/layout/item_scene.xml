@@ -2,7 +2,7 @@
 <com.guohua.mlight.view.widget.SquareLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/selector_bg_rectangle"
+    android:background="@drawable/selector_rectangle_bg"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -10,7 +10,7 @@
         android:id="@+id/iv_picture_scene_scene"
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
-        android:layout_margin="@dimen/content_margin"
+        android:layout_margin="@dimen/vertical_margin"
         android:src="@drawable/icon_center_normal" />
 
     <TextView

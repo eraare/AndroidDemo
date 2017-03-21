@@ -12,9 +12,9 @@ import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 
-import java.util.ArrayList;
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,9 +48,6 @@ public class BLEController {
     /*蓝牙适配器和蓝牙GATT*/
     private BluetoothAdapter mBluetoothAdapter;
     private Map<String, BluetoothGatt> mGatts;
-    /*Section: 回调接口*/
-    private List<OnConnectStateChangedListener> mConnectStateListeners;
-    private List<OnDataReceivedListener> mDataReceivedListeners;
     /*Section: BLE回调类*/
     private final BluetoothGattCallback mBluetoothGattCallback = new BluetoothGattCallback() {
         @Override
@@ -72,13 +69,9 @@ public class BLEController {
                 currentState = STATE_DISCONNECTING;
                 System.out.println("RxBLE: Disconnecting");
             }
-            /*把状态传递出去*/
-            if (mConnectStateListeners != null && mConnectStateListeners.size() > 0) {
-                String deviceAddress = gatt.getDevice().getAddress();
-                for (OnConnectStateChangedListener listener : mConnectStateListeners) {
-                    listener.onStateChanged(deviceAddress, currentState);
-                }
-            }
+            String deviceAddress = gatt.getDevice().getAddress();
+            /*用EventBus把状态POST出去*/
+            EventBus.getDefault().post(new MessageEvent(deviceAddress, currentState));
             super.onConnectionStateChange(gatt, status, newState);
         }
 
@@ -86,31 +79,23 @@ public class BLEController {
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             System.out.println("RxBLE: Fond Services");
                 /*设置可通知*/
-            setCharacteristicNotification(gatt, true);
+            //setCharacteristicNotification(gatt, true);
             System.out.println("RxBLE: Set Notification");
-                /*把状态传递出去*/
-            if (mConnectStateListeners != null && mConnectStateListeners.size() > 0) {
-                String deviceAddress = gatt.getDevice().getAddress();
-                for (OnConnectStateChangedListener listener : mConnectStateListeners) {
-                    listener.onStateChanged(deviceAddress, STATE_SERVICING);
-                }
-            }
+            String deviceAddress = gatt.getDevice().getAddress();
+            /*用EventBus把状态POST出去*/
+            EventBus.getDefault().post(new MessageEvent(deviceAddress, STATE_SERVICING));
             super.onServicesDiscovered(gatt, status);
         }
 
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic
                 characteristic) {
-            /*数据通过回调接口传递出去*/
-            if (mDataReceivedListeners != null && mDataReceivedListeners.size() > 0) {
                 /*哪个设备传来的数据*/
-                String deviceAddress = gatt.getDevice().getAddress();
-                byte[] data = characteristic.getValue();
-                System.out.println("RxBLE: Received Data-[" + new String(data) + "]");
-                for (OnDataReceivedListener listener : mDataReceivedListeners) {
-                    listener.onDataReceived(deviceAddress, data);
-                }
-            }
+            String deviceAddress = gatt.getDevice().getAddress();
+            byte[] data = characteristic.getValue();
+            System.out.println("RxBLE: Received Data-[" + new String(data) + "]");
+            /*用EventBus把状态POST出去*/
+            EventBus.getDefault().post(new MessageEvent(deviceAddress, new String(data)));
             super.onCharacteristicChanged(gatt, characteristic);
         }
     };
@@ -140,7 +125,7 @@ public class BLEController {
     /**
      * 结束的一些操作动作
      */
-    private void suicide() {
+    public void suicide() {
         if (mGatts == null) return;
         /*通过Key遍历进行关闭所有的设备*/
         Set<String> keySet = mGatts.keySet();
@@ -190,50 +175,6 @@ public class BLEController {
             return null;
         }
         return bluetoothGattService.getCharacteristic(BLEUUID.UUID_CHARACTERISTIC);
-    }
-
-    /**
-     * 设置接收状态改变的接口
-     *
-     * @param onConnectStateChangedListener
-     */
-    public void addOnConnectStateChangedListener(OnConnectStateChangedListener onConnectStateChangedListener) {
-        /*为空就初始化列表*/
-        if (this.mConnectStateListeners == null) {
-            this.mConnectStateListeners = new ArrayList<>();
-        }
-        /*是否已经添加过*/
-        if (!this.mConnectStateListeners.contains(onConnectStateChangedListener)) {
-            this.mConnectStateListeners.add(onConnectStateChangedListener);
-        }
-    }
-
-    public void removeOnConnectStateChangedListener(OnConnectStateChangedListener onConnectStateChangedListener) {
-        /*为空就初始化列表*/
-        if (this.mConnectStateListeners == null) return;
-        this.mConnectStateListeners.remove(onConnectStateChangedListener);
-    }
-
-    /**
-     * 设置数据接收的接口
-     *
-     * @param onDataReceivedListener
-     */
-    public void addOnDataReceivedListener(OnDataReceivedListener onDataReceivedListener) {
-        /*为空就初始化列表*/
-        if (this.mDataReceivedListeners == null) {
-            this.mDataReceivedListeners = new ArrayList<>();
-        }
-        /*是否已经添加过*/
-        if (!this.mDataReceivedListeners.contains(onDataReceivedListener)) {
-            this.mDataReceivedListeners.add(onDataReceivedListener);
-        }
-    }
-
-    public void removeOnDataReceivedListener(OnDataReceivedListener onDataReceivedListener) {
-        /*为空就初始化列表*/
-        if (this.mDataReceivedListeners == null) return;
-        this.mDataReceivedListeners.remove(onDataReceivedListener);
     }
 
     /**
@@ -297,19 +238,5 @@ public class BLEController {
         /*向设置发送数据*/
         character.setValue(data);
         return gatt.writeCharacteristic(character);
-    }
-
-    /**
-     * 连接状态改变接口
-     */
-    public interface OnConnectStateChangedListener {
-        void onStateChanged(String deviceAddress, int state);
-    }
-
-    /**
-     * 数据接收数据
-     */
-    public interface OnDataReceivedListener {
-        void onDataReceived(String deviceAddress, byte[] data);
     }
 }

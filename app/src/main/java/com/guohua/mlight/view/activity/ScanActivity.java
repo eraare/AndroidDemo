@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,9 +14,11 @@ import android.widget.Toast;
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
-import com.guohua.mlight.lwble.BLEAdapter;
 import com.guohua.mlight.lwble.BLEConstant;
+import com.guohua.mlight.lwble.BLEFilter;
+import com.guohua.mlight.lwble.BLEScanner;
 import com.guohua.mlight.lwble.BLEUtils;
+import com.guohua.mlight.view.adapter.BLEAdapter;
 
 import butterknife.BindView;
 
@@ -37,7 +38,6 @@ import butterknife.BindView;
  * 描  述：蓝牙设备扫描
  */
 public class ScanActivity extends BaseActivity {
-    private static final long SCAN_PERIOD = 10000;// 扫描10s
     private static final int REQUEST_ENABLE_BT = 1;// 请求码
 
     @Override
@@ -55,6 +55,13 @@ public class ScanActivity extends BaseActivity {
         return 0;
     }
 
+    @BindView(R.id.rv_device_scan)
+    RecyclerView mDeviceView; /*设备列表*/
+
+    private BLEAdapter mAdapter; /* 设备适配器*/
+    private BluetoothAdapter mBluetoothAdapter;/*蓝牙适配器*/
+    private BLEScanner mBleScanner; /*蓝牙扫描器*/
+
     @Override
     protected void init(Intent intent, Bundle savedInstanceState) {
         super.init(intent, savedInstanceState);
@@ -67,21 +74,76 @@ public class ScanActivity extends BaseActivity {
         }
     }
 
-    @BindView(R.id.rv_device_scan)
-    RecyclerView mDeviceView;
-
-    private BLEAdapter mAdapter; /* 设备适配器*/
-    private BluetoothAdapter mBluetoothAdapter;/*蓝牙适配器*/
-    private Handler mHandler = new Handler();// 用于postDelay
-    private boolean mScanning = false;// 循环标志位
-
     /**
      * 初始化数据
      */
     private void initial() {
+        setupToolbar();
         setupDeviceView();
+        setupBleScanner();
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
+
+    private void setupToolbar() {
+        setToolbarTitle("搜索设备");
+        setForwardVisibility(View.VISIBLE);
+        setForwardTitle("搜索");
+        setOnForwardClickListener(mOnClickListener);
+    }
+
+    /**
+     * 扫描断开扫描
+     */
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mBleScanner.isScanning()) {
+                mBleScanner.stopScan();
+            } else {
+                mAdapter.clear();
+                mBleScanner.startScan();
+            }
+        }
+    };
+
+    /**
+     * 配置蓝牙扫描
+     */
+    private void setupBleScanner() {
+        mBleScanner = BLEScanner.getInstance();
+        mBleScanner.setStateCallback(mStateCallback);
+        mBleScanner.setDeviceDiscoveredListener(mDeviceDiscoveredListener);
+    }
+
+    /**
+     * 扫描到设备后加入适配器
+     */
+    private BLEScanner.DeviceDiscoveredListener mDeviceDiscoveredListener = new BLEScanner.DeviceDiscoveredListener() {
+        @Override
+        public void onDiscovered(final BluetoothDevice device, int rssi, byte[] bytes) {
+            if (!BLEFilter.filter(bytes)) return;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mAdapter.addDevice(device);
+                }
+            });
+        }
+    };
+
+    /**
+     * 扫描状态回调
+     */
+    private BLEScanner.StateCallback mStateCallback = new BLEScanner.StateCallback() {
+        @Override
+        public void onStateChanged(boolean state) {
+            if (state) {
+                setForwardTitle("搜索中...");
+            } else {
+                setForwardTitle("搜索");
+            }
+        }
+    };
 
     private void setupDeviceView() {
         mDeviceView.setLayoutManager(new LinearLayoutManager(this));
@@ -89,15 +151,6 @@ public class ScanActivity extends BaseActivity {
         mAdapter = new BLEAdapter();
         mAdapter.setOnItemClickListener(mOnItemClickListener);
         mDeviceView.setAdapter(mAdapter);
-    }
-
-    private void doScan() {
-        if (mScanning) {
-            scanLeDevice(false);
-        } else {
-            mAdapter.clear();
-            scanLeDevice(true);
-        }
     }
 
     private BLEAdapter.OnItemClickListener mOnItemClickListener = new BLEAdapter.OnItemClickListener() {
@@ -109,7 +162,7 @@ public class ScanActivity extends BaseActivity {
 
 
     private void setResultToConnect(int position) {
-        scanLeDevice(false);
+        mBleScanner.stopScan();
         BluetoothDevice device = mAdapter.getDevice(position);
         String name = device.getName().trim();
         String address = device.getAddress().trim();
@@ -127,7 +180,8 @@ public class ScanActivity extends BaseActivity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
-            scanLeDevice(true);
+            mAdapter.clear();
+            mBleScanner.startScan();
         }
     }
 
@@ -137,7 +191,8 @@ public class ScanActivity extends BaseActivity {
         if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
             finish();
         } else {
-            scanLeDevice(true);
+            mAdapter.clear();
+            mBleScanner.startScan();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -145,44 +200,13 @@ public class ScanActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        scanLeDevice(false);
+        mBleScanner.stopScan();
     }
 
     @Override
     protected void suicide() {
         super.suicide();
-        scanLeDevice(false);
+        mBleScanner.stopScan();
     }
 
-    private void scanLeDevice(final boolean enable) {
-        if (enable) {
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mScanning = false;
-                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
-                }
-            }, SCAN_PERIOD);
-
-            mScanning = true;
-            mBluetoothAdapter.startLeScan(mLeScanCallback);
-        } else {
-            mScanning = false;
-            mBluetoothAdapter.stopLeScan(mLeScanCallback);
-        }
-    }
-
-
-    /*扫描蓝牙BLE设备的回掉函数*/
-    private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
-        @Override
-        public void onLeScan(final BluetoothDevice bluetoothDevice, int rssi, byte[] bytes) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mAdapter.addDevice(bluetoothDevice);
-                }
-            });
-        }
-    };
 }

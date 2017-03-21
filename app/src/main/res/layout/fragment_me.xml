@@ -142,7 +142,7 @@
             android:id="@+id/btn_logoff_me"
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_height"
-            android:background="@drawable/selector_round_rectangle"
+            android:background="@drawable/selector_rectangle_bg"
             android:text="注销"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_subhead" />

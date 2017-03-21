@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.guohua.mlight.R;
-import com.guohua.mlight.model.bean.Device;
+import com.guohua.mlight.model.bean.LightInfo;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
  * 情景模式中的情景适配器
  */
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewHolder> {
-    private List<Device> mDatas; /*数据源*/
+    private List<LightInfo> mDatas; /*数据源*/
 
     public DeviceAdapter() {
         mDatas = new CopyOnWriteArrayList<>();
@@ -44,13 +44,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
     @Override
     public void onBindViewHolder(final LocalViewHolder holder, final int position) {
         holder.itemView.setTag(position); /*标志位置*/
-        final Device device = mDatas.get(position);
-        final String name = device.getDeviceName();
-        final String address = device.getDeviceAddress();
-        final boolean isConnected = device.isConnected();
-        holder.deviceName.setText(name == null ? "Unknown Name" : name);
-        holder.deviceState.setText(isConnected ? "在线" : "离线");
-        holder.deviceAddress.setText(device.getDeviceAddress());
+        final LightInfo device = mDatas.get(position);
+        holder.deviceName.setText(device.name == null ? "Unknown Name" : device.name);
+        holder.deviceState.setText(device.connect ? "在线" : "离线");
+        holder.deviceAddress.setText(device.address);
     }
 
     @Override
@@ -77,22 +74,22 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
     /**
      * 添加设备
      */
-    public boolean addDevice(Device device) {
-        for (Device temp : mDatas) {
-            if (TextUtils.equals(temp.getDeviceAddress(), device.getDeviceAddress())) {
+    public boolean addLight(LightInfo light) {
+        for (LightInfo temp : mDatas) {
+            if (TextUtils.equals(temp.address, light.address)) {
                 return false;
             }
         }
-        mDatas.add(0, device);
-        notifyItemInserted(0);
+        mDatas.add(light);
+        notifyItemInserted(mDatas.size() - 1);
         return true;
     }
 
-    public Device getDevice(int position) {
+    public LightInfo getLight(int position) {
         return mDatas.get(position);
     }
 
-    public void removeDevice(int position) {
+    public void removeLight(int position) {
         mDatas.remove(position);
         notifyItemRemoved(position);
     }
@@ -102,7 +99,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
      *
      * @param devices
      */
-    public void setData(List<Device> devices) {
+    public void setData(List<LightInfo> devices) {
         mDatas = devices;
         notifyDataSetChanged();
     }
@@ -122,7 +119,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
         @Override
         public boolean onLongClick(View v) {
             /*长按删除设备*/
-            removeDevice((Integer) v.getTag());
+            removeLight((Integer) v.getTag());
             return true;
         }
     };

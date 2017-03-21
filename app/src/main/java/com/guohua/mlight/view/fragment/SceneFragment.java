@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
@@ -15,13 +16,13 @@ import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.util.CodeUtils;
 import com.guohua.mlight.model.bean.SceneBean;
-import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.view.activity.PalletActivity;
 import com.guohua.mlight.view.activity.SelfieActivity;
 import com.guohua.mlight.view.activity.ShakeActivity;
 import com.guohua.mlight.view.activity.TemperatureActivity;
 import com.guohua.mlight.view.activity.VisualizerActivity;
 import com.guohua.mlight.view.adapter.SceneAdapter;
+import com.guohua.mlight.view.widget.RecyclerViewDivider;
 
 import butterknife.BindView;
 
@@ -84,8 +85,8 @@ public class SceneFragment extends BaseFragment {
     private void initSceneView() {
         mSceneView.setHasFixedSize(true);
         mSceneView.setItemAnimator(new DefaultItemAnimator());
-        mSceneView.setLayoutManager(new GridLayoutManager(mContext, 4));
-//        mSceneView.addItemDecoration(new RecyclerViewDivider(mContext, OrientationHelper.VERTICAL));
+        mSceneView.setLayoutManager(new GridLayoutManager(mContext, 3));
+        mSceneView.addItemDecoration(new RecyclerViewDivider(mContext, -1));
         mSceneAdapter = new SceneAdapter(mContext);
         mSceneAdapter.setOnItemClickListener(mOnItemClickListener);
         mSceneView.setAdapter(mSceneAdapter);

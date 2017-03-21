@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
-import com.guohua.mlight.common.util.BLEUtils;
+import com.guohua.mlight.lwble.BLEUtils;
 import com.guohua.mlight.view.fragment.SplashFragment;
 
 import cn.bmob.v3.Bmob;
