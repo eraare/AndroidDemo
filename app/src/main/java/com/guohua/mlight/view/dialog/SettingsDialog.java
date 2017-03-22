@@ -115,7 +115,7 @@ public class SettingsDialog {
                                 String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SAVE_DIY_START, new Object[]{1});
 //                                ThreadPool.getInstance().addTask(new SendRunnable(data));
                             }
-                        }, Constants.HANDLERDELAY);
+                        }, 200);
                         Toast.makeText(context, R.string.settings_color_tip, Toast.LENGTH_SHORT).show();
                     }
                 }).setNegativeButton(R.string.settings_negative, null).show();

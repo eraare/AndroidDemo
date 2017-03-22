@@ -1,6 +1,7 @@
 package com.guohua.mlight.view.fragment;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -10,11 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guohua.mlight.R;
-import com.guohua.mlight.common.util.CodeUtils;
-import com.guohua.mlight.net.ThreadPool;
+import com.guohua.mlight.common.config.Constants;
+import com.guohua.mlight.model.impl.RxLightService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +56,8 @@ public class PasswordFragment extends BottomSheetDialogFragment {
 
     @BindView(R.id.et_password_password)
     EditText mPasswordView;/*密码视图*/
+    @BindView(R.id.tv_tip_password)
+    TextView mTipView; /*提示语*/
     private Unbinder mUnbinder;
 
     @Nullable
@@ -64,17 +68,34 @@ public class PasswordFragment extends BottomSheetDialogFragment {
         return rootView;
     }
 
-    @OnClick(R.id.btn_set_password)
+    @OnClick(R.id.tv_set_password)
     public void onClick(View view) {
         String password = mPasswordView.getText().toString();
-        if (TextUtils.isEmpty(password)) return; /*密码不为空*/
-        if (password.length() != 4) return; /*密码为4位*/
-        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_PASSWORD, new String[]{sp.getString("ALL", CodeUtils.password), password});
-        sp.edit().putString("ALL", password).apply();
-        CodeUtils.setPassword(password);
-//        ThreadPool.getInstance().addTask(new SendRunnable(data));
-        Toast.makeText(getContext(), R.string.settings_warning, Toast.LENGTH_LONG).show();
+        if (checkPassword(password)) {
+            /*读取旧密码*/
+            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            String oldPassword = preferences.getString(Constants.KEY_GLOBAL_PASSWORD, Constants.DEFAULT_GLOBAL_PASSWORD);
+            /*设置新密码*/
+            preferences.edit().putString(Constants.KEY_GLOBAL_PASSWORD, password).apply();
+            /*发送给灯设置新密码*/
+            RxLightService.getInstance().password(oldPassword, password);
+            Toast.makeText(getContext(), R.string.settings_warning, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /*密码有效性的校验*/
+    private boolean checkPassword(String password) {
+        if (TextUtils.isEmpty(password)) {
+            mTipView.setText("密码不能为空");
+            mTipView.setTextColor(Color.RED);
+            return false;
+        }
+        if (password.length() != 4) {
+            mTipView.setText("密码必须为四位数字");
+            mTipView.setTextColor(Color.RED);
+            return false;
+        }
+        return true;
     }
 
     @Override

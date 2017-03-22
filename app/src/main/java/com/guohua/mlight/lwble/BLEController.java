@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 import android.os.Build;
+import android.os.SystemClock;
 import android.text.TextUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -78,13 +79,30 @@ public class BLEController {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             System.out.println("RxBLE: Fond Services");
-                /*设置可通知*/
-            //setCharacteristicNotification(gatt, true);
+            /*设置可通知*/
             System.out.println("RxBLE: Set Notification");
             String deviceAddress = gatt.getDevice().getAddress();
             /*用EventBus把状态POST出去*/
             EventBus.getDefault().post(new MessageEvent(deviceAddress, STATE_SERVICING));
+            new Thread(new ConfigRunnable(gatt, true)).start();/*通知配置和密码验证必须由事件间隔*/
             super.onServicesDiscovered(gatt, status);
+        }
+
+        /*密码校验线程*/
+        final class ConfigRunnable implements Runnable {
+            private BluetoothGatt gatt;
+            private boolean enable;
+
+            public ConfigRunnable(BluetoothGatt gatt, boolean enable) {
+                this.gatt = gatt;
+                this.enable = enable;
+            }
+
+            @Override
+            public void run() {
+                SystemClock.sleep(150);
+                setCharacteristicNotification(this.gatt, this.enable);
+            }
         }
 
         @Override

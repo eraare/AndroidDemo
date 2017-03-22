@@ -1,16 +1,20 @@
 package com.guohua.mlight.view.fragment;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.base.BaseFragment;
+import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.lwble.BLEController;
 import com.guohua.mlight.lwble.MessageEvent;
 import com.guohua.mlight.model.bean.LightInfo;
@@ -98,7 +102,16 @@ public class DeviceFragment extends BaseFragment {
             case BLEController.STATE_SERVICING: {
                 LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
                 if (lightInfo != null) {
-                    LightService.getInstance().validatePassword(lightInfo.address, lightInfo.password);
+                    /*地址和密码*/
+                    String address = lightInfo.address;
+                    String password = lightInfo.password;
+                    /*如果密码为空则使用系统全局密码*/
+                    if (TextUtils.isEmpty(password)) {
+                        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+                        password = sp.getString(Constants.KEY_GLOBAL_PASSWORD, Constants.DEFAULT_GLOBAL_PASSWORD);
+                    }
+                    /*验证密码*/
+                    LightService.getInstance().validatePassword(address, password);
                 }
                 mContext.toast("可以进行玩耍了");
             }

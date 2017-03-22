@@ -1,11 +1,13 @@
 package com.guohua.mlight.view.fragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
@@ -13,16 +15,16 @@ import android.widget.Toast;
 import com.guohua.ios.dialog.AlertDialog;
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseFragment;
-import com.guohua.mlight.common.config.Constants;
-import com.guohua.mlight.common.util.CodeUtils;
+import com.guohua.mlight.common.permission.PermissionListener;
+import com.guohua.mlight.common.permission.PermissionManager;
 import com.guohua.mlight.model.bean.SceneBean;
+import com.guohua.mlight.model.impl.RxLightService;
 import com.guohua.mlight.view.activity.PalletActivity;
 import com.guohua.mlight.view.activity.SelfieActivity;
 import com.guohua.mlight.view.activity.ShakeActivity;
 import com.guohua.mlight.view.activity.TemperatureActivity;
 import com.guohua.mlight.view.activity.VisualizerActivity;
 import com.guohua.mlight.view.adapter.SceneAdapter;
-import com.guohua.mlight.view.widget.RecyclerViewDivider;
 
 import butterknife.BindView;
 
@@ -47,9 +49,13 @@ public class SceneFragment extends BaseFragment {
         return sceneFragment;
     }
 
+    /*新版权限请求码*/
+    public static final int REQUEST_CODE_CAMERA = 1;
     @BindView(R.id.rv_scene_scene)
     RecyclerView mSceneView;//情景模式
     private SceneAdapter mSceneAdapter;//情景适配器
+    /*权限管理器*/
+    private PermissionManager mPermissionManager;
 
     @Override
     protected int getLayoutId() {
@@ -86,7 +92,7 @@ public class SceneFragment extends BaseFragment {
         mSceneView.setHasFixedSize(true);
         mSceneView.setItemAnimator(new DefaultItemAnimator());
         mSceneView.setLayoutManager(new GridLayoutManager(mContext, 3));
-        mSceneView.addItemDecoration(new RecyclerViewDivider(mContext, -1));
+//        mSceneView.addItemDecoration(new RecyclerViewDivider(mContext, -1));
         mSceneAdapter = new SceneAdapter(mContext);
         mSceneAdapter.setOnItemClickListener(mOnItemClickListener);
         mSceneView.setAdapter(mSceneAdapter);
@@ -105,28 +111,25 @@ public class SceneFragment extends BaseFragment {
                 }
                 break;
                 case 1: {
-                    String musicOff = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_MUSIC_OFF, null);
                     mContext.toast("炫彩渐变模式已开启");
                 }
                 break;
                 case 2: {
-                    String data = CodeUtils.transARGB2Protocol(Constants.COLORMOONMODE);
-//                    ThreadPool.getInstance().addTask(new SendRunnable(data));
+                    /*发送魔小灯的颜色*/
+                    int color = Color.argb(255, 160, 60, 10);
+                    RxLightService.getInstance().adjustColor(color);
                     mContext.toast("小夜灯模式已开启");
                 }
                 break;
                 case 3: {
                     showBottomSheetDialogFragment(PasswordFragment.getInstance(), PasswordFragment.TAG);
-//                    SettingsDialog.showChangePassword(mContext, null);
                 }
                 break;
                 case 4: {
                     showBottomSheetDialogFragment(RenameFragment.getInstance(), RenameFragment.TAG);
-//                    SettingsDialog.showChangeAccount(mContext, -1);
                 }
                 break;
                 case 5: {
-                    //SettingsDialog.showCurrentColor(mContext, null);
                     showPresetColorDialog();
                 }
                 break;
@@ -143,7 +146,12 @@ public class SceneFragment extends BaseFragment {
                 }
                 break;
                 case 9: {
-                    startActivity(new Intent(mContext, SelfieActivity.class));
+                    /*需要照相机的权限才能正常使用*/
+                    if (PermissionManager.hasPermission(mContext, Manifest.permission.CAMERA)) {
+                        startActivity(new Intent(mContext, SelfieActivity.class));
+                    } else {
+                        requestPermission(REQUEST_CODE_CAMERA, Manifest.permission.CAMERA);
+                    }
                 }
                 break;
                 default:
@@ -160,16 +168,7 @@ public class SceneFragment extends BaseFragment {
                 .setPositiveButton(getString(R.string.settings_positive), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_COLOR, null);
-//                        ThreadPool.getInstance().addTask(new SendRunnable(data));
-                        //需启动底层的预置灯色模式，与上次发数据保持一定时间间隔
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SAVE_DIY_START, new Object[]{1});
-//                                ThreadPool.getInstance().addTask(new SendRunnable(data));
-                            }
-                        }, Constants.HANDLERDELAY);
+                        RxLightService.getInstance().presetColor();
                         Toast.makeText(getContext(), R.string.settings_color_tip, Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -179,4 +178,55 @@ public class SceneFragment extends BaseFragment {
                     }
                 }).show();
     }
+
+    /*Section: Android 6.0权限管理*/
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_CODE_CAMERA:
+                mPermissionManager.onPermissionResult(permissions, grantResults);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 请求权限
+     */
+    private void requestPermission(int requestCode, String permission) {
+        mPermissionManager.with(this)
+                .addRequestCode(requestCode)
+                .permissions(permission)
+                .setPermissionsListener(mPermissionListener)
+                .request();
+    }
+
+    private PermissionListener mPermissionListener = new PermissionListener() {
+        @Override
+        public void onGranted() {
+            /*若授权则进入自拍界面*/
+            startActivity(new Intent(mContext, SelfieActivity.class));
+        }
+
+        @Override
+        public void onDenied() {
+            mContext.toast("必须有相机权限才能使用此功能");
+        }
+
+        @Override
+        public void onShowRationale(String[] permissions) {
+            Snackbar.make(mSceneView, "需要相机权限去拍照", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("ok", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mPermissionManager.setIsPositive(true);
+                            mPermissionManager.request();
+                        }
+                    }).show();
+        }
+    };
+
 }

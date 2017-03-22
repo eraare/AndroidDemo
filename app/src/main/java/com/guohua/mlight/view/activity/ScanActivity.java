@@ -101,7 +101,7 @@ public class ScanActivity extends BaseActivity {
                 mBleScanner.stopScan();
             } else {
                 mAdapter.clear();
-                mBleScanner.startScan();
+                mBleScanner.startScan(10000);
             }
         }
     };
@@ -181,7 +181,7 @@ public class ScanActivity extends BaseActivity {
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
             mAdapter.clear();
-            mBleScanner.startScan();
+            mBleScanner.startScan(1000);
         }
     }
 
@@ -192,7 +192,7 @@ public class ScanActivity extends BaseActivity {
             finish();
         } else {
             mAdapter.clear();
-            mBleScanner.startScan();
+            mBleScanner.startScan(1000);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

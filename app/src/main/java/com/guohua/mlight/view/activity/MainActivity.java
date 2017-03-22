@@ -5,11 +5,14 @@ import android.bluetooth.BluetoothDevice;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -22,6 +25,7 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
+import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.lwble.BLEController;
 import com.guohua.mlight.lwble.BLEFilter;
 import com.guohua.mlight.lwble.BLEScanner;
@@ -201,7 +205,7 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         if (isFirstTime) {
             isFirstTime = false;
-            BLEScanner.getInstance().startScan();
+            BLEScanner.getInstance().startScan(5000);
         }
     }
 
@@ -302,9 +306,17 @@ public class MainActivity extends BaseActivity {
             case BLEController.STATE_SERVICING: {
                 LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
                 if (lightInfo != null) {
-                    LightService.getInstance().validatePassword(lightInfo.address, lightInfo.password);
+                    /*地址和密码*/
+                    String address = lightInfo.address;
+                    String password = lightInfo.password;
+                    /*如果密码为空则使用系统全局密码*/
+                    if (TextUtils.isEmpty(password)) {
+                        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        password = sp.getString(Constants.KEY_GLOBAL_PASSWORD, Constants.DEFAULT_GLOBAL_PASSWORD);
+                    }
+                    /*验证密码*/
+                    LightService.getInstance().validatePassword(address, password);
                 }
-                toast("可以进行玩耍了");
             }
             break;
             default:

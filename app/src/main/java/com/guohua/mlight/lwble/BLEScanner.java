@@ -14,12 +14,13 @@ import android.os.Handler;
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class BLEScanner {
-    private static final long SCAN_PERIOD = 10000;// 扫描10s
+    private static final long DEFAULT_SCAN_PERIOD = 10000;// 扫描10s
     private volatile static BLEScanner singleton = null;
     /*蓝牙适配器*/
     private BluetoothAdapter mBluetoothAdapter;
     private Handler mHandler = new Handler();// 用于postDelay
     private boolean mScanning = false;// 循环标志位
+    private long mDuration = DEFAULT_SCAN_PERIOD;
     /**
      * 扫描到的设备的回调接口
      */
@@ -73,7 +74,7 @@ public class BLEScanner {
      */
     private void scanLeDevice(final boolean enable) {
         if (enable) {
-            mHandler.postDelayed(mRunnable, SCAN_PERIOD);
+            mHandler.postDelayed(mRunnable, mDuration);
             mScanning = true;
             mBluetoothAdapter.startLeScan(mLeScanCallback);
         } else {
@@ -106,7 +107,8 @@ public class BLEScanner {
     /**
      * 扫描或者停止
      */
-    public void startScan() {
+    public void startScan(long duration) {
+        this.mDuration = duration;
         scanLeDevice(true);
     }
 

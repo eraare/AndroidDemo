@@ -22,10 +22,10 @@ import android.widget.Toast;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.config.Constants;
+import com.guohua.mlight.model.impl.RxLightService;
 import com.guohua.mlight.model.observer.IObserver;
 import com.guohua.mlight.model.observer.ISubject;
 import com.guohua.mlight.net.ThreadPool;
-import com.guohua.mlight.common.util.CodeUtils;
 import com.guohua.mlight.view.activity.MainActivity;
 
 import java.util.ArrayList;
@@ -137,7 +137,7 @@ public class VisualizerService extends Service implements ISubject {
     private void stopShakeService() {
         Intent service = new Intent(this, ShakeService.class);
         stopService(service);
-        //Toast.makeText(this, R.string.notice_warning, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.notice_warning, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -222,9 +222,7 @@ public class VisualizerService extends Service implements ISubject {
             }
             colorValue = colorStrategy.getColorByFft(fft, size, color);*/
             colorValue = getColorByFft(fft, size, color);
-
-            data = CodeUtils.transARGB2Protocol(colorValue);
-//            pool.addTask(new SendRunnable(data));
+            RxLightService.getInstance().adjustColor(colorValue);
         }
     };
 

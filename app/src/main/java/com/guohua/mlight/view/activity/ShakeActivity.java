@@ -1,5 +1,6 @@
 package com.guohua.mlight.view.activity;
 
+import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -80,38 +81,25 @@ public class ShakeActivity extends BaseActivity {
     protected void init(Intent intent, Bundle savedInstanceState) {
         super.init(intent, savedInstanceState);
         setToolbarTitle(getString(R.string.scene_shake_shake));
-        initValue();
-        initViews();
-
-        Intent service = new Intent(this, ShakeService.class);
-        bindService(service, mServiceConnection, BIND_AUTO_CREATE);
+        initial();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        IntentFilter mFilter = new IntentFilter();
-        mFilter.addAction(ACTION_SHAKE_A_SHAKE);
-        mFilter.setPriority(Integer.MAX_VALUE);
-        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, mFilter);
+    /**
+     * 初始化数据信息
+     */
+    private void initial() {
+        initValue();
+        initViews();
+        bindShakeService();
     }
 
     /**
      * 初始化状态变量
      */
     private void initValue() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         isSwitch = sp.getBoolean(Constants.KEY_SHAKE_MODE, true);
         currentValue = sp.getInt(Constants.KEY_THRESHOLD, 17);
-    }
-
-    /**
-     * 保存状态变量
-     */
-    private void saveValue() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.edit().putBoolean(Constants.KEY_SHAKE_MODE, isSwitch).apply();
-        sp.edit().putInt(Constants.KEY_THRESHOLD, currentValue).apply();
     }
 
     /**
@@ -127,6 +115,31 @@ public class ShakeActivity extends BaseActivity {
             System.out.println("ShakeService: " + ShakeService.class.getName());
             background.setChecked(false);
         }
+    }
+
+    private void bindShakeService() {
+        Intent service = new Intent(this, ShakeService.class);
+        bindService(service, mServiceConnection, BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter mFilter = new IntentFilter();
+        mFilter.addAction(ACTION_SHAKE_A_SHAKE);
+        mFilter.setPriority(Integer.MAX_VALUE);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, mFilter);
+    }
+
+
+
+    /**
+     * 保存状态变量
+     */
+    private void saveValue() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.edit().putBoolean(Constants.KEY_SHAKE_MODE, isSwitch).apply();
+        sp.edit().putInt(Constants.KEY_THRESHOLD, currentValue).apply();
     }
 
     /**
@@ -250,7 +263,7 @@ public class ShakeActivity extends BaseActivity {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-
+            methods = null;
         }
     };
 
@@ -267,9 +280,5 @@ public class ShakeActivity extends BaseActivity {
             methods = null;
         }
         unbindService(mServiceConnection);//解绑服务
-    }
-
-    public void back(View v) {
-        this.finish();
     }
 }

@@ -1,7 +1,9 @@
 package com.guohua.mlight.common.permission;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -159,4 +161,28 @@ public class PermissionManager {
     public void setIsPositive(boolean isPositive) {
         this.mIsPositive = isPositive;
     }
+
+    /**
+     * 查看系统是否具有权限
+     *
+     * @param context
+     * @param permission
+     * @return
+     */
+    public static boolean hasPermission(Context context, String permission) {
+        return !isMarshmallow() || isGranted(context, permission);
+    }
+
+    private static boolean isMarshmallow() {
+        /*是不是Android 6.0*/
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    }
+
+    /*授权了不*/
+    private static boolean isGranted(Context context, String permission) {
+        int checkSelfPermission = ActivityCompat.checkSelfPermission(context, permission);
+        return checkSelfPermission == PackageManager.PERMISSION_GRANTED;
+    }
+
+
 }

@@ -2,25 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/assistant"
+    android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/horizontal_padding">
 
     <TextView
+        android:id="@+id/tv_tip_rename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/content_margin"
         android:text="@string/fragment_tip_rename"
         android:textColor="@color/black"
-        android:textSize="@dimen/text_size_subhead" />
+        android:textSize="@dimen/text_size_caption" />
 
     <EditText
         android:id="@+id/et_name_rename"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_height"
-        android:layout_marginBottom="@dimen/content_margin"
-        android:layout_marginTop="@dimen/content_margin"
+        android:layout_marginBottom="@dimen/content_padding"
+        android:layout_marginTop="@dimen/content_padding"
         android:background="@color/white"
         android:hint="@string/fragment_hint_rename"
         android:inputType="text"
@@ -28,13 +29,14 @@
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_body" />
 
-    <Button
-        android:id="@+id/btn_change_rename"
+    <TextView
+        android:id="@+id/tv_change_rename"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_height"
         android:background="@drawable/selector_round_rectangle"
+        android:gravity="center"
         android:text="@string/fragment_change_rename"
         android:textColor="@color/black"
-        android:textSize="@dimen/text_size_subhead" />
+        android:textSize="@dimen/text_size_body" />
 
 </LinearLayout>

@@ -1,14 +1,8 @@
 package com.guohua.mlight.view.activity;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
-import android.support.v4.content.LocalBroadcastManager;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -16,7 +10,12 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.util.CameraUtils;
+import com.guohua.mlight.lwble.MessageEvent;
 import com.guohua.mlight.view.widget.CameraSurfaceView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -122,29 +121,24 @@ public class SelfieActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
 //        mPreviewView.releaseCamera();
-        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(mBroadcastReceiver);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 //        mPreviewView.switchCamera();
-        IntentFilter filter = new IntentFilter();
-//        filter.addAction(BLEConstant.ACTION_RECEIVED_SELFIE);
-        filter.setPriority(Integer.MAX_VALUE);
-        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBroadcastReceiver, filter);
+        EventBus.getDefault().register(this);
     }
 
-    /**
-     * 接收拍照的广播
-     */
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-//            if (TextUtils.equals(action, BLEConstant.ACTION_RECEIVED_SELFIE)) {
-//                takePicture();
-//            }
+    /*接收处理由EventBus发送来的消息*/
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        if (event.what == MessageEvent.WHAT_DATA) {
+            String data = event.data;
+            if (data != null && data.contains("pres")) {
+                takePicture();
+            }
         }
-    };
+    }
 }

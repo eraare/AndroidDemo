@@ -20,11 +20,12 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.guohua.mlight.R;
+import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.config.Constants;
-import com.guohua.mlight.common.util.CodeUtils;
-import com.guohua.mlight.net.ThreadPool;
+import com.guohua.mlight.model.impl.RxLightService;
 import com.guohua.mlight.view.activity.MainActivity;
 import com.guohua.mlight.view.activity.ShakeActivity;
 
@@ -39,11 +40,8 @@ public class ShakeService extends Service {
 
     private Handler mHandler;
     private boolean allowShake = true;
-    private ThreadPool pool;
 
     private float maxRange;
-
-    private boolean isLightOn = true;//临时添加的
 
     public ShakeService() {
     }
@@ -83,7 +81,7 @@ public class ShakeService extends Service {
     private void stopVisualizerService() {
         Intent service = new Intent(this, VisualizerService.class);
         stopService(service);
-        //Toast.makeText(this, R.string.notice_warning, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.notice_warning, Toast.LENGTH_SHORT).show();
     }
 
     private void init() {
@@ -100,7 +98,6 @@ public class ShakeService extends Service {
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, mFilter);
 
         shakeMode = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.KEY_SHAKE_MODE, true);
-        pool = ThreadPool.getInstance();
 
         manager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);//获取传感器管理服务
         vibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);//震动服务
@@ -162,25 +159,23 @@ public class ShakeService extends Service {
          */
         String data;
         if (shakeMode) {
-            if (isLightOn) {
-                data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SWITCH, new Object[]{CodeUtils.SWITCH_CLOSE});
-                isLightOn = false;
+            if (AppContext.getInstance().isLightOn) {
+                RxLightService.getInstance().turnOff();
+                AppContext.getInstance().isLightOn = false;
             } else {
-                data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SWITCH, new Object[]{CodeUtils.SWITCH_OPEN});
-                isLightOn = true;
+                RxLightService.getInstance().turnOn();
+                AppContext.getInstance().isLightOn = true;
             }
         } else {
             Random r = new Random();
             //int alpha = r.nextInt(256);关闭白光
-            int alpha = 0;
+            int alpha = 255;
             int red = r.nextInt(256);
             int green = r.nextInt(256);
             int blue = r.nextInt(256);
             int color = Color.argb(alpha, red, green, blue);
-            data = CodeUtils.transARGB2Protocol(color);
+            RxLightService.getInstance().adjustColor(color);
         }
-//        pool.addTask(new SendRunnable(data));
-
 
         allowShake = false;
         mHandler.postDelayed(new Runnable() {

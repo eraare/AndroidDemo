@@ -187,17 +187,7 @@ public class PalletActivity extends BaseActivity {
      * 开关灯
      */
     private void switchLight(boolean flag) {
-        final String data;
-        changeBrightness.setEnabled(!flag);
-        if (!flag) {
-            data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SWITCH, new Object[]{Constants.CMD_OPEN_LIGHT});
-            AppContext.getInstance().isLightOn = true;
-            switcher.setImageResource(R.drawable.light_on);
-        } else {
-            data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_SWITCH, new Object[]{Constants.CMD_CLOSE_LIGHT});
-            AppContext.getInstance().isLightOn = false;
-            switcher.setImageResource(R.drawable.light_off);
-        }
+
     }
 
     /**
@@ -335,23 +325,6 @@ public class PalletActivity extends BaseActivity {
     };
 
     private void changeTheColor() {
-        int alpha = Color.alpha(currentColor) * currentBrightness / 255;
-        int red = Color.red(currentColor) * currentBrightness / 255;
-        int green = Color.green(currentColor) * currentBrightness / 255;
-        int blue = Color.blue(currentColor) * currentBrightness / 255;
-
-        //避免出现拖动颜色关灯，且不低于底层要求单路灯珠最低色度值
-        if ((red == 0 && green == 0 && blue == 0) ||
-                (red < Constants.HARDWARELEDMINCOLORVALUE && green < Constants.HARDWARELEDMINCOLORVALUE && blue < Constants.HARDWARELEDMINCOLORVALUE)) {
-            return;
-        }
-
-        String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_CONTROL, new Object[]{alpha, red, green, blue});
-        valueShow.setText("当前颜色 a:" + alpha + "r:" + red + "g:" + green + "b:" + blue);
-        System.out.println("palletactivity changeTheColor 当前颜色 a:" + alpha + "r:" + red + "g:" + green + "b:" + blue);
-        //valueShow.setTextColor(currentColor);
-
-//        valueShow.setBackgroundColor(currentColor);
         ll_activity_pallet.setBackgroundColor(currentColor);
     }
 

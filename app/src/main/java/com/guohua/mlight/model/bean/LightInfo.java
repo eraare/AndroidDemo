@@ -5,8 +5,6 @@ package com.guohua.mlight.model.bean;
  */
 
 public class LightInfo {
-    public static final String DEFAULT_PASSWORD = "0000";
-
     public String name; /*设备名*/
     public String address; /*设备地址*/
     public String password; /*设备密码*/
@@ -18,7 +16,7 @@ public class LightInfo {
     public boolean state; /*开关灯状态*/
 
     public LightInfo(String name, String address) {
-        this(name, address, DEFAULT_PASSWORD, 360, 1, 1, true, false, false);
+        this(name, address, null, 360, 1, 1, true, false, false);
     }
 
     public LightInfo(String name, String address, String password, int hue, int saturation, int value, boolean select, boolean connect, boolean state) {

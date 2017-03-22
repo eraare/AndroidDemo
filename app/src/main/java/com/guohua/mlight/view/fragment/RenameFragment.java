@@ -1,5 +1,6 @@
 package com.guohua.mlight.view.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -8,11 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guohua.mlight.R;
-import com.guohua.mlight.common.util.CodeUtils;
-import com.guohua.mlight.net.ThreadPool;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,7 +51,9 @@ public class RenameFragment extends BottomSheetDialogFragment {
     }
 
     @BindView(R.id.et_name_rename)
-    EditText mNameView;/*新的设备名*/
+    EditText mNameView; /*新的设备名*/
+    @BindView(R.id.tv_tip_rename)
+    TextView mTipView; /*内容提示框*/
     private Unbinder mUnbinder;
 
     @Nullable
@@ -62,14 +64,27 @@ public class RenameFragment extends BottomSheetDialogFragment {
         return rootView;
     }
 
-    @OnClick(R.id.btn_change_rename)
+    @OnClick(R.id.tv_change_rename)
     public void onClick(View view) {
         String name = mNameView.getText().toString();
-        if (TextUtils.isEmpty(name)) return; /*密码不为空*/
-        /*去更改灯名*/
-        String data = CodeUtils.transARGB2Protocol(CodeUtils.CMD_MODE_NAME, new String[]{name});
-//        ThreadPool.getInstance().addTask(new SendRunnable(data));
-        Toast.makeText(getContext(), R.string.settings_warning, Toast.LENGTH_LONG).show();
+        if (checkName(name)) {
+            Toast.makeText(getContext(), R.string.settings_warning, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * 校验名字信息
+     *
+     * @param name
+     * @return
+     */
+    private boolean checkName(String name) {
+        if (TextUtils.isEmpty(name)) {
+            mTipView.setText("设备名不能为空");
+            mTipView.setTextColor(Color.RED);
+            return false;
+        }
+        return true;
     }
 
     @Override

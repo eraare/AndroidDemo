@@ -14,7 +14,6 @@ import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.guohua.mlight.common.config.Constants;
-import com.guohua.mlight.model.bean.SceneListInfo;
 
 import java.io.DataOutputStream;
 import java.util.List;
@@ -141,45 +140,5 @@ public final class ToolUtils {
                 ActivityCompat.requestPermissions(context, new String[]{permission}, myPermissionCode);
             }
         }
-    }
-
-    public static int[] getSceneGradientRampByteArray(SceneListInfo.SceneInfo ss) {
-
-        System.out.println("getSceneGradientRampByteArray SceneListInfo.SceneInfo ss: " + ss.toString());
-
-        byte ctrMode = (byte) (0x78 + (((ss.SceneCurClickColorImgOnOff[1] << 2) + (ss.SceneCurClickColorImgOnOff[2] << 1) + (ss.SceneCurClickColorImgOnOff[3])) & 0x0ff));
-
-        int deta_red = (ss.SceneGradientRampGradientGap[1] & 0x0ff);
-        int deta_green = (ss.SceneGradientRampGradientGap[2] & 0x0ff);
-        int deta_blue = (ss.SceneGradientRampGradientGap[3] & 0x0ff);
-        int deta_red_time = (ss.SceneGradientRampStopGap[1] & 0x0ff);
-        int deta_green_time = (ss.SceneGradientRampStopGap[2] & 0x0ff);
-        int deta_blue_time = (ss.SceneGradientRampStopGap[3] & 0x0ff);
-
-        int sum = deta_red + deta_green + deta_blue + deta_red_time + deta_green_time + deta_blue_time;
-
-        int highBit = 0, lowBit = 0;
-        while (sum > 255) {
-            highBit = (sum & 0xff00) >> 8;
-            lowBit = sum & 0x00ff;
-            sum = highBit + lowBit;
-        }
-
-        final int[] datas = new int[8];
-        datas[0] = ctrMode;
-        datas[1] = deta_red;
-        datas[2] = deta_green;
-        datas[3] = deta_blue;
-        datas[4] = deta_red_time;
-        datas[5] = deta_green_time;
-        datas[6] = deta_blue_time;
-        datas[7] = sum;
-        System.out.println("getSceneGradientRampByteArray datas: ");
-        for (int i = 0; i < datas.length; i++) {
-            System.out.print(datas[i] + ";");
-        }
-        System.out.println();
-
-        return datas;
     }
 }
