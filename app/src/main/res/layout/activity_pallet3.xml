@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_activity_pallet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/assistant"
+    android:orientation="vertical"
+    tools:context=".view.activity.PalletActivity">
+
+    <include
+        layout="@layout/include_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center">
+
+        <com.guohua.mlight.view.widget.holocolorpicker.ColorPicker
+            android:id="@+id/cp_picker_pallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/vertical_margin">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="素"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_caption" />
+
+            <com.guohua.mlight.view.widget.holocolorpicker.SaturationBar
+                android:id="@+id/sb_saturation_pallet"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/content_margin"
+                android:layout_marginStart="@dimen/content_margin"
+                android:layout_weight="4" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="艳"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_caption" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/vertical_margin">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="亮"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_caption" />
+
+            <com.guohua.mlight.view.widget.holocolorpicker.ValueBar
+                android:id="@+id/vb_value_pallet"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/content_margin"
+                android:layout_marginStart="@dimen/content_margin"
+                android:layout_weight="4" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="暗"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_caption" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/vertical_margin"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_timer_tip_pallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/icon_timer"
+                android:gravity="center"
+                android:padding="@dimen/content_padding"
+                android:text="延时关灯已关闭"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_caption" />
+
+            <SeekBar
+                android:id="@+id/sb_timer_pallet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="60" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

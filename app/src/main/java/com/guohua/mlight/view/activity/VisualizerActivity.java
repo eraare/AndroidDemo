@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Switch;
@@ -62,10 +61,16 @@ public class VisualizerActivity extends BaseActivity implements IObserver {
     protected void init(Intent intent, Bundle savedInstanceState) {
         super.init(intent, savedInstanceState);
         setToolbarTitle(getString(R.string.scene_music_rythm));
+        initial();
+    }
+
+    /**
+     * 初始化相关数据
+     */
+    private void initial() {
         initValues();
         initViews();
-        Intent service = new Intent(this, VisualizerService.class);
-        bindService(service, mServiceConnection, BIND_AUTO_CREATE);
+        bindVisualizerService();
     }
 
     private void initValues() {
@@ -81,9 +86,13 @@ public class VisualizerActivity extends BaseActivity implements IObserver {
         valueShow.setText(getString(R.string.visualizer_feel) + value);
         personal.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
         if (!ToolUtils.isServiceRunning(getApplicationContext(), VisualizerService.class.getName())) {
-            System.out.println("false");
             background.setChecked(false);
         }
+    }
+
+    private void bindVisualizerService() {
+        Intent service = new Intent(this, VisualizerService.class);
+        bindService(service, mServiceConnection, BIND_AUTO_CREATE);
     }
 
     @OnCheckedChanged(R.id.s_background_visualizer)
@@ -145,13 +154,17 @@ public class VisualizerActivity extends BaseActivity implements IObserver {
     @Override
     protected void onResume() {
         super.onResume();
-
+        if (mService != null) {
+            mService.registerTheObserver(VisualizerActivity.this);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
+        if (mService != null) {
+            mService.unregisterTheObserver(VisualizerActivity.this);
+        }
     }
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -181,9 +194,5 @@ public class VisualizerActivity extends BaseActivity implements IObserver {
     protected void suicide() {
         super.suicide();
         unbindService(mServiceConnection);
-    }
-
-    public void back(View v) {
-        this.finish();
     }
 }

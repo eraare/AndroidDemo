@@ -6,10 +6,10 @@ import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.AppContext;
@@ -20,6 +20,7 @@ import com.guohua.mlight.lwble.MessageEvent;
 import com.guohua.mlight.model.bean.LightInfo;
 import com.guohua.mlight.model.impl.LightService;
 import com.guohua.mlight.view.adapter.DeviceAdapter;
+import com.guohua.mlight.view.widget.LocalRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -55,7 +56,9 @@ public class DeviceFragment extends BaseFragment {
     @BindView(R.id.srl_refresh_device)
     SwipeRefreshLayout mRefreshView;
     @BindView(R.id.rv_device_device)
-    RecyclerView mDeviceView;
+    LocalRecyclerView mDeviceView;
+    @BindView(R.id.tv_empty_view_device)
+    TextView mEmptyView;
 
     private DeviceAdapter mDeviceAdapter;
 
@@ -141,8 +144,10 @@ public class DeviceFragment extends BaseFragment {
     private void setupDeviceView() {
         mDeviceView.setLayoutManager(new LinearLayoutManager(mContext));
         mDeviceView.setItemAnimator(new DefaultItemAnimator());
+        mDeviceView.setEmptyView(mEmptyView);
         mDeviceAdapter = new DeviceAdapter();
         mDeviceAdapter.setOnItemClickListener(mOnItemClickListener);
+        mDeviceAdapter.setOnItemLongClickListener(mOnItemLongClickListener);
         mDeviceView.setAdapter(mDeviceAdapter);
     }
 
@@ -158,6 +163,14 @@ public class DeviceFragment extends BaseFragment {
                 mContext.showProgressDialog("断开设备", "拼命断开中...");
                 LightService.getInstance().connect(getContext(), light.address, true);
             }
+        }
+    };
+
+    private DeviceAdapter.OnItemLongClickListener mOnItemLongClickListener = new DeviceAdapter.OnItemLongClickListener() {
+        @Override
+        public void onItemLongClick(View view, int position) {
+            final LightInfo light = mDeviceAdapter.removeLight(position);
+            LightService.getInstance().disconnect(light.address, true);
         }
     };
 

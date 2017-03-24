@@ -9,6 +9,7 @@ package com.guohua.mlight.common.base;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.graphics.Color;
 import android.text.TextUtils;
 
 import com.guohua.mlight.R;
@@ -39,6 +40,7 @@ public class AppContext extends Application {
     /*色相 0-360 饱和度 0-1 明度 0-1*/
     public float[] currentHSV = {0F, 0F, 1F};
     public int currentAlpha = 255;
+//    public int currentColor = Color.WHITE;
 
     @Override
     public void onCreate() {

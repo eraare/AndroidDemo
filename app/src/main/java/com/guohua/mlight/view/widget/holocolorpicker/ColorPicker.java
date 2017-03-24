@@ -55,16 +55,16 @@ public class ColorPicker extends View {
      * Colors to construct the color wheel using {@link SweepGradient}.
      */
     //原始的颜色选择环
-    /*private static final int[] COLORS = new int[]{0xFFFF0000, 0xFFFF00FF,
-            0xFF0000FF, 0xFF00FFFF, 0xFF00FF00, 0xFFFFFF00};*/
+    private static final int[] COLORS = new int[]{0xFFFF0000, 0xFFFF00FF,
+            0xFF0000FF, 0xFF00FFFF, 0xFF00FF00, 0xFFFFFF00, 0xFFFF0000};
     //七种颜色遍历 黑
-    private static final int[] COLORS = new int[]{0xFF000000, 0xFFFF0000, 0xFF000000, 0xFF00FF00,
+    /*private static final int[] COLORS = new int[]{0xFF000000, 0xFFFF0000, 0xFF000000, 0xFF00FF00,
             0xFF000000, 0xFF0000FF, 0xFF000000, 0xFFFFFF00, 0xFF000000, 0xFFFF00FF,
-            0xFF000000, 0xFF00FFFF, 0xFF000000, 0xFFFFFFFF};
-    /*//七种颜色遍历 白
-    private static final int[] COLORS = new int[]{0xFF00FFFF, 0xFFFFFFFF, 0xFFFF00FF, 0xFFFFFFFF,
+            0xFF000000, 0xFF00FFFF, 0xFF000000, 0xFFFFFFFF};*/
+    //七种颜色遍历 白
+    /*private static final int[] COLORS = new int[]{0xFF00FFFF, 0xFFFFFFFF, 0xFFFF00FF, 0xFFFFFFFF,
             0xFFFFFF00, 0xFFFFFFFF, 0xFF0000FF, 0xFFFFFFFF, 0xFF00FF00, 0xFFFFFFFF,
-            0xFFFF0000, 0xFFFFFFFF, 0xFF000000, 0xFFFFFF};*/
+            0xFFFF0000, 0xFFFFFFFF};*/
 
     /**
      * {@code Paint} instance used to draw the color wheel.
@@ -634,9 +634,11 @@ public class ColorPicker extends View {
                         && y >= -mColorCenterRadius && y <= mColorCenterRadius
                         && mShowCenterOldColor) {
                     mCenterHaloPaint.setAlpha(0x50);
-                    //setColor(getOldCenterColor());
+                    setColor(getOldCenterColor());
                     invalidate();
-                    onCenterClickListener.onCenterClick();//add by Leo
+                    if (onCenterClickListener != null) {
+                        onCenterClickListener.onCenterClick();//add by Leo
+                    }
                 }
                 // Check whether the user pressed anywhere on the wheel.
                 else if (Math.sqrt(x * x + y * y) <= mColorWheelRadius + mColorPointerHaloRadius

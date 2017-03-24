@@ -89,9 +89,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
         return mDatas.get(position);
     }
 
-    public void removeLight(int position) {
-        mDatas.remove(position);
+    public LightInfo removeLight(int position) {
+        LightInfo light = mDatas.remove(position);
         notifyItemRemoved(position);
+        return light;
     }
 
     /**
@@ -119,8 +120,11 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
         @Override
         public boolean onLongClick(View v) {
             /*长按删除设备*/
-            removeLight((Integer) v.getTag());
-            return true;
+            if (mOnItemLongClickListener != null) {
+                mOnItemLongClickListener.onItemLongClick(v, (Integer) v.getTag());
+                return true;
+            }
+            return false;
         }
     };
 
@@ -135,4 +139,14 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
         mOnItemClickListener = onItemClickListener;
     }
 
+    /*Section: Item长按事件*/
+    public interface OnItemLongClickListener {
+        void onItemLongClick(View view, int position);
+    }
+
+    private OnItemLongClickListener mOnItemLongClickListener;
+
+    public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
+        mOnItemLongClickListener = onItemLongClickListener;
+    }
 }

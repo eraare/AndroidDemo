@@ -191,4 +191,34 @@ public class RxLightService {
                     }
                 });
     }
+
+    /**
+     * 对所有灯进行炫彩渐变开启
+     */
+    public void musicOn() {
+        Observable.from(AppContext.getInstance().lights)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new Action1<LightInfo>() {
+                    @Override
+                    public void call(LightInfo lightInfo) {
+                        mLightService.musicOn(lightInfo.address);
+                    }
+                });
+    }
+
+    /**
+     * 对所有灯进行炫彩渐变关闭
+     */
+    public void musicOff() {
+        Observable.from(AppContext.getInstance().lights)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new Action1<LightInfo>() {
+                    @Override
+                    public void call(LightInfo lightInfo) {
+                        mLightService.musicOff(lightInfo.address);
+                    }
+                });
+    }
 }

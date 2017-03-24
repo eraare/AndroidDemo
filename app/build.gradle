@@ -8,8 +8,8 @@ android {
         applicationId "com.guohua.mlight"
         minSdkVersion 18
         targetSdkVersion 23
-        versionCode 30
-        versionName "2.0.1.170318_alpha"
+        versionCode 31
+        versionName "2.0.1.170322"
     }
     buildTypes {
         release {
@@ -41,7 +41,8 @@ dependencies {
     compile 'com.ashokvarma.android:bottom-navigation-bar:1.3.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    /*holo colorpicker*/
+    compile 'com.larswerkman:HoloColorPicker:1.5'
     /*滑动框架*/
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
-    /*蓝牙BLE通信库*/
 }

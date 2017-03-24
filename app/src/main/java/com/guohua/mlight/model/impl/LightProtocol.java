@@ -51,14 +51,14 @@ public class LightProtocol implements IDeviceProtocol {
     @Override
     public String delayOn(int millis) {
         /*定时开灯*/
-        if (millis < 0) return "dl off";
+        if (millis <= 0) return "dl off";
         return "dl:" + millis;
     }
 
     @Override
     public String delayOff(int millis) {
         /*延时关灯*/
-        if (millis < 0) return "de off";
+        if (millis <= 0) return "de off";
         return "de:" + millis;
     }
 

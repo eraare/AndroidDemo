@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guohua.mlight.R;
@@ -19,6 +19,7 @@ import com.guohua.mlight.lwble.BLEFilter;
 import com.guohua.mlight.lwble.BLEScanner;
 import com.guohua.mlight.lwble.BLEUtils;
 import com.guohua.mlight.view.adapter.BLEAdapter;
+import com.guohua.mlight.view.widget.LocalRecyclerView;
 
 import butterknife.BindView;
 
@@ -39,6 +40,7 @@ import butterknife.BindView;
  */
 public class ScanActivity extends BaseActivity {
     private static final int REQUEST_ENABLE_BT = 1;// 请求码
+    private static final long DEFAULT_SCAN_DURATION = 10000;
 
     @Override
     protected int getContentViewId() {
@@ -56,7 +58,9 @@ public class ScanActivity extends BaseActivity {
     }
 
     @BindView(R.id.rv_device_scan)
-    RecyclerView mDeviceView; /*设备列表*/
+    LocalRecyclerView mDeviceView; /*设备列表*/
+    @BindView(R.id.tv_empty_view_scan)
+    TextView mEmptyView; /*空设备*/
 
     private BLEAdapter mAdapter; /* 设备适配器*/
     private BluetoothAdapter mBluetoothAdapter;/*蓝牙适配器*/
@@ -101,7 +105,7 @@ public class ScanActivity extends BaseActivity {
                 mBleScanner.stopScan();
             } else {
                 mAdapter.clear();
-                mBleScanner.startScan(10000);
+                mBleScanner.startScan(DEFAULT_SCAN_DURATION);
             }
         }
     };
@@ -148,6 +152,7 @@ public class ScanActivity extends BaseActivity {
     private void setupDeviceView() {
         mDeviceView.setLayoutManager(new LinearLayoutManager(this));
         mDeviceView.setItemAnimator(new DefaultItemAnimator());
+        mDeviceView.setEmptyView(mEmptyView);
         mAdapter = new BLEAdapter();
         mAdapter.setOnItemClickListener(mOnItemClickListener);
         mDeviceView.setAdapter(mAdapter);
@@ -181,7 +186,7 @@ public class ScanActivity extends BaseActivity {
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
             mAdapter.clear();
-            mBleScanner.startScan(1000);
+            mBleScanner.startScan(DEFAULT_SCAN_DURATION);
         }
     }
 
@@ -192,7 +197,7 @@ public class ScanActivity extends BaseActivity {
             finish();
         } else {
             mAdapter.clear();
-            mBleScanner.startScan(1000);
+            mBleScanner.startScan(DEFAULT_SCAN_DURATION);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

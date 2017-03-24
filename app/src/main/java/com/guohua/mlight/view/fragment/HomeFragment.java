@@ -81,11 +81,11 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initView() {
-        float saturation = AppContext.getInstance().currentHSV[0] * 100;
-        float value = AppContext.getInstance().currentHSV[1] * 100;
+        float saturation = AppContext.getInstance().currentHSV[1] * 100;
+        float value = AppContext.getInstance().currentHSV[2] * 100;
 
         mSaturationView.setProgress((int) saturation);
-        mValueView.setProgress((int) saturation);
+        mValueView.setProgress((int) value);
 
         mValueView.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
         mSaturationView.setOnSeekBarChangeListener(mOnSeekBarChangeListener);

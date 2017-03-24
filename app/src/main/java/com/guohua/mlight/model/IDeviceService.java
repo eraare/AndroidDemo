@@ -81,4 +81,18 @@ public interface IDeviceService {
      * @param name
      */
     void name(String deviceAddress, String name);
+
+    /**
+     * 炫彩渐变关闭
+     *
+     * @param deviceAddress
+     */
+    void musicOff(String deviceAddress);
+
+    /**
+     * 炫彩渐变开启
+     *
+     * @param deviceAddress
+     */
+    void musicOn(String deviceAddress);
 }

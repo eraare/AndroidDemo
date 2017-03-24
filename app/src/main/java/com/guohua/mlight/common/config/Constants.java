@@ -11,6 +11,7 @@ public final class Constants {
     public static final String KEY_GLOBAL_PASSWORD = "key_global_password";
     public static final String KEY_SHAKE_MODE = "key_shake_mode";
     public static final String KEY_THRESHOLD = "key_threshold";
+    public static final String KEY_PERSONAL_FEEL = "key_personal_feel";
 
     /*系统使用到的默认值DEFAULT*/
     public static final String DEFAULT_GLOBAL_PASSWORD = "0000";
@@ -27,7 +28,6 @@ public final class Constants {
     public static final String KEY_DEVICE_NAME = "device_name";
     public static final String KEY_DEVICE_ADDRESS = "device_address";
     public static final String KEY_COLOR = "key_color";
-    public static final String KEY_PERSONAL_FEEL = "personal_feel";
     public static final String KEY_STATUS_MESSAGE = "key_status_message";
     public static final String EXIST_TIMER_OPEN = "exist_timer_open";
     public static final String KEY_TIMER_OPEN = "key_timer_open";

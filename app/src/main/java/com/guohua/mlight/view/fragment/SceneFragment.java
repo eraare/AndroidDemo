@@ -56,6 +56,7 @@ public class SceneFragment extends BaseFragment {
     private SceneAdapter mSceneAdapter;//情景适配器
     /*权限管理器*/
     private PermissionManager mPermissionManager;
+    private boolean isGradientOn = false;
 
     @Override
     protected int getLayoutId() {
@@ -80,7 +81,7 @@ public class SceneFragment extends BaseFragment {
         mSceneAdapter.addScene(new SceneBean(5, getString(R.string.scene_preset_color), getString(R.string.defaultmode_description), R.drawable.icon_color_scene));
         mSceneAdapter.addScene(new SceneBean(6, getString(R.string.scene_music_rythm), getString(R.string.defaultmode_description), R.drawable.icon_music_scene));
         mSceneAdapter.addScene(new SceneBean(7, getString(R.string.scene_shake_shake), getString(R.string.defaultmode_description), R.drawable.icon_shake_scene));
-        mSceneAdapter.addScene(new SceneBean(8, getString(R.string.scene_temperature), getString(R.string.defaultmode_description), R.drawable.icon_temperature_scene));
+//        mSceneAdapter.addScene(new SceneBean(8, getString(R.string.scene_temperature), getString(R.string.defaultmode_description), R.drawable.icon_temperature_scene));
         mSceneAdapter.addScene(new SceneBean(9, getString(R.string.scene_selfie), getString(R.string.defaultmode_description), R.drawable.icon_selfie_scene));
 
     }
@@ -111,7 +112,15 @@ public class SceneFragment extends BaseFragment {
                 }
                 break;
                 case 1: {
-                    mContext.toast("炫彩渐变模式已开启");
+                    if (isGradientOn) {
+                        RxLightService.getInstance().musicOff();
+                        mContext.toast("炫彩渐变已关闭");
+                        isGradientOn = false;
+                    } else {
+                        RxLightService.getInstance().musicOn();
+                        mContext.toast("炫彩渐变已开启");
+                        isGradientOn = true;
+                    }
                 }
                 break;
                 case 2: {

@@ -107,4 +107,16 @@ public class LightService implements IDeviceService {
         String protocol = mLightProtocol.name(name);
         mBLEController.send(deviceAddress, protocol.getBytes());
     }
+
+    @Override
+    public void musicOff(String deviceAddress) {
+        String protocol = mLightProtocol.musicOff();
+        mBLEController.send(deviceAddress, protocol.getBytes());
+    }
+
+    @Override
+    public void musicOn(String deviceAddress) {
+        String protocol = mLightProtocol.musicOn();
+        mBLEController.send(deviceAddress, protocol.getBytes());
+    }
 }
