@@ -1,10 +1,13 @@
 package com.guohua.mlight.view.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -14,6 +17,8 @@ import android.widget.Toast;
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
+import com.guohua.mlight.common.permission.PermissionListener;
+import com.guohua.mlight.common.permission.PermissionManager;
 import com.guohua.mlight.lwble.BLEConstant;
 import com.guohua.mlight.lwble.BLEFilter;
 import com.guohua.mlight.lwble.BLEScanner;
@@ -104,8 +109,8 @@ public class ScanActivity extends BaseActivity {
             if (mBleScanner.isScanning()) {
                 mBleScanner.stopScan();
             } else {
-                mAdapter.clear();
-                mBleScanner.startScan(DEFAULT_SCAN_DURATION);
+                /*请求定位权限*/
+                requestPermission();
             }
         }
     };
@@ -185,9 +190,59 @@ public class ScanActivity extends BaseActivity {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
+            requestPermission();
+        }
+    }
+
+    /*Section: 权限管理*/
+    private PermissionManager mHelper; /*权限管理类*/
+    public static final int PERMISSION_REQUEST_CODE = 102;
+
+    private void requestPermission() {
+        /*是否有定位权限使用蓝牙操作进行扫描*/
+        if (PermissionManager.hasPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            mAdapter.clear();
+            BLEScanner.getInstance().startScan(DEFAULT_SCAN_DURATION);
+        } else {
+            mHelper = PermissionManager.with(this)
+                    .permissions(Manifest.permission.ACCESS_COARSE_LOCATION)
+                    .setPermissionsListener(mPermissionListener)
+                    .addRequestCode(PERMISSION_REQUEST_CODE)
+                    .request();
+        }
+    }
+
+    private PermissionListener mPermissionListener = new PermissionListener() {
+        @Override
+        public void onGranted() {
             mAdapter.clear();
             mBleScanner.startScan(DEFAULT_SCAN_DURATION);
         }
+
+        @Override
+        public void onDenied() {
+            toast("需要模糊定位权限使用蓝牙");
+        }
+
+        @Override
+        public void onShowRationale(String[] permissions) {
+            Snackbar.make(mEmptyView, "需要模糊定位权限使用蓝牙", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("ok", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mHelper.setIsPositive(true);
+                            mHelper.request();
+                        }
+                    }).show();
+        }
+    };
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            mHelper.onPermissionResult(permissions, grantResults);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -196,8 +251,8 @@ public class ScanActivity extends BaseActivity {
         if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
             finish();
         } else {
-            mAdapter.clear();
-            mBleScanner.startScan(DEFAULT_SCAN_DURATION);
+            /*请求定位权限*/
+            requestPermission();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

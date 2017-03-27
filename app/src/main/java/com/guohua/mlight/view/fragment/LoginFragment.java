@@ -70,6 +70,7 @@ public class LoginFragment extends BaseFragment implements ILoginView {
         int id = view.getId();
         switch (id) {
             case R.id.btn_login_login: {
+
                 login();
             }
             break;

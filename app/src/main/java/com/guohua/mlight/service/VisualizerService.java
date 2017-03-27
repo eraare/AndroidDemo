@@ -25,7 +25,6 @@ import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.model.impl.RxLightService;
 import com.guohua.mlight.model.observer.IObserver;
 import com.guohua.mlight.model.observer.ISubject;
-import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.view.activity.MainActivity;
 
 import java.util.ArrayList;
@@ -41,8 +40,6 @@ import java.util.TimerTask;
 public class VisualizerService extends Service implements ISubject {
     // 音乐分析
     private Visualizer mVisualizer = null;
-    // 通信Handle理
-    private ThreadPool pool = null;
     // 常量
     //private static final int RATE = 20000;// 多长时间输出一次
     //private IColorStrategy colorStrategy;
@@ -156,7 +153,6 @@ public class VisualizerService extends Service implements ISubject {
         initValues();
         //colorStrategy = new ColourStrategy();
         IObservers = new ArrayList<>();
-        pool = ThreadPool.getInstance();//得到线程池
         initVisualizer();//初始化Visualizer
         mTimer = new Timer();
         mTimer.schedule(timerTask, DELAY, DELAY);
@@ -181,7 +177,7 @@ public class VisualizerService extends Service implements ISubject {
 
             mVisualizer.release();
         }
-        mVisualizer = new Visualizer(0);
+        mVisualizer = new Visualizer(0); /*华为手机不能为0*/
         if (mVisualizer == null) {
             Toast.makeText(this, R.string.default_text, Toast.LENGTH_SHORT).show();
             onDestroy();

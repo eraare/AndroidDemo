@@ -97,8 +97,10 @@ public abstract class BaseFragment extends Fragment {
      * @param tag
      */
     public void showBottomSheetDialogFragment(BottomSheetDialogFragment fragment, String tag) {
-        FragmentManager fragmentManager = getFragmentManager();
-        fragment.setCancelable(true);
-        fragment.show(fragmentManager, tag);
+        if (!fragment.isAdded()) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragment.setCancelable(true);
+            fragment.show(fragmentManager, tag);
+        }
     }
 }

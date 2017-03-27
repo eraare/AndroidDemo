@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.model.bean.DatetimeBean;
-import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.common.util.CodeUtils;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.view.activity.MainActivity;

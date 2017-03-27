@@ -16,7 +16,6 @@ import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.util.CodeUtils;
 import com.guohua.mlight.model.bean.Device;
-import com.guohua.mlight.net.ThreadPool;
 
 /**
  * @author Leo

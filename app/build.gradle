@@ -7,9 +7,9 @@ android {
     defaultConfig {
         applicationId "com.guohua.mlight"
         minSdkVersion 18
-        targetSdkVersion 23
-        versionCode 31
-        versionName "2.0.1.170322"
+        targetSdkVersion 22
+        versionCode 36
+        versionName "2.0.2.170327"
     }
     buildTypes {
         release {
@@ -44,5 +44,7 @@ dependencies {
     /*holo colorpicker*/
     compile 'com.larswerkman:HoloColorPicker:1.5'
     /*滑动框架*/
-    compile 'com.daimajia.swipelayout:library:1.2.0@aar'
+    /*compile 'com.daimajia.swipelayout:library:1.2.0@aar'*/
+    compile files('libs/Bmob_Push_V1.0.0beta_20160627.jar')
+    compile files('libs/GDTUnionSDK.4.9.543.min.jar')
 }

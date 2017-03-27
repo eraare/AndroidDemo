@@ -49,13 +49,9 @@ public class SceneFragment extends BaseFragment {
         return sceneFragment;
     }
 
-    /*新版权限请求码*/
-    public static final int REQUEST_CODE_CAMERA = 1;
     @BindView(R.id.rv_scene_scene)
     RecyclerView mSceneView;//情景模式
     private SceneAdapter mSceneAdapter;//情景适配器
-    /*权限管理器*/
-    private PermissionManager mPermissionManager;
     private boolean isGradientOn = false;
 
     @Override
@@ -143,7 +139,11 @@ public class SceneFragment extends BaseFragment {
                 }
                 break;
                 case 6: {
-                    startActivity(new Intent(mContext, VisualizerActivity.class));
+                    if (PermissionManager.hasPermission(mContext, Manifest.permission.RECORD_AUDIO)) {
+                        startActivity(new Intent(mContext, VisualizerActivity.class));
+                    } else {
+                        requestPermission(REQUEST_CODE_AUDIO, Manifest.permission.RECORD_AUDIO);
+                    }
                 }
                 break;
                 case 7: {
@@ -197,37 +197,63 @@ public class SceneFragment extends BaseFragment {
             case REQUEST_CODE_CAMERA:
                 mPermissionManager.onPermissionResult(permissions, grantResults);
                 break;
+            case REQUEST_CODE_AUDIO:
+                mPermissionManager.onPermissionResult(permissions, grantResults);
+                break;
             default:
                 break;
         }
     }
 
+    /*权限管理器*/
+    private PermissionManager mPermissionManager;
+    private int permissionRequestCode = -1;
+    public static final int REQUEST_CODE_CAMERA = 1;
+    public static final int REQUEST_CODE_AUDIO = 2;
+
     /**
      * 请求权限
      */
     private void requestPermission(int requestCode, String permission) {
-        mPermissionManager.with(this)
+        mPermissionManager = PermissionManager.with(this)
                 .addRequestCode(requestCode)
                 .permissions(permission)
                 .setPermissionsListener(mPermissionListener)
                 .request();
     }
 
+
     private PermissionListener mPermissionListener = new PermissionListener() {
         @Override
         public void onGranted() {
-            /*若授权则进入自拍界面*/
-            startActivity(new Intent(mContext, SelfieActivity.class));
+            if (permissionRequestCode == REQUEST_CODE_CAMERA) {
+                startActivity(new Intent(mContext, SelfieActivity.class));
+            } else if (permissionRequestCode == REQUEST_CODE_AUDIO) {
+                startActivity(new Intent(mContext, VisualizerActivity.class));
+            }
         }
 
         @Override
         public void onDenied() {
-            mContext.toast("必须有相机权限才能使用此功能");
+            if (permissionRequestCode == REQUEST_CODE_CAMERA) {
+                mContext.toast("必须有相机权限才能使用此功能");
+            } else if (permissionRequestCode == REQUEST_CODE_AUDIO) {
+                mContext.toast("必须有麦克风权限才能使用此功能");
+            }
+
         }
 
         @Override
         public void onShowRationale(String[] permissions) {
-            Snackbar.make(mSceneView, "需要相机权限去拍照", Snackbar.LENGTH_INDEFINITE)
+            String text;
+            if (permissionRequestCode == REQUEST_CODE_CAMERA) {
+                text = "需要相机权限去拍照";
+            } else if (permissionRequestCode == REQUEST_CODE_AUDIO) {
+                text = "需要麦克风权限去音乐律动";
+            } else {
+                text = "需要权限使用此功能";
+            }
+            Snackbar.make(mSceneView, text, Snackbar.LENGTH_INDEFINITE)
                     .setAction("ok", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

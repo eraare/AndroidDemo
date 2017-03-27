@@ -19,7 +19,6 @@ import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.util.CodeUtils;
 import com.guohua.mlight.common.util.ToolUtils;
-import com.guohua.mlight.net.ThreadPool;
 import com.guohua.mlight.upgrade.UpgradeManager;
 
 import butterknife.BindView;
