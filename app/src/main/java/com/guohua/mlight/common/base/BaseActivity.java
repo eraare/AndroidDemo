@@ -41,6 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        hideNavigationBar();
         super.onCreate(savedInstanceState);
         setContentView(getContentViewId());
         mUnbinder = ButterKnife.bind(this); /*使用ButterKnife*/
@@ -48,6 +49,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         init(getIntent(), savedInstanceState); /*处理Intent及初始化*/
         setupFirstFragment(); /*加载第一个Fragment*/
         initAfterCreate(); /*之后的初始化操作*/
+    }
+
+    /**
+     * 隐藏底部的NavigationBar
+     */
+    public void hideNavigationBar() {
+        int uiFlags = /*View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | */View.SYSTEM_UI_FLAG_HIDE_NAVIGATION; // hide nav bar
+                /*| View.SYSTEM_UI_FLAG_FULLSCREEN;*/ // hide status bar
+
+        if (android.os.Build.VERSION.SDK_INT >= 19) {
+            uiFlags |= 0x00001000;
+        } else {
+            uiFlags |= View.SYSTEM_UI_FLAG_LOW_PROFILE;
+        }
+
+        getWindow().getDecorView().setSystemUiVisibility(uiFlags);
     }
 
     /**
@@ -188,6 +208,22 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
+            hideNavigationBar();
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            hideNavigationBar();
+        }
     }
 
     /*接口*/
