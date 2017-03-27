@@ -2,6 +2,7 @@ package com.guohua.mlight.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseActivity;
@@ -61,5 +62,13 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected BaseFragment getFirstFragment() {
         return SplashFragment.getInstance();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_HOME) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

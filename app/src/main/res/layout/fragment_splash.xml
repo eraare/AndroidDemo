@@ -6,33 +6,71 @@
     tools:context="com.guohua.mlight.view.fragment.SplashFragment">
 
     <LinearLayout
-        android:id="@+id/ll_text_splash"
-        android:layout_width="wrap_content"
+        android:id="@+id/ll_bottom_splash"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/vertical_margin"
+        android:paddingTop="@dimen/vertical_margin">
 
-        <TextView
+        <ImageView
+            android:layout_width="@dimen/logo_size"
+            android:layout_height="@dimen/logo_size"
+            android:layout_marginEnd="@dimen/vertical_margin"
+            android:src="@mipmap/icon_launcher" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textColor="@color/main"
-            android:textSize="@dimen/text_size_display1" />
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fragment_content_splash"
-            android:textColor="@color/font_color"
-            android:textSize="@dimen/text_size_body" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@color/main"
+                android:textSize="@dimen/text_size_display1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_content_splash"
+                android:textColor="@color/font_color"
+                android:textSize="@dimen/text_size_body" />
+        </LinearLayout>
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/fl_ad_container_splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_bottom_splash" />
+
+    <TextView
+        android:id="@+id/tv_skip_splash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/vertical_margin"
+        android:background="@drawable/selector_round_corner"
+        android:paddingBottom="@dimen/content_margin"
+        android:paddingEnd="@dimen/content_padding"
+        android:paddingStart="@dimen/content_padding"
+        android:paddingTop="@dimen/content_margin"
+        android:text="点击跳过"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_caption" />
+
     <ImageView
-        android:layout_width="@dimen/logo_size"
-        android:layout_height="@dimen/logo_size"
-        android:layout_above="@+id/ll_text_splash"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/about_logo" />
+        android:id="@+id/iv_holder_splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/ll_bottom_splash"
+        android:scaleType="fitXY"
+        android:src="@drawable/splash_holder" />
 
 </RelativeLayout>

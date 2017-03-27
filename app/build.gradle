@@ -8,8 +8,8 @@ android {
         applicationId "com.guohua.mlight"
         minSdkVersion 18
         targetSdkVersion 22
-        versionCode 36
-        versionName "2.0.2.170327"
+        versionCode 50
+        versionName "2.0.0"
     }
     buildTypes {
         release {
