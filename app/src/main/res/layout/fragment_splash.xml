@@ -17,8 +17,8 @@
         android:paddingTop="@dimen/vertical_margin">
 
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:layout_marginEnd="@dimen/vertical_margin"
             android:src="@mipmap/icon_launcher" />
 

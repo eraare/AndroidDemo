@@ -70,8 +70,8 @@ public class SceneFragment extends BaseFragment {
      */
     private void loadScenes() {
         mSceneAdapter.addScene(new SceneBean(0, getString(R.string.scene_color_pallet), getString(R.string.colorpallet_description), R.drawable.icon_pallet_scene));
-        mSceneAdapter.addScene(new SceneBean(1, getString(R.string.scene_colorful_gradient), getString(R.string.warmnight_description), R.drawable.icon_light_scene));
-        mSceneAdapter.addScene(new SceneBean(2, getString(R.string.scene_warm_light), getString(R.string.defaultmode_description), R.drawable.icon_gradient_scene));
+        mSceneAdapter.addScene(new SceneBean(1, getString(R.string.scene_colorful_gradient), getString(R.string.warmnight_description), R.drawable.icon_gradient_scene));
+        mSceneAdapter.addScene(new SceneBean(2, getString(R.string.scene_warm_light), getString(R.string.defaultmode_description), R.drawable.icon_light_scene));
         mSceneAdapter.addScene(new SceneBean(3, getString(R.string.scene_set_password), getString(R.string.defaultmode_description), R.drawable.icon_password_scene));
         mSceneAdapter.addScene(new SceneBean(4, getString(R.string.scene_change_name), getString(R.string.defaultmode_description), R.drawable.icon_rename_scene));
         mSceneAdapter.addScene(new SceneBean(5, getString(R.string.scene_preset_color), getString(R.string.defaultmode_description), R.drawable.icon_color_scene));
