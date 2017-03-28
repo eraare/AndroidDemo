@@ -126,6 +126,7 @@ public class CenterFragment extends BaseFragment {
         mOptionAdapter.addItem(new OptionBean(3, getString(R.string.center_about_app), R.drawable.icon_app_center));
         mOptionAdapter.addItem(new OptionBean(4, getString(R.string.center_about_us), R.drawable.icon_us_center));
         mOptionAdapter.addItem(new OptionBean(5, getString(R.string.center_share), R.drawable.icon_share_center));
+//        mOptionAdapter.addItem(new OptionBean(6, "应用推荐", R.drawable.icon_share_center));
     }
 
     /**
@@ -159,6 +160,9 @@ public class CenterFragment extends BaseFragment {
                 case 5: {
                     ShareUtils.shareText(mContext, getString(R.string.center_share_title),
                             getString(R.string.center_share_text), null);
+                }
+                break;
+                case 6: {
                 }
                 break;
                 default:

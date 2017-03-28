@@ -20,13 +20,18 @@ public final class Constants {
     public static final long CAPTCHA_TIMER_DELAY = 60 * 1000;
     public static final long CAPTCHA_TIMER_INTERVAL = 1000;
 
+    /*广点通的广告用到的广告位ID*/
+    //public static final String APP_ID = "1105667675";
+    //public static final String SPLASH_POS_ID = "1030028134195577";
+    public static final String APP_ID = "1101152570";
+    public static final String SPLASH_POS_ID = "8863364436303842593";
+
 
     /**************************************
      * 旧的
      *****************************/
     /*键值对的键*/
     public static final String KEY_DEVICE_NAME = "device_name";
-    public static final String KEY_DEVICE_ADDRESS = "device_address";
     public static final String KEY_COLOR = "key_color";
     public static final String KEY_STATUS_MESSAGE = "key_status_message";
     public static final String EXIST_TIMER_OPEN = "exist_timer_open";
@@ -49,7 +54,6 @@ public final class Constants {
      * 用到的action
      */
     public static final String ACTION_EXIT = "com.guohua.glight.ACTION_EXIT";
-    public static final String ACTION_RECEIVED_STATUS = "action.RECEIVED_STATUS";
     public static final String ACTION_FIRMWARE_VERSION = "action_FIRMWARE_VERSION";
     public static final String ACTION_OPENLIGHT_TIMER = "action_OPENLIGHT_TIMER";
 }

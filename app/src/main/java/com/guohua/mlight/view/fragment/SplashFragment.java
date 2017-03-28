@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseFragment;
+import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.lwble.BLEUtils;
 import com.guohua.mlight.view.activity.LoginActivity;
 import com.guohua.mlight.view.activity.MainActivity;
@@ -52,8 +53,6 @@ public class SplashFragment extends BaseFragment implements SplashADListener {
         return singleton;
     }
 
-    public static final String APP_ID = "1105667675";
-    public static final String SPLASH_POS_ID = "1030028134195577";
     public static final String SKIP_TEXT = "点击跳过 %d";
 
     @BindView(R.id.fl_ad_container_splash)
@@ -74,7 +73,7 @@ public class SplashFragment extends BaseFragment implements SplashADListener {
     @Override
     protected void init(View view, Bundle savedInstanceState) {
         super.init(view, savedInstanceState);
-        fetchSplashAD(mContext, mContainerView, mSkipView, APP_ID, SPLASH_POS_ID, this, 0);
+        fetchSplashAD(mContext, mContainerView, mSkipView, Constants.APP_ID, Constants.SPLASH_POS_ID, this, 0);
     }
 
     /**
