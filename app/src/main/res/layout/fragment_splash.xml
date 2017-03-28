@@ -10,14 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/vertical_margin"
         android:paddingTop="@dimen/vertical_margin">
 
         <ImageView
-            android:layout_width="@dimen/logo_size"
-            android:layout_height="@dimen/logo_size"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginEnd="@dimen/vertical_margin"
             android:src="@mipmap/icon_launcher" />
 
@@ -32,14 +33,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
                 android:textColor="@color/main"
-                android:textSize="@dimen/text_size_display1" />
+                android:textSize="@dimen/text_size_headline" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/fragment_content_splash"
-                android:textColor="@color/font_color"
-                android:textSize="@dimen/text_size_body" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_caption" />
         </LinearLayout>
     </LinearLayout>
 
