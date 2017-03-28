@@ -28,7 +28,8 @@
             android:padding="@dimen/vertical_margin"
             android:text="点击开灯"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_subhead" />
+            android:textSize="@dimen/text_size_body"
+            android:visibility="gone" />
     </LinearLayout>
 
 
@@ -55,16 +56,6 @@
                 android:textSize="@dimen/text_size_caption"
                 android:visibility="gone" />
 
-            <SeekBar
-                android:id="@+id/sb_value_home"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/content_margin"
-                android:layout_weight="1"
-                android:max="100"
-                android:thumb="@drawable/icon_lightness_thumb"
-                android:thumbOffset="0dp" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,6 +63,16 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_caption"
                 android:visibility="gone" />
+
+            <SeekBar
+                android:id="@+id/sb_value_home"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/content_margin"
+                android:layout_weight="1"
+                android:max="100"
+                android:thumb="@drawable/icon_value_home"
+                android:thumbOffset="0dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -95,7 +96,7 @@
                 android:layout_margin="@dimen/content_margin"
                 android:layout_weight="1"
                 android:max="100"
-                android:thumb="@drawable/icon_color_thumb"
+                android:thumb="@drawable/icon_saturation_home"
                 android:thumbOffset="0dp" />
 
             <TextView

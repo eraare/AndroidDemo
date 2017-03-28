@@ -69,15 +69,15 @@ public class MainActivity extends BaseActivity {
     String[] mAlias; // 显示在顶部导航栏的别名
     /*底部标签导航的ICON图像*/
     private int[] mNormalIconIds = {
-            R.drawable.icon_home_normal,
-            R.drawable.icon_scene_normal,
-            R.drawable.icon_center_normal,
+            R.drawable.tab_home_normal,
+            R.drawable.tab_scene_normal,
+            R.drawable.tab_center_normal,
     };
     /*底部标签导航被选中的ICON图像*/
     private int[] mSelectedIconIds = {
-            R.drawable.icon_home_checked,
-            R.drawable.icon_scene_checked,
-            R.drawable.icon_center_checked,
+            R.drawable.tab_home_checked,
+            R.drawable.tab_scene_checked,
+            R.drawable.tab_center_checked,
     };
 
     /*默认页面的位置*/

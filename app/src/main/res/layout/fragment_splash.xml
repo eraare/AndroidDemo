@@ -63,7 +63,7 @@
         android:paddingStart="@dimen/content_padding"
         android:paddingTop="@dimen/content_margin"
         android:text="点击跳过"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="@dimen/text_size_caption" />
 
     <ImageView

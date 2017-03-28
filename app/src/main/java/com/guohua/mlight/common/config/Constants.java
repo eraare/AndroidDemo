@@ -21,10 +21,10 @@ public final class Constants {
     public static final long CAPTCHA_TIMER_INTERVAL = 1000;
 
     /*广点通的广告用到的广告位ID*/
-    //public static final String APP_ID = "1105667675";
-    //public static final String SPLASH_POS_ID = "1030028134195577";
-    public static final String APP_ID = "1101152570";
-    public static final String SPLASH_POS_ID = "8863364436303842593";
+    public static final String APP_ID = "1105667675";
+    public static final String SPLASH_POS_ID = "1030028134195577";
+//    public static final String APP_ID = "1101152570";
+//    public static final String SPLASH_POS_ID = "8863364436303842593";
 
 
     /**************************************

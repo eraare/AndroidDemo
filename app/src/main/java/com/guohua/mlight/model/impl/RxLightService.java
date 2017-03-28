@@ -7,6 +7,7 @@ import com.guohua.mlight.model.bean.LightInfo;
 
 import rx.Observable;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -42,6 +43,12 @@ public class RxLightService {
         Observable.from(AppContext.getInstance().lights)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
+                .filter(new Func1<LightInfo, Boolean>() {
+                    @Override
+                    public Boolean call(LightInfo lightInfo) {
+                        return lightInfo.select;
+                    }
+                })
                 .subscribe(new Action1<LightInfo>() {
                     @Override
                     public void call(LightInfo lightInfo) {
@@ -57,6 +64,12 @@ public class RxLightService {
         Observable.from(AppContext.getInstance().lights)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
+                .filter(new Func1<LightInfo, Boolean>() {
+                    @Override
+                    public Boolean call(LightInfo lightInfo) {
+                        return lightInfo.select;
+                    }
+                })
                 .subscribe(new Action1<LightInfo>() {
                     @Override
                     public void call(LightInfo lightInfo) {
@@ -74,6 +87,12 @@ public class RxLightService {
         Observable.from(AppContext.getInstance().lights)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
+                .filter(new Func1<LightInfo, Boolean>() {
+                    @Override
+                    public Boolean call(LightInfo lightInfo) {
+                        return lightInfo.select;
+                    }
+                })
                 .subscribe(new Action1<LightInfo>() {
                     @Override
                     public void call(LightInfo lightInfo) {
@@ -91,6 +110,12 @@ public class RxLightService {
         Observable.from(AppContext.getInstance().lights)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
+                .filter(new Func1<LightInfo, Boolean>() {
+                    @Override
+                    public Boolean call(LightInfo lightInfo) {
+                        return lightInfo.select;
+                    }
+                })
                 .subscribe(new Action1<LightInfo>() {
                     @Override
                     public void call(LightInfo lightInfo) {
@@ -106,6 +131,12 @@ public class RxLightService {
         Observable.from(AppContext.getInstance().lights)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
+                .filter(new Func1<LightInfo, Boolean>() {
+                    @Override
+                    public Boolean call(LightInfo lightInfo) {
+                        return lightInfo.select;
+                    }
+                })
                 .subscribe(new Action1<LightInfo>() {
                     @Override
                     public void call(LightInfo lightInfo) {
@@ -123,6 +154,12 @@ public class RxLightService {
         Observable.from(AppContext.getInstance().lights)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
+                .filter(new Func1<LightInfo, Boolean>() {
+                    @Override
+                    public Boolean call(LightInfo lightInfo) {
+                        return lightInfo.select;
+                    }
+                })
                 .subscribe(new Action1<LightInfo>() {
                     @Override
                     public void call(LightInfo lightInfo) {
@@ -141,6 +178,12 @@ public class RxLightService {
         Observable.from(AppContext.getInstance().lights)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
+                .filter(new Func1<LightInfo, Boolean>() {
+                    @Override
+                    public Boolean call(LightInfo lightInfo) {
+                        return lightInfo.select;
+                    }
+                })
                 .subscribe(new Action1<LightInfo>() {
                     @Override
                     public void call(LightInfo lightInfo) {
@@ -166,6 +209,12 @@ public class RxLightService {
         Observable.from(AppContext.getInstance().lights)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
+                .filter(new Func1<LightInfo, Boolean>() {
+                    @Override
+                    public Boolean call(LightInfo lightInfo) {
+                        return lightInfo.select;
+                    }
+                })
                 .subscribe(new Action1<LightInfo>() {
                     @Override
                     public void call(LightInfo lightInfo) {
@@ -184,6 +233,12 @@ public class RxLightService {
         Observable.from(AppContext.getInstance().lights)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
+                .filter(new Func1<LightInfo, Boolean>() {
+                    @Override
+                    public Boolean call(LightInfo lightInfo) {
+                        return lightInfo.select;
+                    }
+                })
                 .subscribe(new Action1<LightInfo>() {
                     @Override
                     public void call(LightInfo lightInfo) {
@@ -199,6 +254,12 @@ public class RxLightService {
         Observable.from(AppContext.getInstance().lights)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
+                .filter(new Func1<LightInfo, Boolean>() {
+                    @Override
+                    public Boolean call(LightInfo lightInfo) {
+                        return lightInfo.select;
+                    }
+                })
                 .subscribe(new Action1<LightInfo>() {
                     @Override
                     public void call(LightInfo lightInfo) {
@@ -214,6 +275,12 @@ public class RxLightService {
         Observable.from(AppContext.getInstance().lights)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
+                .filter(new Func1<LightInfo, Boolean>() {
+                    @Override
+                    public Boolean call(LightInfo lightInfo) {
+                        return lightInfo.select;
+                    }
+                })
                 .subscribe(new Action1<LightInfo>() {
                     @Override
                     public void call(LightInfo lightInfo) {

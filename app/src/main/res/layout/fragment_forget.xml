@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/assistant"
@@ -24,7 +23,7 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_margin="@dimen/content_margin"
-                android:src="@drawable/icon_phone" />
+                android:src="@drawable/icon_username_login" />
 
             <EditText
                 android:id="@+id/et_phone_forget"
@@ -61,7 +60,7 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_margin="@dimen/content_margin"
-                android:src="@drawable/icon_sms_code" />
+                android:src="@drawable/icon_sms_login" />
 
             <EditText
                 android:id="@+id/et_captcha_forget"
@@ -84,10 +83,11 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_margin="@dimen/content_margin"
-                android:src="@drawable/icon_password" />
+                android:src="@drawable/icon_password_login" />
 
             <EditText
                 android:id="@+id/et_password_forget"
@@ -105,7 +105,7 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_margin="@dimen/content_margin"
-                android:src="@drawable/icon_clear" />
+                android:src="@drawable/icon_visible_login" />
         </LinearLayout>
 
         <Button
@@ -129,6 +129,7 @@
             android:layout_height="wrap_content"
             android:text="@string/fragment_agreement_login"
             android:textColor="@color/font_color"
-            android:textSize="@dimen/text_size_caption" />
+            android:textSize="@dimen/text_size_caption"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

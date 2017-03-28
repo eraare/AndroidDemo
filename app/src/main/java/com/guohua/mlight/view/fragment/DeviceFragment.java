@@ -146,6 +146,7 @@ public class DeviceFragment extends BaseFragment {
         mDeviceView.setItemAnimator(new DefaultItemAnimator());
         mDeviceView.setEmptyView(mEmptyView);
         mDeviceAdapter = new DeviceAdapter();
+        mDeviceAdapter.setOnIconClickListener(mOnIconClickListener);
         mDeviceAdapter.setOnItemClickListener(mOnItemClickListener);
         mDeviceAdapter.setOnItemLongClickListener(mOnItemLongClickListener);
         mDeviceView.setAdapter(mDeviceAdapter);
@@ -171,6 +172,21 @@ public class DeviceFragment extends BaseFragment {
         public void onItemLongClick(View view, int position) {
             final LightInfo light = mDeviceAdapter.removeLight(position);
             LightService.getInstance().disconnect(light.address, true);
+        }
+    };
+
+    private DeviceAdapter.OnIconClickListener mOnIconClickListener = new DeviceAdapter.OnIconClickListener() {
+        @Override
+        public void onIconClick(View view, int position) {
+            final LightInfo light = mDeviceAdapter.getLight(position);
+            if (light.select) {
+                light.select = false;
+                mContext.toast("已取消设备");
+            } else {
+                light.select = true;
+                mContext.toast("已选择设备");
+            }
+            mDeviceAdapter.notifyItemChanged(position);
         }
     };
 

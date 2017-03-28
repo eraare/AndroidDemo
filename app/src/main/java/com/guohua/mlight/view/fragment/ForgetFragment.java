@@ -1,12 +1,14 @@
 package com.guohua.mlight.view.fragment;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseFragment;
@@ -20,6 +22,7 @@ import com.guohua.mlight.view.widget.CountDownTimerView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import cn.bmob.v3.BmobUser;
 
 /**
@@ -62,6 +65,8 @@ public class ForgetFragment extends BaseFragment implements ILoginView {
     Button mRequestView;
     @BindView(R.id.btn_reset_forget)
     Button mResetView;
+    @BindView(R.id.iv_clear_forget)
+    ImageView mClearView;
     /*处理业务逻辑的Presenter*/
     private ILoginPresenter mLoginPresenter;
     /*验证码倒计时*/
@@ -106,8 +111,10 @@ public class ForgetFragment extends BaseFragment implements ILoginView {
         /*若为隐藏则显示 否则隐藏*/
         if (currentMethod instanceof PasswordTransformationMethod) {
             mPasswordView.setTransformationMethod(showMethod);
+            mClearView.setImageResource(R.drawable.icon_invisible_login);
         } else {
             mPasswordView.setTransformationMethod(hideMethod);
+            mClearView.setImageResource(R.drawable.icon_visible_login);
         }
     }
 
@@ -154,6 +161,24 @@ public class ForgetFragment extends BaseFragment implements ILoginView {
         return R.layout.fragment_forget;
     }
 
+    @OnTextChanged(value = R.id.et_phone_forget, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void afterPhoneTextChanged(Editable s) {
+        String phone = s.toString();
+        int length = phone.length();
+        if (length == 11) {
+            mCaptchaView.requestFocus();
+        }
+    }
+
+    @OnTextChanged(value = R.id.et_captcha_forget, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void afterCaptchaTextChanged(Editable s) {
+        String sms = s.toString();
+        int length = sms.length();
+        if (length == 6) {
+            mPasswordView.requestFocus();
+        }
+    }
+
     @Override
     protected void suicide() {
         super.suicide();
@@ -173,7 +198,7 @@ public class ForgetFragment extends BaseFragment implements ILoginView {
 
     @Override
     public void onFailed(String error) {
-        mResetView.setEnabled(false);
+        mResetView.setEnabled(true);
         mContext.toast(error);
     }
 

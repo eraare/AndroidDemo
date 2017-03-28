@@ -44,10 +44,23 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
     @Override
     public void onBindViewHolder(final LocalViewHolder holder, final int position) {
         holder.itemView.setTag(position); /*标志位置*/
+        holder.deviceIcon.setTag(position); /*标志位置*/
+        holder.deviceIcon.setOnClickListener(mOnClickListener); /*绑定图标事件*/
+        /*取得数据*/
         final LightInfo device = mDatas.get(position);
         holder.deviceName.setText(device.name == null ? "Unknown Name" : device.name);
-        holder.deviceState.setText(device.connect ? "在线" : "离线");
         holder.deviceAddress.setText(device.address);
+        if (!device.connect) {
+            holder.deviceState.setText("离线");
+            holder.deviceIcon.setImageResource(R.drawable.icon_light_off_line);
+        } else {
+            holder.deviceState.setText("在线");
+            if (device.select) {
+                holder.deviceIcon.setImageResource(R.drawable.icon_light_on_selected);
+            } else {
+                holder.deviceIcon.setImageResource(R.drawable.icon_light_on_unselected);
+            }
+        }
     }
 
     @Override
@@ -109,9 +122,20 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.d("Hello World", "mOnClickListener");
-            if (mOnItemClickListener != null) {
-                mOnItemClickListener.onItemClick(v, (Integer) v.getTag());
+            switch (v.getId()) {
+                case R.id.iv_device_icon_device: {
+                    if (mOnIconClickListener != null) {
+                        mOnIconClickListener.onIconClick(v, (Integer) v.getTag());
+                    }
+                }
+                break;
+                default: {
+                    Log.d("Hello World", "mOnClickListener");
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onItemClick(v, (Integer) v.getTag());
+                    }
+                }
+                break;
             }
         }
     };
@@ -148,5 +172,16 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
 
     public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
         mOnItemLongClickListener = onItemLongClickListener;
+    }
+
+    /*左边的图标点击事件*/
+    public interface OnIconClickListener {
+        void onIconClick(View view, int position);
+    }
+
+    private OnIconClickListener mOnIconClickListener;
+
+    public void setOnIconClickListener(OnIconClickListener onIconClickListener) {
+        this.mOnIconClickListener = onIconClickListener;
     }
 }

@@ -23,7 +23,7 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_margin="@dimen/content_margin"
-                android:src="@drawable/icon_phone" />
+                android:src="@drawable/icon_username_login" />
 
             <EditText
                 android:id="@+id/et_phone_register"
@@ -60,7 +60,7 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_margin="@dimen/content_margin"
-                android:src="@drawable/icon_sms_code" />
+                android:src="@drawable/icon_sms_login" />
 
             <EditText
                 android:id="@+id/et_captcha_register"
@@ -86,7 +86,7 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_margin="@dimen/content_margin"
-                android:src="@drawable/icon_password" />
+                android:src="@drawable/icon_password_login" />
 
             <EditText
                 android:id="@+id/et_password_register"
@@ -104,7 +104,7 @@
                 android:layout_width="@dimen/icon_size"
                 android:layout_height="@dimen/icon_size"
                 android:layout_margin="@dimen/content_margin"
-                android:src="@drawable/icon_clear" />
+                android:src="@drawable/icon_visible_login" />
         </LinearLayout>
 
         <Button
@@ -128,6 +128,7 @@
             android:layout_height="wrap_content"
             android:text="@string/fragment_agreement_login"
             android:textColor="@color/font_color"
-            android:textSize="@dimen/text_size_caption" />
+            android:textSize="@dimen/text_size_caption"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

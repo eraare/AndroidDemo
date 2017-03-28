@@ -3,6 +3,7 @@ package com.guohua.mlight.view.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import com.guohua.mlight.view.activity.MainActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import cn.bmob.v3.BmobUser;
 
 /**
@@ -70,7 +72,6 @@ public class LoginFragment extends BaseFragment implements ILoginView {
         int id = view.getId();
         switch (id) {
             case R.id.btn_login_login: {
-
                 login();
             }
             break;
@@ -111,6 +112,15 @@ public class LoginFragment extends BaseFragment implements ILoginView {
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_login;
+    }
+
+    @OnTextChanged(value = R.id.et_phone_login, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    public void afterTextChanged(Editable s) {
+        String phone = s.toString();
+        int length = phone.length();
+        if (length == 11) {
+            mPasswordView.requestFocus();
+        }
     }
 
     @Override
