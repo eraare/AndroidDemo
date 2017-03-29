@@ -247,6 +247,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         mForwardView.setText(title);
     }
 
+    public void setForwardTitle(int id) {
+        mForwardView.setText(id);
+    }
+
     public void setOnForwardClickListener(View.OnClickListener onClickListener) {
         mForwardView.setOnClickListener(onClickListener);
     }
@@ -262,7 +266,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (mToast != null) {
             mToast.cancel();
         }
-        mToast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        mToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
         mToast.show();
     }
 
@@ -275,7 +279,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (mToast != null) {
             mToast.cancel();
         }
-        mToast = Toast.makeText(this, id, Toast.LENGTH_SHORT);
+        mToast = Toast.makeText(getApplicationContext(), id, Toast.LENGTH_SHORT);
         mToast.show();
     }
 

@@ -109,7 +109,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void init(Intent intent, Bundle savedInstanceState) {
         super.init(intent, savedInstanceState);
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         setShowBack(false);
         initial();
     }
@@ -126,7 +128,7 @@ public class MainActivity extends BaseActivity {
         showOrHideForward(lastSelectedPosition);
         setToolbarTitle(mAlias[lastSelectedPosition]);
         /* 添加右边前进键单机事件*/
-        setForwardTitle("设备管理");
+        setForwardTitle(R.string.activity_title_device);
         setOnForwardClickListener(mOnClickListener);
         /*配置BLEScanner*/
         BLEScanner.getInstance().setStateCallback(mStateCallback);
@@ -333,7 +335,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void suicide() {
         super.suicide();
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         AppContext.getInstance().exitApplication();
     }
 
@@ -402,14 +406,16 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onStateChanged(boolean state) {
             if (state) {
-                showProgressDialog("搜索设备", "请稍后，正在搜索设备...");
+                String title = getString(R.string.activity_dialog_title_main);
+                String content = getString(R.string.activity_dialog_content_main);
+                showProgressDialog(title, content);
             } else {
                 dismissProgressDialog();
                 if (AppContext.getInstance().lights.size() > 0) {
-                    toast("开始连接设备");
+                    toast(R.string.activity_start_connect_main);
                     RxLightService.getInstance().connect(getApplicationContext(), true);
                 } else {
-                    toast("未找到相关设备");
+                    toast(R.string.activity_no_device_main);
                 }
             }
         }

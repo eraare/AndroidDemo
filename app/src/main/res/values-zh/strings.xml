@@ -20,10 +20,16 @@
         <item>情景模式</item>
         <item>个人中心</item>
     </string-array>
+    <string name="fragment_off_tip_home">点击开灯</string>
+    <string name="fragment_delay_off_home">延时关灯</string>
+    <string name="activity_dialog_title_main">搜索设备</string>
+    <string name="activity_dialog_content_main">请稍后，正在搜索设备...</string>
+    <string name="activity_start_connect_main">开始连接设备</string>
+    <string name="activity_no_device_main">未找到相关设备</string>
     <!--SplashActivity1.java 和 SplashFragment.java 以及对应layout中用到的文字-->
-    <string name="fragment_content_splash">真正懂得你，乐享新生活</string>
     <string name="activity_bluetooth_tip_splash">您的设备不支持BLE</string>
     <string name="fragment_denied_tip_splash">打开蓝牙才能正常使用哦</string>
+    <string name="fragment_skip_splash">点击跳过 %d</string>
     <!--LoginFragment.java 和 fragment_login.xml中用到的文字-->
     <string name="fragment_username_hint_login">+86</string>
     <string name="fragment_password_hint_login">密码</string>
@@ -44,6 +50,24 @@
     <string name="fragment_invalid_password_login">无效的密码</string>
     <!--MeFragment.java 和 fragment_me.xml中用到的文字-->
     <string name="fragment_me_setting">我</string>
+    <string name="fragment_head_me">头像</string>
+    <string name="fragment_nickname_me">昵称</string>
+    <string name="fragment_phone_number_me">手机号</string>
+    <string name="fragment_change_password_me">修改登陆密码</string>
+    <string name="fragment_log_out_me">注销</string>
+
+    <!--ScanActivity.java中用到的文字-->
+    <string name="activity_title_scan">搜索设备</string>
+    <string name="activity_scan_scan">搜索</string>
+    <string name="activity_scanning_scan">搜索中...</string>
+    
+    <!--PalletActivity.java中用到的文字-->
+    <string name="activity_white_pallet">素</string>
+    <string name="activity_colorful_pallet">艳</string>
+    <string name="activity_dark_pallet">暗</string>
+    <string name="activity_light_pallet">亮</string>
+    
+    <string name="background_app">后台运行</string>
 
     <!--gradient_ramp.xml-->
     <string name="tv_save">保存</string>
@@ -79,6 +103,9 @@
     <string name="scene_shake_shake">摇一摇</string>
     <string name="scene_temperature">温度监测</string>
     <string name="scene_selfie">自拍</string>
+    <string name="fragment_night_tip_scene">小夜灯已开启</string>
+    <string name="fragment_gradient_open_scene">炫彩渐变模式已开启</string>
+    <string name="fragment_gradient_close_scene">炫彩渐变模式已关闭</string>
 
     <string name="colorpallet">调色盘</string>
     <string name="colorpallet_description">随心所欲，调制您的颜料，漾出一片色空</string>
@@ -121,11 +148,14 @@
     <string name="close_light_timer">延时关灯</string>
     <string name="light_timer_unit">分钟</string>
 
+
     <!--HomeFragment.java中用到的文字-->
     <string name="unfinised_open_light_timer">定时开灯任务正在运行</string>
     <string name="finised_open_light_timer">定时开灯任务已结束</string>
     <string name="unfinised_close_light_timer">定时关灯任务正在运行</string>
     <string name="finised_close_light_timer">定时关灯任务已结束</string>
+    <string name="fragment_delay_tip_home">%s 分钟后关灯</string>
+    <string name="fragment_delay_cancel_home">已取消延时关灯</string>
 
     <!--ConnectActivity.java 和 activity_connect.xml中用到的文字-->
     <string name="connect_device_title">我的设备</string>
@@ -353,4 +383,12 @@
     <string name="fragment_change_rename">更改</string>
     <!--DeviceActivity.java 相关的文字-->
     <string name="activity_title_device">设备管理</string>
+    <string name="activity_add_device">添加设备</string>
+    <string name="activity_online_device">在线</string>
+    <string name="activity_offline_device">离线</string>
+    <string name="activity_dialog_title_device">设备操作</string>
+    <string name="activity_dialog_connect_device">拼命连接中...</string>
+    <string name="activity_dialog_disconnect_device">拼命断开中...</string>
+    <string name="activity_selected_device">已选择设备</string>
+    <string name="activity_unselected_device">已取消设备</string>
 </resources>

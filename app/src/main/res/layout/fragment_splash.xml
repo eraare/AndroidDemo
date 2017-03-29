@@ -17,8 +17,8 @@
         android:paddingTop="@dimen/vertical_margin">
 
         <ImageView
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_marginEnd="@dimen/vertical_margin"
             android:src="@mipmap/icon_launcher" />
 
@@ -38,7 +38,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/fragment_content_splash"
+                android:text="@string/splash_words"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_caption" />
         </LinearLayout>
@@ -62,7 +62,7 @@
         android:paddingEnd="@dimen/content_padding"
         android:paddingStart="@dimen/content_padding"
         android:paddingTop="@dimen/content_margin"
-        android:text="点击跳过"
+        android:text="@string/fragment_skip_splash"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_caption" />
 

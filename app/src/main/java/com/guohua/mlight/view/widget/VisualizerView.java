@@ -30,8 +30,8 @@ public class VisualizerView extends View {
     /* 画笔 */
     private Paint realPaint = new Paint();
     private Paint reflectionPaint = new Paint();// 倒影
-    private static final int MIDDLE_COLOR = Color.rgb(255, 0, 0);
-    private static final int STROKE_COLOR = Color.rgb(0, 255, 0);
+    private static final int MIDDLE_COLOR = Color.rgb(248, 236, 118);
+    private static final int STROKE_COLOR = Color.rgb(66, 192, 174);
 
     public VisualizerView(Context context) {
         super(context);

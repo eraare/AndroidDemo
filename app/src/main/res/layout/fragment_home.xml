@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/vertical_margin"
-            android:text="点击开灯"
+            android:text="@string/fragment_off_tip_home"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_body"
             android:visibility="gone" />
@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@color/assistant"
-                android:text="延迟关灯"
+                android:text="@string/fragment_delay_off_home"
                 android:textColor="@color/main"
                 android:textSize="@dimen/text_size_subhead" />
         </FrameLayout>
@@ -152,7 +152,7 @@
                 android:layout_height="66dp"
                 android:layout_margin="8dp"
                 app:selected="false"
-                app:unit="分钟"
+                app:unit="@string/light_timer_unit"
                 app:value="5" />
 
             <com.guohua.mlight.view.widget.TimerView
@@ -161,7 +161,7 @@
                 android:layout_height="66dp"
                 android:layout_margin="8dp"
                 app:selected="false"
-                app:unit="分钟"
+                app:unit="@string/light_timer_unit"
                 app:value="15" />
 
             <com.guohua.mlight.view.widget.TimerView
@@ -170,7 +170,7 @@
                 android:layout_height="66dp"
                 android:layout_margin="8dp"
                 app:selected="false"
-                app:unit="分钟"
+                app:unit="@string/light_timer_unit"
                 app:value="30" />
 
             <com.guohua.mlight.view.widget.TimerView
@@ -179,7 +179,7 @@
                 android:layout_height="66dp"
                 android:layout_margin="8dp"
                 app:selected="false"
-                app:unit="分钟"
+                app:unit="@string/light_timer_unit"
                 app:value="60" />
         </LinearLayout>
 

@@ -53,8 +53,6 @@ public class SplashFragment extends BaseFragment implements SplashADListener {
         return singleton;
     }
 
-    public static final String SKIP_TEXT = "点击跳过 %d";
-
     @BindView(R.id.fl_ad_container_splash)
     FrameLayout mContainerView;
     @BindView(R.id.tv_skip_splash)
@@ -119,7 +117,7 @@ public class SplashFragment extends BaseFragment implements SplashADListener {
     @Override
     public void onADTick(long millisUntilFinished) {
         Log.i("SplashFragment", "SplashADTick " + millisUntilFinished + "ms");
-        mSkipView.setText(String.format(SKIP_TEXT, Math.round(millisUntilFinished / 1000F)));
+        mSkipView.setText(String.format(getString(R.string.fragment_skip_splash), Math.round(millisUntilFinished / 1000F)));
     }
 
     private void next() {

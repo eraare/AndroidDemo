@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
-                android:text="头像"
+                android:text="@string/fragment_head_me"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_subhead" />
 
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
-                android:text="昵称"
+                android:text="@string/fragment_nickname_me"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_subhead" />
 
@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
-                android:text="手机号"
+                android:text="@string/fragment_phone_number_me"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_subhead" />
 
@@ -122,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center_vertical"
-                android:text="修改登陆密码"
+                android:text="@string/fragment_change_password_me"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_subhead" />
 
@@ -143,7 +143,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/item_height"
             android:background="@drawable/selector_rectangle_bg"
-            android:text="注销"
+            android:text="@string/fragment_log_out_me"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_subhead" />
     </LinearLayout>

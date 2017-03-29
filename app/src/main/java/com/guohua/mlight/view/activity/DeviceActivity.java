@@ -35,7 +35,7 @@ public class DeviceActivity extends BaseActivity {
         /*配置标题栏*/
         setToolbarTitle(R.string.activity_title_device);
         setForwardVisibility(View.VISIBLE);
-        setForwardTitle("添加设备");
+        setForwardTitle(R.string.activity_add_device);
         setOnForwardClickListener(mOnClickListener);
     }
 

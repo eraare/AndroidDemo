@@ -94,9 +94,9 @@ public class ScanActivity extends BaseActivity {
     }
 
     private void setupToolbar() {
-        setToolbarTitle("搜索设备");
+        setToolbarTitle(R.string.activity_title_scan);
         setForwardVisibility(View.VISIBLE);
-        setForwardTitle("搜索");
+        setForwardTitle(R.string.activity_scan_scan);
         setOnForwardClickListener(mOnClickListener);
     }
 
@@ -147,9 +147,9 @@ public class ScanActivity extends BaseActivity {
         @Override
         public void onStateChanged(boolean state) {
             if (state) {
-                setForwardTitle("搜索中...");
+                setForwardTitle(R.string.activity_scanning_scan);
             } else {
-                setForwardTitle("搜索");
+                setForwardTitle(R.string.activity_scan_scan);
             }
         }
     };

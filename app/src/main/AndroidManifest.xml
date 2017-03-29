@@ -36,6 +36,7 @@
         android:theme="@style/AppTheme">
         <!--欢迎界面-->
         <activity
+            android:configChanges="locale"
             android:name=".view.activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen">

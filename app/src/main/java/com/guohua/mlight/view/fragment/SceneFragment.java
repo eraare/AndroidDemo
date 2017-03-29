@@ -110,11 +110,11 @@ public class SceneFragment extends BaseFragment {
                 case 1: {
                     if (isGradientOn) {
                         RxLightService.getInstance().musicOff();
-                        mContext.toast("炫彩渐变已关闭");
+                        mContext.toast(R.string.fragment_gradient_close_scene);
                         isGradientOn = false;
                     } else {
                         RxLightService.getInstance().musicOn();
-                        mContext.toast("炫彩渐变已开启");
+                        mContext.toast(R.string.fragment_gradient_open_scene);
                         isGradientOn = true;
                     }
                 }
@@ -123,7 +123,7 @@ public class SceneFragment extends BaseFragment {
                     /*发送魔小灯的颜色*/
                     int color = Color.argb(255, 160, 60, 10);
                     RxLightService.getInstance().adjustColor(color);
-                    mContext.toast("小夜灯模式已开启");
+                    mContext.toast(R.string.fragment_night_tip_scene);
                 }
                 break;
                 case 3: {

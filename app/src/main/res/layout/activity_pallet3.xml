@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="素"
+                android:text="@string/activity_white_pallet"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_caption" />
 
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:text="艳"
+                android:text="@string/activity_colorful_pallet"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_caption" />
         </LinearLayout>
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text="亮"
+                android:text="@string/activity_light_pallet"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_caption" />
 
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:text="暗"
+                android:text="@string/activity_dark_pallet"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_caption" />
         </LinearLayout>

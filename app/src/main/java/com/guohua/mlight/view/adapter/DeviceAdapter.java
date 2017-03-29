@@ -51,10 +51,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.LocalViewH
         holder.deviceName.setText(device.name == null ? "Unknown Name" : device.name);
         holder.deviceAddress.setText(device.address);
         if (!device.connect) {
-            holder.deviceState.setText("离线");
+            holder.deviceState.setText(R.string.activity_offline_device);
             holder.deviceIcon.setImageResource(R.drawable.icon_light_off_line);
         } else {
-            holder.deviceState.setText("在线");
+            holder.deviceState.setText(R.string.activity_online_device);
             if (device.select) {
                 holder.deviceIcon.setImageResource(R.drawable.icon_light_on_selected);
             } else {

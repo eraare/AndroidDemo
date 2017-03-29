@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="后台运行"
+            android:text="@string/background_app"
             android:textSize="@dimen/text_size_body" />
     </LinearLayout>
 </LinearLayout>

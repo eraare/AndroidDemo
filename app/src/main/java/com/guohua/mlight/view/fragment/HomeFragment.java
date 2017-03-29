@@ -15,6 +15,8 @@ import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.model.impl.RxLightService;
 import com.guohua.mlight.view.widget.TimerView;
 
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -178,7 +180,7 @@ public class HomeFragment extends BaseFragment {
         /*开启或取消定时关灯*/
         if (checked) {
             RxLightService.getInstance().delayOff(-1);
-            mContext.toast("已取消延时关灯");
+            mContext.toast(R.string.fragment_delay_cancel_home);
         } else {
             if (TextUtils.equals(value, "5")) {
                 mFiveView.check();
@@ -190,7 +192,8 @@ public class HomeFragment extends BaseFragment {
                 mSixyView.check();
             }
             RxLightService.getInstance().delayOff(time);
-            mContext.toast(value + "分钟后关灯");
+            String tip = String.format(getString(R.string.fragment_delay_tip_home), value);
+            mContext.toast(tip);
         }
     }
 

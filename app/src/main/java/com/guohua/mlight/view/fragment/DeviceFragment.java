@@ -68,18 +68,22 @@ public class DeviceFragment extends BaseFragment {
         setupRefreshView(); /*配置刷新控件*/
         setupDeviceView(); /*配置设备显示控件*/
         loadDevice(); /*加载设备列表*/
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         switch (event.state) {
             case BLEController.STATE_CONNECTING: {
-                mContext.showProgressDialog("连接设备", "拼命连接中...");
+                /*String title = getString(R.string.activity_dialog_title_device);
+                String content = getString(R.string.activity_dialog_connect_device);
+                mContext.showProgressDialog(title, content);*/
+                Log.d("DeviceFragment", "Connecting...");
             }
             break;
             case BLEController.STATE_CONNECTED: {
-                mContext.toast("连接成功");
                 mContext.dismissProgressDialog();
                 LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
                 if (lightInfo != null) {
@@ -89,11 +93,13 @@ public class DeviceFragment extends BaseFragment {
             }
             break;
             case BLEController.STATE_DISCONNECTING: {
-                mContext.showProgressDialog("断开设备", "拼命断开中...");
+                /*String title = getString(R.string.activity_dialog_title_device);
+                String content = getString(R.string.activity_dialog_disconnect_device);
+                mContext.showProgressDialog(title, content);*/
+                Log.d("DeviceFragment", "Disconnecting...");
             }
             break;
             case BLEController.STATE_DISCONNECTED: {
-                mContext.toast("断开成功");
                 mContext.dismissProgressDialog();
                 LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
                 if (lightInfo != null) {
@@ -157,11 +163,14 @@ public class DeviceFragment extends BaseFragment {
         public void onItemClick(View view, int position) {
             Log.d("Hello World", "mOnItemClickListener");
             final LightInfo light = mDeviceAdapter.getLight(position);
+            String title = getString(R.string.activity_dialog_title_device);
+            String content = getString(R.string.activity_dialog_disconnect_device);
             if (light.connect) {
-                mContext.showProgressDialog("连接设备", "拼命连接中...");
+                mContext.showProgressDialog(title, content);
                 LightService.getInstance().disconnect(light.address, false);
             } else {
-                mContext.showProgressDialog("断开设备", "拼命断开中...");
+                content = getString(R.string.activity_dialog_connect_device);
+                mContext.showProgressDialog(title, content);
                 LightService.getInstance().connect(getContext(), light.address, true);
             }
         }
@@ -179,12 +188,13 @@ public class DeviceFragment extends BaseFragment {
         @Override
         public void onIconClick(View view, int position) {
             final LightInfo light = mDeviceAdapter.getLight(position);
+            if (!light.connect) return;
             if (light.select) {
                 light.select = false;
-                mContext.toast("已取消设备");
+                mContext.toast(R.string.activity_unselected_device);
             } else {
                 light.select = true;
-                mContext.toast("已选择设备");
+                mContext.toast(R.string.activity_selected_device);
             }
             mDeviceAdapter.notifyItemChanged(position);
         }
@@ -209,7 +219,9 @@ public class DeviceFragment extends BaseFragment {
     public void onResult(LightInfo light) {
         if (mDeviceAdapter.addLight(light)) {
             /*添加后进行自动连接*/
-            mContext.showProgressDialog("连接设备", "拼命连接中...");
+            String title = getString(R.string.activity_dialog_title_device);
+            String content = getString(R.string.activity_dialog_connect_device);
+            mContext.showProgressDialog(title, content);
             LightService.getInstance().connect(getContext(), light.address, true);
         }
     }
@@ -217,6 +229,8 @@ public class DeviceFragment extends BaseFragment {
     @Override
     protected void suicide() {
         super.suicide();
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
     }
 }
