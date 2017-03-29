@@ -15,3 +15,28 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+
+#-optimizationpasses 5
+#-dontusemixedcaseclassnames
+#-dontskipnonpubliclibraryclasses
+#-verbose
+#-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+#
+#-keepattributes *Annotation*
+#-keepattributes Signature
+#
+#-libraryjars libs/Bmob_Push_V1.0.0beta_20160627.jar
+#-libraryjars libs/GDTUnionSDK.4.9.543.min.jar
+#
+#
+# -keep public class * extends android.app.Fragment
+# -keep public class * extends android.app.Activity
+# -keep public class * extends android.app.Application
+# -keep public class * extends android.app.Service
+# -keep public class * extends android.content.BroadcastReceiver
+# -keep public class * extends android.content.ContentProvider
+# -keep public class * extends android.app.backup.BackupAgentHelper
+# -keep public class * extends android.preference.Preference
+# -keep public class * extends android.support.v4.**
+# -keep public class com.android.vending.licensing.ILicensingService
