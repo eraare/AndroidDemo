@@ -3,7 +3,7 @@ package com.guohua.mlight.model.impl;
 import android.content.Context;
 import android.graphics.Color;
 
-import com.guohua.mlight.lwble.BLEController;
+import com.guohua.mlight.lwble.BLECenter;
 import com.guohua.mlight.model.IDeviceService;
 
 /**
@@ -13,7 +13,7 @@ import com.guohua.mlight.model.IDeviceService;
  * 命令的真正执行者
  */
 public class LightService implements IDeviceService {
-    private BLEController mBLEController;
+    private BLECenter mBLECenter;
     private LightProtocol mLightProtocol;
 
     private volatile static LightService mService = null;
@@ -30,30 +30,30 @@ public class LightService implements IDeviceService {
     }
 
     private LightService() {
-        mBLEController = BLEController.getInstance();
+        mBLECenter = BLECenter.getInstance();
         mLightProtocol = LightProtocol.getInstance();
     }
 
     @Override
     public boolean connect(Context context, String deviceAddress, boolean isAutoConnect) {
-        return mBLEController.connect(context, deviceAddress, isAutoConnect);
+        return mBLECenter.connect(context, deviceAddress, isAutoConnect);
     }
 
     @Override
     public void disconnect(String deviceAddress, boolean isRemove) {
-        mBLEController.disconnect(deviceAddress, isRemove);
+        mBLECenter.disconnect(deviceAddress, isRemove);
     }
 
     @Override
     public void turnOn(String deviceAddress) {
         String protocol = mLightProtocol.turnOn();
-        mBLEController.send(deviceAddress, protocol.getBytes());
+        mBLECenter.send(deviceAddress, protocol.getBytes());
     }
 
     @Override
     public void turnOff(String deviceAddress) {
         String protocol = mLightProtocol.turnOff();
-        mBLEController.send(deviceAddress, protocol.getBytes());
+        mBLECenter.send(deviceAddress, protocol.getBytes());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class LightService implements IDeviceService {
         int green = Color.green(color);
         int blue = Color.blue(color);
         String protocol = mLightProtocol.control(new Object[]{alpha, red, green, blue});
-        mBLEController.send(deviceAddress, protocol.getBytes());
+        mBLECenter.send(deviceAddress, protocol.getBytes());
     }
 
     @Override
@@ -75,48 +75,48 @@ public class LightService implements IDeviceService {
         int green = Color.green(color);
         int blue = Color.blue(color);
         String protocol = mLightProtocol.control(new Object[]{alpha, red, green, blue});
-        mBLEController.send(deviceAddress, protocol.getBytes());
+        mBLECenter.send(deviceAddress, protocol.getBytes());
     }
 
     @Override
     public void validatePassword(String deviceAddress, String password) {
         String protocol = mLightProtocol.validate(password);
-        mBLEController.send(deviceAddress, protocol.getBytes());
+        mBLECenter.send(deviceAddress, protocol.getBytes());
     }
 
     @Override
     public void presetColor(String deviceAddress) {
         String protocol = mLightProtocol.color();
-        mBLEController.send(deviceAddress, protocol.getBytes());
+        mBLECenter.send(deviceAddress, protocol.getBytes());
     }
 
     @Override
     public void delayOff(String deviceAddress, int time) {
         String protocol = mLightProtocol.delayOff(time);
-        mBLEController.send(deviceAddress, protocol.getBytes());
+        mBLECenter.send(deviceAddress, protocol.getBytes());
     }
 
     @Override
     public void password(String deviceAddress, String oldPwd, String newPwd) {
         String protocol = mLightProtocol.password(oldPwd, newPwd);
-        mBLEController.send(deviceAddress, protocol.getBytes());
+        mBLECenter.send(deviceAddress, protocol.getBytes());
     }
 
     @Override
     public void name(String deviceAddress, String name) {
         String protocol = mLightProtocol.name(name);
-        mBLEController.send(deviceAddress, protocol.getBytes());
+        mBLECenter.send(deviceAddress, protocol.getBytes());
     }
 
     @Override
     public void musicOff(String deviceAddress) {
         String protocol = mLightProtocol.musicOff();
-        mBLEController.send(deviceAddress, protocol.getBytes());
+        mBLECenter.send(deviceAddress, protocol.getBytes());
     }
 
     @Override
     public void musicOn(String deviceAddress) {
         String protocol = mLightProtocol.musicOn();
-        mBLEController.send(deviceAddress, protocol.getBytes());
+        mBLECenter.send(deviceAddress, protocol.getBytes());
     }
 }

@@ -1,7 +1,10 @@
 package com.guohua.mlight.view.fragment;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,10 +15,12 @@ import android.widget.TextView;
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.base.BaseFragment;
+import com.guohua.mlight.common.config.Constants;
+import com.guohua.mlight.lwble.BLECenter;
+import com.guohua.mlight.model.bean.LightInfo;
+import com.guohua.mlight.model.impl.LightService;
 import com.guohua.mlight.model.impl.RxLightService;
 import com.guohua.mlight.view.widget.TimerView;
-
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;

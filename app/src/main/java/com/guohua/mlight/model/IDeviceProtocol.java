@@ -38,10 +38,10 @@ public interface IDeviceProtocol {
     String musicOff();
 
     /*DIY*/
-    String diyNumber();
+    String diyNumber(String value);
 
     /*DIY*/
-    String diyStart();
+    String diyStart(String value);
 
     /*密码校验*/
     String validate(String password);

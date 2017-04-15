@@ -1,8 +1,11 @@
 package com.guohua.mlight.lwble;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.pm.PackageManager;
+
+import java.lang.reflect.Method;
 
 /**
  * @file BLEUtils.java
@@ -20,6 +23,8 @@ import android.content.pm.PackageManager;
  * 描  述：BLE用到的工具类，包括检查是否支持蓝牙及BLE
  */
 public final class BLEUtils {
+    private BLEUtils() {
+    }
 
     /**
      * 检测设备是否支持蓝牙BLE
@@ -51,16 +56,15 @@ public final class BLEUtils {
         return true;
     }
 
+
     /**
      * 是否支持蓝牙
      *
      * @return
      */
     public static boolean isSupportBluetooth() {
-        // 初始化BluetoothAdapter
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        // 检查设备上是否支持蓝牙不支 持就退出程序
-        if (mBluetoothAdapter == null) {
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter == null) {
             return false;
         }
         return true;
@@ -72,8 +76,65 @@ public final class BLEUtils {
      * @return
      */
     public static boolean isBluetoothEnabled() {
-        // 初始化BluetoothAdapter
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        return mBluetoothAdapter.isEnabled();
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        return adapter.isEnabled();
+    }
+
+    /**
+     * 打开蓝牙
+     */
+    public static boolean openBluetooth() {
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter != null) {
+            if (!adapter.isEnabled()) {
+                return adapter.enable();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 关闭蓝牙
+     */
+    public static boolean closeBluetooth() {
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter != null) {
+            if (adapter.isEnabled()) {
+                return adapter.disable();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * unpair bluetooth device
+     *
+     * @param device
+     */
+    public static void removeBond(BluetoothDevice device) {
+        try {
+            Class c = BluetoothDevice.class;
+            Method m = c.getMethod("removeBond", (Class[]) null);
+            m.invoke(device, (Object[]) null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * unpair bluetooth device by address
+     *
+     * @param address
+     */
+    public static void removeBond(String address) {
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        try {
+            BluetoothDevice device = adapter.getRemoteDevice(address);
+            Class c = BluetoothDevice.class;
+            Method m = c.getMethod("removeBond", (Class[]) null);
+            m.invoke(device, (Object[]) null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

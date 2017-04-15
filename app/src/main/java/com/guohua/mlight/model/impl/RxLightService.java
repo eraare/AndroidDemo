@@ -3,6 +3,7 @@ package com.guohua.mlight.model.impl;
 import android.content.Context;
 
 import com.guohua.mlight.common.base.AppContext;
+import com.guohua.mlight.lwble.BLECenter;
 import com.guohua.mlight.model.bean.LightInfo;
 
 import rx.Observable;
@@ -31,9 +32,11 @@ public class RxLightService {
     }
 
     private LightService mLightService; /*实际操作的服务类*/
+    private BLECenter mBleCenter;
 
     private RxLightService() {
         mLightService = LightService.getInstance();
+        mBleCenter = BLECenter.getInstance();
     }
 
     /**
@@ -285,6 +288,29 @@ public class RxLightService {
                     @Override
                     public void call(LightInfo lightInfo) {
                         mLightService.musicOff(lightInfo.address);
+                    }
+                });
+    }
+
+    /**
+     * 发送数据
+     *
+     * @param data
+     */
+    public void send(final byte[] data) {
+        Observable.from(AppContext.getInstance().lights)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .filter(new Func1<LightInfo, Boolean>() {
+                    @Override
+                    public Boolean call(LightInfo lightInfo) {
+                        return lightInfo.select;
+                    }
+                })
+                .subscribe(new Action1<LightInfo>() {
+                    @Override
+                    public void call(LightInfo lightInfo) {
+                        mBleCenter.send(lightInfo.address, data);
                     }
                 });
     }

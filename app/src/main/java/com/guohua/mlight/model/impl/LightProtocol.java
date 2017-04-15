@@ -98,13 +98,13 @@ public class LightProtocol implements IDeviceProtocol {
     }
 
     @Override
-    public String diyNumber() {
-        return null;
+    public String diyStart(String value) {
+        return "device start" + value;
     }
 
     @Override
-    public String diyStart() {
-        return null;
+    public String diyNumber(String value) {
+        return "rec:" + value;
     }
 
     @Override

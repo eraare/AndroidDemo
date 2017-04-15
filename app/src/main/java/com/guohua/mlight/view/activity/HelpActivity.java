@@ -59,12 +59,10 @@ public class HelpActivity extends BaseActivity {
     }
 
     private void loadQaInfo() {
-        mQaAdapter.addQa(new QaInfo("1、一直连不上怎么办？", "答：您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。"));
-        mQaAdapter.addQa(new QaInfo("2、一直连不上怎么办？", "答：您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。"));
-        mQaAdapter.addQa(new QaInfo("3、一直连不上怎么办？", "答：您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。"));
-        mQaAdapter.addQa(new QaInfo("4、一直连不上怎么办？", "答：您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。"));
-        mQaAdapter.addQa(new QaInfo("5、一直连不上怎么办？", "答：您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。"));
-        mQaAdapter.addQa(new QaInfo("6、一直连不上怎么办？", "答：您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。您可以重启APP，重启魔小灯后再次尝试。"));
+        mQaAdapter.addQa(new QaInfo("1、搜索不到设备怎么办？", "答：a、检查手机蓝牙是否已开启；b、检查设备是否已开启；" +
+                "c、查看是否允许APP的蓝牙操作和模糊定位权限；d、彻底退出APP再次；e、重启设备再次尝试。"));
+        mQaAdapter.addQa(new QaInfo("2、一直连接不上设备怎么办？", "答：同上一问题。您可以重启APP，重启魔小灯后再次尝试。"));
+        mQaAdapter.addQa(new QaInfo("3、连接设备后无法控制？", "答：查看是否选择了要操作的设备；尝试修改密码为默认密码（0000）。"));
     }
 
     @OnItemClick(R.id.lv_qa_help)

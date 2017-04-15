@@ -15,13 +15,11 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.lwble.BLEUtils;
-import com.guohua.mlight.view.activity.LoginActivity;
 import com.guohua.mlight.view.activity.MainActivity;
 import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
 
 import butterknife.BindView;
-import cn.bmob.v3.BmobUser;
 
 /**
  * @file SplashFragment.java
@@ -157,12 +155,14 @@ public class SplashFragment extends BaseFragment implements SplashADListener {
     }
 
     private void startTheActivity() {
-        BmobUser currentUser = BmobUser.getCurrentUser();
+        /*BmobUser currentUser = BmobUser.getCurrentUser();
         if (currentUser == null) {
             startActivity(new Intent(mContext, LoginActivity.class));
         } else {
             startActivity(new Intent(mContext, MainActivity.class));
         }
+        removeFragment();*/
+        startActivity(new Intent(mContext, MainActivity.class));
         removeFragment();
     }
 

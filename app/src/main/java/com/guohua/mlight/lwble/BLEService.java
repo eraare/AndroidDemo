@@ -37,6 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 描  述：蓝牙通信核心服务
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+@Deprecated
 public class BLEService extends Service {
     private static final String TAG = BLEService.class.getSimpleName();
     private BLEService mContext; //上下文

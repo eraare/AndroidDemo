@@ -1,5 +1,6 @@
 package com.guohua.mlight.view.fragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,10 +16,11 @@ import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
-import com.guohua.mlight.lwble.BLEController;
+import com.guohua.mlight.lwble.BLECenter;
 import com.guohua.mlight.lwble.MessageEvent;
 import com.guohua.mlight.model.bean.LightInfo;
 import com.guohua.mlight.model.impl.LightService;
+import com.guohua.mlight.view.activity.ScanActivity;
 import com.guohua.mlight.view.adapter.DeviceAdapter;
 import com.guohua.mlight.view.widget.LocalRecyclerView;
 
@@ -27,6 +29,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author Leo
@@ -76,14 +79,14 @@ public class DeviceFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         switch (event.state) {
-            case BLEController.STATE_CONNECTING: {
+            case BLECenter.STATE_CONNECTING: {
                 /*String title = getString(R.string.activity_dialog_title_device);
                 String content = getString(R.string.activity_dialog_connect_device);
                 mContext.showProgressDialog(title, content);*/
                 Log.d("DeviceFragment", "Connecting...");
             }
             break;
-            case BLEController.STATE_CONNECTED: {
+            case BLECenter.STATE_CONNECTED: {
                 mContext.dismissProgressDialog();
                 LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
                 if (lightInfo != null) {
@@ -92,14 +95,14 @@ public class DeviceFragment extends BaseFragment {
                 mDeviceAdapter.notifyDataSetChanged();
             }
             break;
-            case BLEController.STATE_DISCONNECTING: {
+            case BLECenter.STATE_DISCONNECTING: {
                 /*String title = getString(R.string.activity_dialog_title_device);
                 String content = getString(R.string.activity_dialog_disconnect_device);
                 mContext.showProgressDialog(title, content);*/
                 Log.d("DeviceFragment", "Disconnecting...");
             }
             break;
-            case BLEController.STATE_DISCONNECTED: {
+            case BLECenter.STATE_DISCONNECTED: {
                 mContext.dismissProgressDialog();
                 LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
                 if (lightInfo != null) {
@@ -108,7 +111,7 @@ public class DeviceFragment extends BaseFragment {
                 mDeviceAdapter.notifyDataSetChanged();
             }
             break;
-            case BLEController.STATE_SERVICING: {
+            case BLECenter.STATE_SERVICING: {
                 LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
                 if (lightInfo != null) {
                     /*地址和密码*/
@@ -211,6 +214,12 @@ public class DeviceFragment extends BaseFragment {
         mDeviceAdapter.addDevice(new Device("餐厅灯", "00:23:93:A6:88:22"));
         mDeviceAdapter.addDevice(new Device("运动智能", "00:23:93:A6:88:22"));*/
         mDeviceAdapter.setData(AppContext.getInstance().lights);
+    }
+
+    @OnClick(R.id.tv_empty_view_device)
+    public void onClick(View v) {
+        Intent intent = new Intent(mContext, ScanActivity.class);
+        getActivity().startActivityForResult(intent, 520);
     }
 
     /**

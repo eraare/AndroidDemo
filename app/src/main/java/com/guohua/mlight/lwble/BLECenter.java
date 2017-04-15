@@ -21,22 +21,22 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @file BLEController.java
+ * @file BLECenter.java
  * @author Leo
  * @version 1
- * @detail 蓝牙通信控制器
+ * @detail 蓝牙通信控制中心
  * @since 2016/12/30 17:25
  */
 
 /**
- * 文件名：BLEController.java
+ * 文件名：BLECenter.java
  * 作  者：Leo
  * 版  本：1
  * 日  期：2016/12/30 17:25
- * 描  述：蓝牙通信控制器
+ * 描  述：蓝牙通信控制中心
  */
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-public class BLEController {
+public class BLECenter {
     /*连接断开状态码*/
     public static final int STATE_INITIAL = -1;
     public static final int STATE_CONNECTING = 1;
@@ -45,10 +45,48 @@ public class BLEController {
     public static final int STATE_DISCONNECTED = 4;
     public static final int STATE_SERVICING = 5;
 
-    private volatile static BLEController singleton = null;
+    private volatile static BLECenter singleton = null;
+
+    public static BLECenter getInstance() {
+        if (singleton == null) {
+            synchronized (BLECenter.class) {
+                if (singleton == null) {
+                    singleton = new BLECenter();
+                }
+            }
+        }
+        return singleton;
+    }
+
     /*蓝牙适配器和蓝牙GATT*/
     private BluetoothAdapter mBluetoothAdapter;
     private Map<String, BluetoothGatt> mGatts;
+
+    private BLECenter() {
+        /*初始化数据*/
+        initial();
+    }
+
+    /*初始化*/
+    private void initial() {
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mGatts = new ConcurrentHashMap<>();
+    }
+
+    /**
+     * 结束的一些操作动作
+     */
+    public void suicide() {
+        if (mGatts == null) return;
+        /*通过Key遍历进行关闭所有的设备*/
+        Set<String> keySet = mGatts.keySet();
+        Iterator<String> iterator = keySet.iterator();
+        while (iterator.hasNext()) {
+            disconnect(iterator.next(), true);
+        }
+        mGatts.clear();
+    }
+
     /*Section: BLE回调类*/
     private final BluetoothGattCallback mBluetoothGattCallback = new BluetoothGattCallback() {
         @Override
@@ -117,42 +155,6 @@ public class BLEController {
             super.onCharacteristicChanged(gatt, characteristic);
         }
     };
-
-    private BLEController() {
-        /*初始化数据*/
-        init();
-    }
-
-    public static BLEController getInstance() {
-        if (singleton == null) {
-            synchronized (BLEController.class) {
-                if (singleton == null) {
-                    singleton = new BLEController();
-                }
-            }
-        }
-        return singleton;
-    }
-
-    /*初始化*/
-    private void init() {
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mGatts = new ConcurrentHashMap<>();
-    }
-
-    /**
-     * 结束的一些操作动作
-     */
-    public void suicide() {
-        if (mGatts == null) return;
-        /*通过Key遍历进行关闭所有的设备*/
-        Set<String> keySet = mGatts.keySet();
-        Iterator<String> iterator = keySet.iterator();
-        while (iterator.hasNext()) {
-            disconnect(iterator.next(), true);
-        }
-        mGatts.clear();
-    }
 
     /**
      * 设置蓝牙设备可接受通知

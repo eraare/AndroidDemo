@@ -3,7 +3,7 @@ package com.guohua.mlight.lwble;
 /**
  * Created by china on 2017/3/20.
  */
-public class MessageEvent {
+public final class MessageEvent {
     /*传输内容的控制*/
     public static final int WHAT_STATE = 1;
     public static final int WHAT_DATA = 2;

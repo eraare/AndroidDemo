@@ -31,9 +31,10 @@ import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.permission.PermissionListener;
 import com.guohua.mlight.common.permission.PermissionManager;
-import com.guohua.mlight.lwble.BLEController;
+import com.guohua.mlight.lwble.BLECenter;
 import com.guohua.mlight.lwble.BLEFilter;
 import com.guohua.mlight.lwble.BLEScanner;
+import com.guohua.mlight.lwble.BLEUtils;
 import com.guohua.mlight.lwble.MessageEvent;
 import com.guohua.mlight.model.bean.LightInfo;
 import com.guohua.mlight.model.impl.LightService;
@@ -298,6 +299,10 @@ public class MainActivity extends BaseActivity {
      * 退出程序关闭所有
      */
     private void exit() {
+        /*还原用户设置*/
+        if (!AppContext.getInstance().isBluetoothEnabled) {
+            BLEUtils.closeBluetooth();
+        }
         finish();
     }
 
@@ -344,7 +349,7 @@ public class MainActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         switch (event.state) {
-            case BLEController.STATE_DISCONNECTED: {
+            case BLECenter.STATE_DISCONNECTED: {
                 toast("设备已离线：" + event.address);
                 LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
                 if (lightInfo != null) {
@@ -352,7 +357,7 @@ public class MainActivity extends BaseActivity {
                 }
             }
             break;
-            case BLEController.STATE_CONNECTED: {
+            case BLECenter.STATE_CONNECTED: {
                 toast("设备已在线：" + event.address);
                 LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
                 if (lightInfo != null) {
@@ -360,7 +365,7 @@ public class MainActivity extends BaseActivity {
                 }
             }
             break;
-            case BLEController.STATE_SERVICING: {
+            case BLECenter.STATE_SERVICING: {
                 LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
                 if (lightInfo != null) {
                     /*地址和密码*/

@@ -9,11 +9,11 @@ package com.guohua.mlight.common.base;
 
 import android.app.ActivityManager;
 import android.app.Application;
-import android.graphics.Color;
 import android.text.TextUtils;
 
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.util.CrashHandler;
+import com.guohua.mlight.lwble.BLEUtils;
 import com.guohua.mlight.model.bean.Device;
 import com.guohua.mlight.model.bean.LightInfo;
 
@@ -40,14 +40,16 @@ public class AppContext extends Application {
     /*色相 0-360 饱和度 0-1 明度 0-1*/
     public float[] currentHSV = {0F, 0F, 1F};
     public int currentAlpha = 255;
-//    public int currentColor = Color.WHITE;
+    //    public int currentColor = Color.WHITE;
+    /*开始时用户是否打开了蓝牙*/
+    public boolean isBluetoothEnabled = BLEUtils.isBluetoothEnabled();
 
     @Override
     public void onCreate() {
         super.onCreate();
         // 开启异常捕捉
         new CrashHandler.Builder(getApplicationContext())
-                .debug(true)
+                .debug(false)
                 .tip(getString(R.string.error_info))
                 .file("log", "crash", ".err")
                 .build()
