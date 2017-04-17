@@ -75,6 +75,7 @@ public class SelfieActivity extends BaseActivity {
             break;
             case R.id.iv_set_selfie: {
 //                startService(new Intent(this, TestService.class));
+                finish();
             }
             break;
             case R.id.civ_album_selfie: {

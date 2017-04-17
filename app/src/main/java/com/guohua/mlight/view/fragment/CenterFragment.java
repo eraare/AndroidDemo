@@ -1,10 +1,13 @@
 package com.guohua.mlight.view.fragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
@@ -18,6 +21,8 @@ import com.guohua.ios.dialog.ActionSheetDialog;
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.config.Constants;
+import com.guohua.mlight.common.permission.PermissionListener;
+import com.guohua.mlight.common.permission.PermissionManager;
 import com.guohua.mlight.common.util.ShareUtils;
 import com.guohua.mlight.model.bean.OptionBean;
 import com.guohua.mlight.view.activity.AppActivity;
@@ -138,7 +143,7 @@ public class CenterFragment extends BaseFragment {
             int id = (int) tag;
             switch (id) {
                 case 0: {
-                    showTelephonyDialog();
+                    requestPermission();
                 }
                 break;
                 case 1: {
@@ -227,5 +232,56 @@ public class CenterFragment extends BaseFragment {
             }
         }
     };
+
+    /*Section: 权限管理*/
+    private PermissionManager mHelper; /*权限管理类*/
+    public static final int PERMISSION_REQUEST_CODE = 103;
+
+    private void requestPermission() {
+        /*是否有定位权限使用蓝牙操作进行扫描*/
+        if (PermissionManager.hasPermission(mContext, Manifest.permission.READ_PHONE_STATE)) {
+            showTelephonyDialog();
+        } else {
+            if (mHelper == null) {
+                mHelper = PermissionManager.with(this)
+                        .permissions(Manifest.permission.READ_PHONE_STATE)
+                        .setPermissionsListener(mPermissionListener)
+                        .addRequestCode(PERMISSION_REQUEST_CODE);
+            }
+            mHelper.request();
+        }
+    }
+
+    private PermissionListener mPermissionListener = new PermissionListener() {
+        @Override
+        public void onGranted() {
+            showTelephonyDialog();
+        }
+
+        @Override
+        public void onDenied() {
+            mContext.toast("来电提醒功能需要电话状态权限");
+        }
+
+        @Override
+        public void onShowRationale(String[] permissions) {
+            Snackbar.make(mHeadView, "需要电话状态权限使用来电提醒功能", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("ok", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mHelper.setIsPositive(true);
+                            mHelper.request();
+                        }
+                    }).show();
+        }
+    };
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            mHelper.onPermissionResult(permissions, grantResults);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 
 }

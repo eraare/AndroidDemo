@@ -170,6 +170,8 @@ public class PermissionManager {
      * @return
      */
     public static boolean hasPermission(Context context, String permission) {
+        System.out.println("sdk_int" + isMarshmallow());
+        System.out.println("granted" + isGranted(context, permission));
         return !isMarshmallow() || isGranted(context, permission);
     }
 
@@ -180,7 +182,7 @@ public class PermissionManager {
 
     /*授权了不*/
     private static boolean isGranted(Context context, String permission) {
-        int checkSelfPermission = ActivityCompat.checkSelfPermission(context, permission);
+        int checkSelfPermission = ContextCompat.checkSelfPermission(context, permission);
         return checkSelfPermission == PackageManager.PERMISSION_GRANTED;
     }
 

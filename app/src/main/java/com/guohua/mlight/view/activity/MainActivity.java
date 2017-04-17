@@ -268,7 +268,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        BLEScanner.getInstance().stopScan();
+        if (BLEScanner.getInstance().isScanning()) {
+            BLEScanner.getInstance().stopScan();
+        }
     }
 
     @Override
@@ -389,7 +391,7 @@ public class MainActivity extends BaseActivity {
     /**
      * 发现设备是添加到列表
      */
-    private BLEScanner.DeviceDiscoveredListener mDeviceDiscoveredListener = new BLEScanner.DeviceDiscoveredListener() {
+    private final BLEScanner.DeviceDiscoveredListener mDeviceDiscoveredListener = new BLEScanner.DeviceDiscoveredListener() {
         @Override
         public void onDiscovered(final BluetoothDevice device, int rssi, byte[] bytes) {
             if (!BLEFilter.filter(bytes)) return; /*过滤自家设备*/
@@ -407,9 +409,10 @@ public class MainActivity extends BaseActivity {
     /**
      * 扫描状态改变回调函数
      */
-    private BLEScanner.StateCallback mStateCallback = new BLEScanner.StateCallback() {
+    private final BLEScanner.StateCallback mStateCallback = new BLEScanner.StateCallback() {
         @Override
         public void onStateChanged(boolean state) {
+            System.out.println("Hello world.....................");
             if (state) {
                 String title = getString(R.string.activity_dialog_title_main);
                 String content = getString(R.string.activity_dialog_content_main);
