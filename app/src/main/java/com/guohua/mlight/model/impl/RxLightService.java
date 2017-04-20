@@ -221,6 +221,7 @@ public class RxLightService {
                 .subscribe(new Action1<LightInfo>() {
                     @Override
                     public void call(LightInfo lightInfo) {
+                        lightInfo.name = name;
                         mLightService.name(lightInfo.address, name);
                     }
                 });
