@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.guohua.mlight.view.activity.SelfieActivity">
 
-    <com.guohua.mlight.view.widget.CameraSurfaceView
-        android:id="@+id/csv_preview_selfie"
+    <com.guohua.mlight.view.widget.CameraView
+        android:id="@+id/cv_preview_selfie"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

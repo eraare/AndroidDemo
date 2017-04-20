@@ -63,6 +63,7 @@ public class HelpActivity extends BaseActivity {
                 "c、查看是否允许APP的蓝牙操作和模糊定位权限；d、彻底退出APP再次；e、重启设备再次尝试。"));
         mQaAdapter.addQa(new QaInfo("2、一直连接不上设备怎么办？", "答：同上一问题。您可以重启APP，重启魔小灯后再次尝试。"));
         mQaAdapter.addQa(new QaInfo("3、连接设备后无法控制？", "答：查看是否选择了要操作的设备；尝试修改密码为默认密码（0000）。"));
+        mQaAdapter.addQa(new QaInfo("4、音乐律动用不了？", "答：查看有没有开启后台运行，只有后台运行才能后台播放；尝试其他音乐播放器，有些手机的音乐播放器不支持音乐节奏的采集。"));
     }
 
     @OnItemClick(R.id.lv_qa_help)

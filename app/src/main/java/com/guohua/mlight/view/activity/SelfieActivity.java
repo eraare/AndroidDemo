@@ -11,7 +11,7 @@ import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.util.CameraUtils;
 import com.guohua.mlight.lwble.MessageEvent;
-import com.guohua.mlight.view.widget.CameraSurfaceView;
+import com.guohua.mlight.view.widget.CameraView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -26,8 +26,8 @@ public class SelfieActivity extends BaseActivity {
     ImageView mFlashView;
     @BindView(R.id.iv_set_selfie)
     ImageView mSetView;
-    @BindView(R.id.csv_preview_selfie)
-    CameraSurfaceView mPreviewView;
+    @BindView(R.id.cv_preview_selfie)
+    CameraView mPreviewView;
     @BindView(R.id.civ_album_selfie)
     CircleImageView mAlbumView;
     @BindView(R.id.civ_camera_selfie)
