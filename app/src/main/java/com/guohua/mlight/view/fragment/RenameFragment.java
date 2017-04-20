@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guohua.mlight.R;
+import com.guohua.mlight.model.impl.RxLightService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,6 +69,7 @@ public class RenameFragment extends BottomSheetDialogFragment {
     public void onClick(View view) {
         String name = mNameView.getText().toString();
         if (checkName(name)) {
+            RxLightService.getInstance().name(name);
             Toast.makeText(getContext(), R.string.settings_warning, Toast.LENGTH_LONG).show();
         }
     }
