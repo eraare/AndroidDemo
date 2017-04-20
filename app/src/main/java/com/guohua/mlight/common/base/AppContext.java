@@ -17,6 +17,7 @@ import com.guohua.mlight.lwble.BLEUtils;
 import com.guohua.mlight.model.bean.Device;
 import com.guohua.mlight.model.bean.LightInfo;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
