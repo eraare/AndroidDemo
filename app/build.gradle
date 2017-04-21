@@ -47,4 +47,6 @@ dependencies {
     /*compile 'com.daimajia.swipelayout:library:1.2.0@aar'*/
     compile files('libs/Bmob_Push_V1.0.0beta_20160627.jar')
     compile files('libs/GDTUnionSDK.4.9.543.min.jar')
+    /*摄像头*/
+    compile 'com.flurgle:camerakit:0.9.17'
 }

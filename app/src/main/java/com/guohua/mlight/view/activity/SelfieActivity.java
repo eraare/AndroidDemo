@@ -1,17 +1,21 @@
 package com.guohua.mlight.view.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.hardware.Camera;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.flurgle.camerakit.CameraKit;
+import com.flurgle.camerakit.CameraListener;
+import com.flurgle.camerakit.CameraView;
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
+import com.guohua.mlight.common.util.AntiShake;
 import com.guohua.mlight.common.util.CameraUtils;
 import com.guohua.mlight.lwble.MessageEvent;
-import com.guohua.mlight.view.widget.CameraView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,6 +40,8 @@ public class SelfieActivity extends BaseActivity {
     CircleImageView mSwitchView;
 
     private String currentPicturePath;
+    private AntiShake mAntiShake;
+    private boolean canCapture; /*是否可以拍照*/
 
     @Override
     protected int getContentViewId() {
@@ -52,19 +58,51 @@ public class SelfieActivity extends BaseActivity {
         return 0;
     }
 
+    @Override
+    protected void init(Intent intent, Bundle savedInstanceState) {
+        super.init(intent, savedInstanceState);
+        canCapture = true;
+        mAntiShake = new AntiShake();/*专业防抖20年*/
+        mPreviewView.setJpegQuality(100);
+        mPreviewView.setCameraListener(mCameraListener);
+        mPreviewView.setFocus(CameraKit.Constants.FOCUS_TAP);
+        mPreviewView.setFlash(CameraKit.Constants.FLASH_AUTO);
+    }
+
+    private CameraListener mCameraListener = new CameraListener() {
+        @Override
+        public void onPictureTaken(byte[] jpeg) {
+            super.onPictureTaken(jpeg);
+            Bitmap source = BitmapFactory.decodeByteArray(jpeg, 0, jpeg.length);
+            mAlbumView.setImageBitmap(source);
+            currentPicturePath = CameraUtils.saveBitmap2Album(getApplicationContext(), source);
+            source.recycle();
+            canCapture = true;
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPreviewView.start();
+        EventBus.getDefault().register(this);
+    }
+
     @OnClick({R.id.iv_flash_selfie, R.id.iv_set_selfie, R.id.civ_album_selfie, R.id.civ_camera_selfie, R.id.civ_switch_selfie})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_flash_selfie: {
-                String mode = mPreviewView.switchFlashMode();
-                switch (mode) {
-                    case Camera.Parameters.FLASH_MODE_ON:
+                if (!mAntiShake.check(R.id.iv_flash_selfie, 100)) return;
+                /*設置閃光模式*/
+                int flash = mPreviewView.toggleFlash();
+                switch (flash) {
+                    case CameraKit.Constants.FLASH_OFF:
                         mFlashView.setImageResource(R.drawable.icon_flash_on);
                         break;
-                    case Camera.Parameters.FLASH_MODE_AUTO:
+                    case CameraKit.Constants.FLASH_ON:
                         mFlashView.setImageResource(R.drawable.icon_flash_auto);
                         break;
-                    case Camera.Parameters.FLASH_MODE_OFF:
+                    case CameraKit.Constants.FLASH_AUTO:
                         mFlashView.setImageResource(R.drawable.icon_flash_off);
                         break;
                     default:
@@ -74,20 +112,27 @@ public class SelfieActivity extends BaseActivity {
             }
             break;
             case R.id.iv_set_selfie: {
-//                startService(new Intent(this, TestService.class));
+                /*退出*/
                 finish();
             }
             break;
             case R.id.civ_album_selfie: {
+                /*查看相冊*/
                 CameraUtils.viewPictureByPath(SelfieActivity.this, currentPicturePath);
             }
             break;
             case R.id.civ_switch_selfie: {
-                mPreviewView.switchCamera();
+                /*摄像头的前后切换*/
+                if (mAntiShake.check(R.id.civ_switch_selfie, 1000)) {
+                    mPreviewView.toggleFacing();
+                }
             }
             break;
             case R.id.civ_camera_selfie: {
-                takePicture();
+                /*拍照拍照*/
+                if (mAntiShake.check(R.id.civ_switch_selfie, 1000)) {
+                    takePicture();
+                }
             }
             break;
             default:
@@ -95,41 +140,11 @@ public class SelfieActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 拍照
-     */
     private void takePicture() {
-        mPreviewView.takePicture(null, null, mPictureCallback);
-    }
-
-    /**
-     * 拍照后的数据回调接口
-     */
-    private Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
-        @Override
-        public void onPictureTaken(byte[] data, Camera camera) {
-            Bitmap source = BitmapFactory.decodeByteArray(data, 0, data.length);
-            source = mPreviewView.correctPicture(source);
-            mAlbumView.setImageBitmap(source);
-            currentPicturePath = CameraUtils.saveBitmap2Album(getApplicationContext(), source);
-            source.recycle();
-            camera.stopPreview();
-            camera.startPreview();
+        if (canCapture) {
+            canCapture = false;
+            mPreviewView.captureImage();
         }
-    };
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-//        mPreviewView.releaseCamera();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        mPreviewView.switchCamera();
-        EventBus.getDefault().register(this);
     }
 
     /*接收处理由EventBus发送来的消息*/
@@ -141,5 +156,12 @@ public class SelfieActivity extends BaseActivity {
                 takePicture();
             }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mPreviewView.stop();
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -91,6 +91,7 @@ public class MainActivity extends BaseActivity {
     /*蓝牙权限申请*/
     private PermissionManager mHelper;
     public static final int PERMISSION_REQUEST_CODE = 101;
+    public static final long DEFAULT_SCAN_DURATION = 50;
 
     @Override
     protected int getContentViewId() {
@@ -223,7 +224,7 @@ public class MainActivity extends BaseActivity {
     private void requestPermission() {
         /*是否有定位权限使用蓝牙操作进行扫描*/
         if (PermissionManager.hasPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-            BLEScanner.getInstance().startScan(5000);
+            BLEScanner.getInstance().startScan(DEFAULT_SCAN_DURATION);
         } else {
             mHelper = PermissionManager.with(this)
                     .permissions(Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -236,7 +237,7 @@ public class MainActivity extends BaseActivity {
     private PermissionListener mPermissionListener = new PermissionListener() {
         @Override
         public void onGranted() {
-            BLEScanner.getInstance().startScan(5000);
+            BLEScanner.getInstance().startScan(DEFAULT_SCAN_DURATION);
         }
 
         @Override
