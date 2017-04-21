@@ -40,8 +40,10 @@ public class SelfieActivity extends BaseActivity {
     CircleImageView mSwitchView;
 
     private String currentPicturePath;
-    private AntiShake mAntiShake;
+    /*处理快速切换和快速拍照*/
+    private AntiShake mAntiShake; /*专业防抖过滤*/
     private boolean canCapture; /*是否可以拍照*/
+    private boolean isCameraOpened; /*摄像头似乎已打开*/
 
     @Override
     protected int getContentViewId() {
@@ -65,8 +67,8 @@ public class SelfieActivity extends BaseActivity {
         mAntiShake = new AntiShake();/*专业防抖20年*/
         mPreviewView.setJpegQuality(100);
         mPreviewView.setCameraListener(mCameraListener);
-        mPreviewView.setFocus(CameraKit.Constants.FOCUS_TAP);
         mPreviewView.setFlash(CameraKit.Constants.FLASH_AUTO);
+        mPreviewView.setFocus(CameraKit.Constants.FOCUS_TAP_WITH_MARKER);
     }
 
     private CameraListener mCameraListener = new CameraListener() {
@@ -79,6 +81,18 @@ public class SelfieActivity extends BaseActivity {
             source.recycle();
             canCapture = true;
         }
+
+        @Override
+        public void onCameraOpened() {
+            super.onCameraOpened();
+            isCameraOpened = true;
+        }
+
+        @Override
+        public void onCameraClosed() {
+            super.onCameraClosed();
+            isCameraOpened = false;
+        }
     };
 
     @Override
@@ -90,9 +104,14 @@ public class SelfieActivity extends BaseActivity {
 
     @OnClick({R.id.iv_flash_selfie, R.id.iv_set_selfie, R.id.civ_album_selfie, R.id.civ_camera_selfie, R.id.civ_switch_selfie})
     public void onClick(View view) {
+        if (!isCameraOpened) return;
+        if (!mAntiShake.check(view.getId(), 1000)) {
+            toast("亲，慢一点^_^");
+            return;
+        }
+
         switch (view.getId()) {
             case R.id.iv_flash_selfie: {
-                if (!mAntiShake.check(R.id.iv_flash_selfie, 100)) return;
                 /*設置閃光模式*/
                 int flash = mPreviewView.toggleFlash();
                 switch (flash) {
@@ -123,16 +142,12 @@ public class SelfieActivity extends BaseActivity {
             break;
             case R.id.civ_switch_selfie: {
                 /*摄像头的前后切换*/
-                if (mAntiShake.check(R.id.civ_switch_selfie, 1000)) {
-                    mPreviewView.toggleFacing();
-                }
+                mPreviewView.toggleFacing();
             }
             break;
             case R.id.civ_camera_selfie: {
                 /*拍照拍照*/
-                if (mAntiShake.check(R.id.civ_switch_selfie, 1000)) {
-                    takePicture();
-                }
+                takePicture();
             }
             break;
             default:

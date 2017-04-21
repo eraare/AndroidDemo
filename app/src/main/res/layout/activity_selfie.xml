@@ -23,12 +23,12 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:background="@color/black"
-        android:padding="16dp">
+        android:padding="25dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_camera_selfie"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
             android:src="@drawable/icon_take_picture"
             app:civ_border_color="@color/white"
@@ -36,17 +36,21 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_album_selfie"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_vertical|left"
-            android:src="@drawable/icon_view_picture" />
+            android:src="@drawable/icon_view_picture"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1dp" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civ_switch_selfie"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_vertical|right"
-            android:src="@drawable/icon_switch_camera" />
+            android:src="@drawable/icon_switch_camera"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1dp" />
     </FrameLayout>
 
     <ImageView
@@ -56,6 +60,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_margin="16dp"
+        android:padding="3dp"
         android:src="@drawable/icon_close"
         android:visibility="visible" />
 

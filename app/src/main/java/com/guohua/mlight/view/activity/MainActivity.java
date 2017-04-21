@@ -91,7 +91,7 @@ public class MainActivity extends BaseActivity {
     /*蓝牙权限申请*/
     private PermissionManager mHelper;
     public static final int PERMISSION_REQUEST_CODE = 101;
-    public static final long DEFAULT_SCAN_DURATION = 50;
+    public static final long DEFAULT_SCAN_DURATION = 4000;
 
     @Override
     protected int getContentViewId() {
