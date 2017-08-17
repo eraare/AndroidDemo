@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.guohua.mlight.view.widget.SquareLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.guohua.sdk.view.widget.SquareLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_rectangle_bg"
@@ -21,4 +21,4 @@
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_body" />
 
-</com.guohua.mlight.view.widget.SquareLinearLayout>
+</com.guohua.sdk.view.widget.SquareLinearLayout>

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#0cb29d"
     android:orientation="vertical"
-    tools:context="com.guohua.mlight.view.activity.ControlActivity">
+    tools:context="com.guohua.sdk.view.activity.ControlActivity">
 
     <ScrollView
         android:id="@+id/scrollView1"

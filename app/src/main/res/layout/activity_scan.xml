@@ -23,7 +23,7 @@
             android:layout_gravity="center"
             android:drawableTop="@drawable/icon_no_device" />
 
-        <com.guohua.mlight.view.widget.LocalRecyclerView
+        <com.guohua.sdk.view.widget.LocalRecyclerView
             android:id="@+id/rv_device_scan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

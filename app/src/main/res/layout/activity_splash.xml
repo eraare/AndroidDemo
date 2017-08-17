@@ -4,4 +4,4 @@
     android:id="@+id/fl_container_splash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.guohua.mlight.view.activity.SplashActivity" />
+    tools:context="com.guohua.sdk.view.activity.SplashActivity" />

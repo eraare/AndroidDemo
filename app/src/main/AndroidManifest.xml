@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.guohua.mlight">
+    package="com.guohua.sdk">
 
     <!-- 所需要的所有权限 蓝牙 模糊定位 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -10,7 +10,7 @@
     <uses-feature android:name="android.hardware.bluetooth_le" />
 
     <application
-        android:name=".common.base.AppContext"
+        android:name="com.guohua.sdk.common.base.AppContext"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme">
         <!-- 欢迎界面 -->
         <activity
-            android:name=".view.activity.SplashActivity"
+            android:name="com.guohua.sdk.view.activity.SplashActivity"
             android:configChanges="locale"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen">
@@ -31,25 +31,25 @@
         </activity>
         <!-- 主界面 -->
         <activity
-            android:name=".view.activity.MainActivity"
+            android:name="com.guohua.sdk.view.activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".view.activity.ScanActivity"
+            android:name="com.guohua.sdk.view.activity.ScanActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.ControlActivity"
+            android:name="com.guohua.sdk.view.activity.ControlActivity"
             android:screenOrientation="portrait" />
         <!-- Center中的界面 -->
         <activity
-            android:name=".view.activity.AppActivity"
+            android:name="com.guohua.sdk.view.activity.AppActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.HelpActivity"
+            android:name="com.guohua.sdk.view.activity.HelpActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.activity.UsActivity"
+            android:name="com.guohua.sdk.view.activity.UsActivity"
             android:screenOrientation="portrait" />
     </application>
 

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.guohua.mlight.view.widget.LocalRecyclerView
+        <com.guohua.sdk.view.widget.LocalRecyclerView
             android:id="@+id/rv_device_device"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
