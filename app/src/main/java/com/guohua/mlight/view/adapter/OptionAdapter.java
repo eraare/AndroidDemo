@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.guohua.mlight.R;
-import com.guohua.mlight.model.bean.OptionBean;
+import com.guohua.mlight.bean.Option;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
  *         #detail 数据源适配器
  */
 public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ItemViewHolder> {
-    private List<OptionBean> mDatas; // 数据源
+    private List<Option> mDatas; // 数据源
     private LayoutInflater mInflater; // 布局器
 
     public OptionAdapter(Context context) {
@@ -40,7 +40,7 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ItemViewHo
 
     @Override
     public void onBindViewHolder(ItemViewHolder holder, int position) {
-        OptionBean optionBean = mDatas.get(position);
+        Option optionBean = mDatas.get(position);
         holder.itemView.setTag(optionBean.tag);
         // insert code here
         holder.title.setText(optionBean.title);
@@ -84,7 +84,7 @@ public class OptionAdapter extends RecyclerView.Adapter<OptionAdapter.ItemViewHo
      *
      * @param optionBean
      */
-    public void addItem(OptionBean optionBean) {
+    public void addItem(Option optionBean) {
         this.mDatas.add(optionBean);
         notifyDataSetChanged();
     }

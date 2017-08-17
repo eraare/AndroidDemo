@@ -16,7 +16,7 @@
         <item>Profile</item>
     </string-array>
     <string-array name="fragment_alias_main">
-        <item>Control</item>
+        <item>Device</item>
         <item>Scene</item>
         <item>Profile</item>
     </string-array>
@@ -393,5 +393,8 @@
     <string name="activity_dialog_disconnect_device">Disconnecting...</string>
     <string name="activity_selected_device">Selected device.</string>
     <string name="activity_unselected_device">Unselected device.</string>
+
+    <!-- PlatoonInsertFragment.java 相关文字 -->
+    <string name="notime">定时</string>
 </resources>
 

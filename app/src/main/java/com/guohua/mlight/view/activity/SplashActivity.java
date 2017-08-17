@@ -4,15 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
+import com.eraare.ble.BLEUtils;
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
-import com.guohua.mlight.lwble.BLEUtils;
-import com.guohua.mlight.view.fragment.SplashFragment;
-
-import cn.bmob.push.BmobPush;
-import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobInstallation;
 
 /**
  * @file SplashActivity.java
@@ -30,18 +25,8 @@ import cn.bmob.v3.BmobInstallation;
  * 描  述：欢迎界面的Activity
  */
 public class SplashActivity extends BaseActivity {
-    /*Bmob的Application_id*/
-    private static final String APPLICATION_ID = "bd5687d8f691de6e530fde446f273582";
-
     @Override
     protected void init(Intent intent, Bundle savedInstanceState) {
-        /*1 初始化Bmob*/
-        Bmob.initialize(this, APPLICATION_ID);
-        /*使用推送服务时的初始化操作*/
-        BmobInstallation.getCurrentInstallation().save();
-        /*启动推送服务*/
-        BmobPush.startWork(this);
-
         /*2 检查蓝牙状态*/
         if (!BLEUtils.isSupportBluetoothBLE(this)) {
             toast(R.string.activity_bluetooth_tip_splash);
@@ -61,7 +46,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected BaseFragment getFirstFragment() {
-        return SplashFragment.getInstance();
+        return SplashFragment1.getInstance();
     }
 
     @Override

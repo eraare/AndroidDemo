@@ -16,7 +16,7 @@
         <item>我的</item>
     </string-array>
     <string-array name="fragment_alias_main">
-        <item>控制中心</item>
+        <item>设备管理</item>
         <item>情景模式</item>
         <item>个人中心</item>
     </string-array>
@@ -60,13 +60,13 @@
     <string name="activity_title_scan">搜索设备</string>
     <string name="activity_scan_scan">搜索</string>
     <string name="activity_scanning_scan">搜索中...</string>
-    
+
     <!--PalletActivity.java中用到的文字-->
     <string name="activity_white_pallet">素</string>
     <string name="activity_colorful_pallet">艳</string>
     <string name="activity_dark_pallet">暗</string>
     <string name="activity_light_pallet">亮</string>
-    
+
     <string name="background_app">后台运行</string>
 
     <!--gradient_ramp.xml-->

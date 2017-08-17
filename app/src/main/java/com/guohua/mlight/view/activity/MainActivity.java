@@ -6,16 +6,13 @@ import android.bluetooth.BluetoothDevice;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,38 +20,33 @@ import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.eraare.ble.BLECenter;
+import com.eraare.ble.BLEScanner;
+import com.eraare.ble.BLEUtils;
+import com.eraare.ble.OnStateChangedListener;
 import com.guohua.ios.dialog.AlertDialog;
 import com.guohua.mlight.R;
+import com.guohua.mlight.bean.Device;
 import com.guohua.mlight.common.base.AppContext;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
-import com.guohua.mlight.common.config.Constants;
 import com.guohua.mlight.common.permission.PermissionListener;
 import com.guohua.mlight.common.permission.PermissionManager;
-import com.guohua.mlight.lwble.BLECenter;
-import com.guohua.mlight.lwble.BLEFilter;
-import com.guohua.mlight.lwble.BLEScanner;
-import com.guohua.mlight.lwble.BLEUtils;
-import com.guohua.mlight.lwble.MessageEvent;
-import com.guohua.mlight.model.bean.LightInfo;
-import com.guohua.mlight.model.impl.LightService;
-import com.guohua.mlight.model.impl.RxLightService;
+import com.guohua.mlight.common.util.FilterUtils;
 import com.guohua.mlight.view.adapter.FragmentAdapter;
 import com.guohua.mlight.view.fragment.CenterFragment;
-import com.guohua.mlight.view.fragment.HomeFragment;
+import com.guohua.mlight.view.fragment.DeviceFragment;
 import com.guohua.mlight.view.fragment.SceneFragment;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import com.guohua.socket.DeviceManager;
 
 import butterknife.BindArray;
 import butterknife.BindView;
 
 /**
  * @author Leo
- * @detail 项目框架主界面 具有滑动切换功能 各类功能在各自Fragment里
- * @time 2015-10-29
+ * @version 1
+ * @since 2015-10-29
+ * 项目框架主界面 具有滑动切换功能 各类功能在各自Fragment里
  */
 @SuppressLint("NewApi")
 public class MainActivity extends BaseActivity {
@@ -83,15 +75,18 @@ public class MainActivity extends BaseActivity {
 
     /*默认页面的位置*/
     private int lastSelectedPosition = 0;
-    /*ViewPager加载Fragment所需要的Adapter*/
-    private FragmentAdapter mFragmentAdapter;
 
     /*刚进来则进行蓝牙设备的扫描*/
     private boolean isFirstTime = true;
     /*蓝牙权限申请*/
     private PermissionManager mHelper;
+    /*蓝牙设备的操作*/
+    private DeviceManager mDeviceManager;
+
     public static final int PERMISSION_REQUEST_CODE = 101;
     public static final long DEFAULT_SCAN_DURATION = 4000;
+
+    private static final int REQUEST_CODE_BLE = 520;
 
     @Override
     protected int getContentViewId() {
@@ -111,9 +106,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void init(Intent intent, Bundle savedInstanceState) {
         super.init(intent, savedInstanceState);
-        if (!EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().register(this);
-        }
         setShowBack(false);
         initial();
     }
@@ -122,6 +114,9 @@ public class MainActivity extends BaseActivity {
      * 初始化操作
      */
     private void initial() {
+        mDeviceManager = DeviceManager.getInstance();
+        mDeviceManager.initial(getApplicationContext());
+
         /*1 初始化底部导航条*/
         initBottomNavigationBar();
         /*2 初始化ViewPager*/
@@ -130,29 +125,84 @@ public class MainActivity extends BaseActivity {
         showOrHideForward(lastSelectedPosition);
         setToolbarTitle(mAlias[lastSelectedPosition]);
         /* 添加右边前进键单机事件*/
-        setForwardTitle(R.string.activity_title_device);
+        setForwardTitle(R.string.activity_title_scan);
         setOnForwardClickListener(mOnClickListener);
         /*配置BLEScanner*/
-        BLEScanner.getInstance().setStateCallback(mStateCallback);
-        BLEScanner.getInstance().setDeviceDiscoveredListener(mDeviceDiscoveredListener);
+        BLEScanner.getInstance().setCallback(mCallback);
+        DeviceManager.getInstance().addOnStateChangedListener(mOnStateChangedListener);
     }
 
+    /**
+     * 设置蓝牙扫描回调
+     */
+    private BLEScanner.Callback mCallback = new BLEScanner.Callback() {
+        @Override
+        public void onStateChanged(boolean state) {
+            System.out.println("Hello world.....................");
+            if (state) {
+                String title = getString(R.string.activity_dialog_title_main);
+                String content = getString(R.string.activity_dialog_content_main);
+                showProgressDialog(title, content);
+            } else {
+                dismissProgressDialog();
+                if (AppContext.getInstance().devices.size() > 0) {
+                    toast(R.string.activity_start_connect_main);
+                    //RxLightService.getInstance().connect(getApplicationContext(), true);
+                    String address = AppContext.getInstance().devices.get(0).address;
+                    DeviceManager.getInstance().connect(address, true);
+                } else {
+                    toast(R.string.activity_no_device_main);
+                }
+            }
+        }
+
+        @Override
+        public void onDeviceDiscovered(final BluetoothDevice device, int i, byte[] bytes) {
+            if (!FilterUtils.filter(bytes)) return; /*过滤自家设备*/
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String deviceName = device.getName();
+                    String deviceAddress = device.getAddress();
+                    DeviceFragment.newInstance().addDevice(new Device(deviceName, deviceAddress));
+                }
+            });
+        }
+    };
+
+    /**
+     * 跳转到设备扫描页
+     */
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            startActivity(new Intent(MainActivity.this, DeviceActivity.class));
+            Intent intent = new Intent(MainActivity.this, ScanActivity.class);
+            startActivityForResult(intent, REQUEST_CODE_BLE);
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_BLE) {
+            if (resultCode == RESULT_OK) {
+                /*接收设备数据并加入到全局缓存切进行连接操作*/
+                String deviceAddress = data.getStringExtra(ScanActivity.EXTRA_DEVICE_ADDRESS);
+                String deviceName = data.getStringExtra(ScanActivity.EXTRA_DEVICE_NAME);
+                DeviceFragment.newInstance().addDevice(new Device(deviceName, deviceAddress));
+            }
+        }
+    }
 
     /**
      * 初始化ViewPager显示Fragments
      */
     private void initViewPager() {
-        mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager());
-        mFragmentAdapter.addFragment(HomeFragment.newInstance());
-        mFragmentAdapter.addFragment(SceneFragment.newInstance());
-        mFragmentAdapter.addFragment(CenterFragment.newInstance());
-        mPagerView.setAdapter(mFragmentAdapter);
+        FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
+        adapter.addFragment(DeviceFragment.newInstance());
+        adapter.addFragment(SceneFragment.newInstance());
+        adapter.addFragment(CenterFragment.newInstance());
+        mPagerView.setAdapter(adapter);
         mPagerView.setOffscreenPageLimit(2);
         mPagerView.addOnPageChangeListener(mOnPageChangeListener);
         mPagerView.setCurrentItem(lastSelectedPosition, true);
@@ -343,90 +393,47 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void suicide() {
         super.suicide();
-        if (EventBus.getDefault().isRegistered(this)) {
-            EventBus.getDefault().unregister(this);
-        }
+        DeviceManager.getInstance().removeOnStateChangedListener(mOnStateChangedListener);
+        DeviceManager.getInstance().suicide();
         AppContext.getInstance().exitApplication();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event) {
-        switch (event.state) {
-            case BLECenter.STATE_DISCONNECTED: {
-                toast("设备已离线：" + event.address);
-                LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
-                if (lightInfo != null) {
-                    lightInfo.connect = false;
-                }
-            }
-            break;
-            case BLECenter.STATE_CONNECTED: {
-                toast("设备已在线：" + event.address);
-                LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
-                if (lightInfo != null) {
-                    lightInfo.connect = true;
-                }
-            }
-            break;
-            case BLECenter.STATE_SERVICING: {
-                LightInfo lightInfo = AppContext.getInstance().findLight(event.address);
-                if (lightInfo != null) {
-                    /*地址和密码*/
-                    String address = lightInfo.address;
-                    String password = lightInfo.password;
-                    /*如果密码为空则使用系统全局密码*/
-                    if (TextUtils.isEmpty(password)) {
-                        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                        password = sp.getString(Constants.KEY_GLOBAL_PASSWORD, Constants.DEFAULT_GLOBAL_PASSWORD);
+    /**
+     * 设备状态回调
+     */
+    private OnStateChangedListener mOnStateChangedListener = new OnStateChangedListener() {
+        @Override
+        public void onStateChanged(String address, int state) {
+            switch (state) {
+                case STATE_DISCONNECTED: {
+                    //toast("设备已离线：" + address);
+                    Device device = AppContext.getInstance().findDevice(address);
+                    if (device != null) {
+                        device.connect = false;
                     }
-                    /*验证密码*/
-                    LightService.getInstance().validatePassword(address, password);
                 }
-            }
-            break;
-            default:
                 break;
-        }
-    }
-
-    /**
-     * 发现设备是添加到列表
-     */
-    private final BLEScanner.DeviceDiscoveredListener mDeviceDiscoveredListener = new BLEScanner.DeviceDiscoveredListener() {
-        @Override
-        public void onDiscovered(final BluetoothDevice device, int rssi, byte[] bytes) {
-            if (!BLEFilter.filter(bytes)) return; /*过滤自家设备*/
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    String deviceName = device.getName();
-                    String deviceAddress = device.getAddress();
-                    AppContext.getInstance().addLight(new LightInfo(deviceName, deviceAddress));
+                case STATE_CONNECTED: {
+                    //toast("设备已在线：" + address);
+                    Device device = AppContext.getInstance().findDevice(address);
+                    if (device != null) {
+                        device.connect = true;
+                    }
                 }
-            });
-        }
-    };
-
-    /**
-     * 扫描状态改变回调函数
-     */
-    private final BLEScanner.StateCallback mStateCallback = new BLEScanner.StateCallback() {
-        @Override
-        public void onStateChanged(boolean state) {
-            System.out.println("Hello world.....................");
-            if (state) {
-                String title = getString(R.string.activity_dialog_title_main);
-                String content = getString(R.string.activity_dialog_content_main);
-                showProgressDialog(title, content);
-            } else {
-                dismissProgressDialog();
-                if (AppContext.getInstance().lights.size() > 0) {
-                    toast(R.string.activity_start_connect_main);
-                    RxLightService.getInstance().connect(getApplicationContext(), true);
-                } else {
-                    toast(R.string.activity_no_device_main);
+                break;
+                case STATE_SERVICING: {
+                    Device device = AppContext.getInstance().findDevice(address);
+                    if (device != null) {
+                        /*验证密码*/
+                        DeviceManager.getInstance().validatePassword(address, device.password);
+                    }
                 }
+                break;
+                default:
+                    break;
             }
+            DeviceFragment.newInstance().update();
         }
     };
+
 }

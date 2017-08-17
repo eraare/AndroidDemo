@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.guohua.mlight.R;
-import com.guohua.mlight.model.bean.SceneBean;
+import com.guohua.mlight.bean.Scene;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
  */
 public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.SceneViewHolder> {
     private LayoutInflater mLayoutInflater;
-    private List<SceneBean> mDatas;
+    private List<Scene> mDatas;
 
     public SceneAdapter(Context context) {
         mLayoutInflater = LayoutInflater.from(context);
@@ -47,7 +47,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.SceneViewHol
 
     @Override
     public void onBindViewHolder(final SceneViewHolder holder, final int position) {
-        final SceneBean mScene = mDatas.get(position);
+        final Scene mScene = mDatas.get(position);
         holder.itemView.setTag(mScene.tag);
         holder.title.setText(mScene.title);
         holder.picture.setImageResource(mScene.picture);
@@ -80,7 +80,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.SceneViewHol
         void onItemClick(View v, Object tag);
     }
 
-    public void addScene(SceneBean sceneBean) {
+    public void addScene(Scene sceneBean) {
         this.mDatas.add(sceneBean);
         notifyDataSetChanged();
     }
@@ -108,7 +108,7 @@ public class SceneAdapter extends RecyclerView.Adapter<SceneAdapter.SceneViewHol
     public boolean changeState(Object tag) {
         // 默认为false
         boolean flag = false;
-        for (SceneBean s : mDatas) {
+        for (Scene s : mDatas) {
             if (tag == null) {
                 s.isRunning = false;
             } else {

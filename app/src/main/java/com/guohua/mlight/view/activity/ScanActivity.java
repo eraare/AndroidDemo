@@ -14,15 +14,14 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eraare.ble.BLEScanner;
+import com.eraare.ble.BLEUtils;
 import com.guohua.mlight.R;
 import com.guohua.mlight.common.base.BaseActivity;
 import com.guohua.mlight.common.base.BaseFragment;
 import com.guohua.mlight.common.permission.PermissionListener;
 import com.guohua.mlight.common.permission.PermissionManager;
-import com.guohua.mlight.lwble.BLEConstant;
-import com.guohua.mlight.lwble.BLEFilter;
-import com.guohua.mlight.lwble.BLEScanner;
-import com.guohua.mlight.lwble.BLEUtils;
+import com.guohua.mlight.common.util.FilterUtils;
 import com.guohua.mlight.view.adapter.BLEAdapter;
 import com.guohua.mlight.view.widget.LocalRecyclerView;
 
@@ -44,6 +43,9 @@ import butterknife.BindView;
  * 描  述：蓝牙设备扫描
  */
 public class ScanActivity extends BaseActivity {
+    public static final String EXTRA_DEVICE_NAME = "extra_device_name";
+    public static final String EXTRA_DEVICE_ADDRESS = "extra_device_address";
+
     private static final int REQUEST_ENABLE_BT = 1;// 请求码
     private static final long DEFAULT_SCAN_DURATION = 10000;
 
@@ -120,30 +122,10 @@ public class ScanActivity extends BaseActivity {
      */
     private void setupBleScanner() {
         mBleScanner = BLEScanner.getInstance();
-        mBleScanner.setStateCallback(mStateCallback);
-        mBleScanner.setDeviceDiscoveredListener(mDeviceDiscoveredListener);
+        mBleScanner.setCallback(mCallback);
     }
 
-    /**
-     * 扫描到设备后加入适配器
-     */
-    private BLEScanner.DeviceDiscoveredListener mDeviceDiscoveredListener = new BLEScanner.DeviceDiscoveredListener() {
-        @Override
-        public void onDiscovered(final BluetoothDevice device, int rssi, byte[] bytes) {
-            if (!BLEFilter.filter(bytes)) return;
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mAdapter.addDevice(device);
-                }
-            });
-        }
-    };
-
-    /**
-     * 扫描状态回调
-     */
-    private BLEScanner.StateCallback mStateCallback = new BLEScanner.StateCallback() {
+    private BLEScanner.Callback mCallback = new BLEScanner.Callback() {
         @Override
         public void onStateChanged(boolean state) {
             if (state) {
@@ -151,6 +133,17 @@ public class ScanActivity extends BaseActivity {
             } else {
                 setForwardTitle(R.string.activity_scan_scan);
             }
+        }
+
+        @Override
+        public void onDeviceDiscovered(final BluetoothDevice bluetoothDevice, int i, byte[] bytes) {
+            if (!FilterUtils.filter(bytes)) return;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mAdapter.addDevice(bluetoothDevice);
+                }
+            });
         }
     };
 
@@ -177,8 +170,8 @@ public class ScanActivity extends BaseActivity {
         String name = device.getName().trim();
         String address = device.getAddress().trim();
         Intent intent = new Intent();
-        intent.putExtra(BLEConstant.EXTRA_DEVICE_ADDRESS, address);
-        intent.putExtra(BLEConstant.EXTRA_DEVICE_NAME, name);
+        intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
+        intent.putExtra(EXTRA_DEVICE_NAME, name);
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
