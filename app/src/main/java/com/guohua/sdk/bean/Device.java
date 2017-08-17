@@ -4,7 +4,7 @@ package com.guohua.sdk.bean;
  * @author Leo
  * @version 1
  * @since 2017-08-15
- * 设备Bean类
+ * 设备Bean类  1
  */
 public class Device {
     public String name;
